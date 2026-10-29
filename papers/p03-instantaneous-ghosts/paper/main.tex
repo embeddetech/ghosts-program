@@ -1,0 +1,1685 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1.1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!60!black,citecolor=blue!60!black,urlcolor=blue!60!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{openproblem}[theorem]{Open Problem}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\PT}{\mathcal{PT}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\ii}{\mathrm{i}}
+\newcommand{\ee}{\mathrm{e}}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\avg}[1]{\langle #1 \rangle}
+\newcommand{\ket}[1]{|#1\rangle}
+
+\title{Ghost vacuum decay as a stochastic process:\\
+instantaneous states, the boost-orbit measure,\\
+and the foliation that ghosts make visible}
+
+\author{Jonathan Torkelson\\[2pt]
+\small Embeddetech, Inc., Tulsa, Oklahoma, USA\\
+\small\texttt{jtorkelson@embeddetech.com}}
+\date{July 11, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+In a companion paper we showed that the Ostrogradski instability of
+interacting ghosts is, in the stochastic currency of Barandes'
+quantum--stochastic correspondence, a recurrence-classification
+problem, with malicious interactions realizing \emph{explosion}:
+escape from the sample space in finite time. Here we take the program
+to quantum field theory, where the vacuum of a ghost coupled to
+ordinary matter famously decays at a divergent rate. Our results:
+(i)~the explosion dictionary acquires a Fock-space column---Feller's
+\emph{pure-birth} ladder criterion $\sum_n 1/\lambda_n<\infty$ is the discrete image of
+the classical time-of-flight integral, and finite-time blowup
+corresponds to ladder exponents $\alpha_{\rm eff}>1$, verified numerically (up to
+marginal logarithmic cases at $\alpha_{\rm eff}=1$); (ii)~the known factorization of the ghost
+vacuum rate into an infinite boost-orbit volume times an invariant
+reduced integral (Gross--Strumia--Teresi--Zirilli) is verified by
+brute-force phase-space integration to $0.1\%$ in $d{=}1$, and yields
+the reduced measure's dimension-and-coupling ladder
+($\Lambda^{0}/\Lambda^{4}/\Lambda^{8}$),
+whose $\Lambda^{8}/M_{\rm Pl}^{4}$ rung reproduces the
+Cline--Jeon--Moore scaling; (iii)~in Markov language
+the Lorentz-invariant \emph{eternal} ghost vacuum is, on the
+multiplicity reading and at tree level, an
+\emph{instantaneous state}---the minimal semigroup degenerates to
+zero vacuum lifetime---so a coupled ghost admits a non-degenerate
+configuration-space process only relative to a structure that individuates the channels---in every known rescue a frame or a birth surface---and every
+configuration-preserving rescue in the literature (momentum cutoffs, ghost condensation, a
+born vacuum) supplies one; (iv)~classical lattice experiments in
+$1{+}1$ and $2{+}1$ dimensions show the classical decay tracks a
+different, \emph{tadpole} dimension ladder ($\avg{\phi^2}\sim
+k_{\max}^{d-1}$, logarithmic at $d{=}1$), with the channel ladder flat to classical dynamics within the
+measurement resolution---spontaneous emission into empty channels is intrinsically
+quantum; (v)~a beables-first field theory is foliation-anchored by
+construction, the foliation's determinacy is a measurable property of
+the state that vanishes continuously at the vacuum, and a ghost
+sector would render the otherwise-hidden foliation observable (the hiddenness
+proved for the finite core; the ghost-induced observability argued at
+tree level);
+(vi)~apparent superluminal signaling enters at the two points we
+identify (the conditioning point provably the unique marginal-breaker in the finite core, over the framework's dilated local dynamics; the completions door left open), both simulated: survival conditioning (recovering the
+known resolution of the Lee--Hsieh--Flammia--Lee no-signaling
+controversy in one bookkeeping, with the signal magnitude of its
+broken-phase dimer analog now in
+closed form, $\mathrm{TV}(\infty)=\tilde\kappa/\sin\theta$)
+and conservative completions (a messaging protocol whose latency
+through infinity is distance-independent in the explosive
+class (in the cases tested), and which the minimal process silences). The findings assemble
+into a trilemma: \emph{coupled ghosts, empirical Lorentz
+invariance, definite configurations---any two, never all three} (at
+tree level).
+\end{abstract}
+
+\newpage
+\begin{quote}
+\small\noindent\textbf{Note on provenance.} This manuscript is an
+experiment in AI-conducted research as much as a physics paper. The
+project began when the author asked the large language model Claude
+Fable~5 (Anthropic): \emph{``Is it not possible that the antilinear
+PT/time-reversal symmetry element could maybe predict indivisible
+non-Markovian processes?''} Everything that followed was performed by
+the model: the research program, the theorems and proofs, the numerical
+experiments, the literature search, and this text. The model was
+repeatedly prompted to attack its own results adversarially and to
+search for prior work. The author, a professional engineer rather than
+a physicist, directed and reviewed the sessions but makes no claim to
+comprehension of the findings, and is circulating the manuscript for
+independent review by professional physicists. Accordingly, nothing
+here should be taken on trust: every theorem is stated with a full
+proof or its explicit verification, and every numerical claim is
+reproducible from the public scripts (see Code availability); the
+originating conversation, project briefing, and full research
+notebook are preserved in the program's hub repository (see Code
+availability).
+\end{quote}
+
+\newpage
+\tableofcontents
+\newpage
+
+%=====================================================================
+\section{Introduction}
+\label{sec:intro}
+
+The companion paper \cite{indivisible} developed a dictionary between
+non-Hermitian and higher-derivative quantum mechanics and the
+indivisible-stochastic-process reconstruction of quantum theory due
+to Barandes \cite{Barandes2023,Barandes2025}. Its final result, the
+\emph{explosion dictionary}, identified the Ostrogradski instability
+of malicious interacting ghosts \cite{PaisUhlenbeck1950,Smilga2005}
+with \emph{explosion} in the probabilist's sense: the classical time
+of flight to infinity, the quantum deficiency norm, and the failure
+of Feller conservativity are one integral, and the canonical
+description of a malicious ghost is a \emph{sub-stochastic} process
+that loses mass to infinity in finite time.
+
+That paper stopped at quantum mechanics. The present paper asks
+whether the identification survives the passage to quantum field
+theory, where the instability of a ghost coupled to ordinary matter
+takes its sharpest known form: the vacuum itself decays, into ghost
+pairs plus matter pairs of balancing energy, at a rate whose
+phase-space integral diverges \cite{CHT2003,CJM2004}. Whether that
+divergence means catastrophe or artifact is a live dispute:
+Cline--Jeon--Moore concluded that only a Lorentz-\emph{violating}
+momentum cutoff tames it and bounded the cutoff at
+$\Lambda\lesssim3\,$MeV from the diffuse gamma-ray background
+\cite{CJM2004} (a 2023 re-analysis with exact phase space relaxes
+this to $\Lambda\lesssim19\,$MeV \cite{ClinePhantom2024}); Gross--Strumia--Teresi--Zirilli, noting that the same
+divergent boost integral once afflicted ordinary false-vacuum decay
+before Coleman's bounce resolved it as an over-counting, answer
+``we do not know the true rate'' \cite{GSTZ2021};
+Garriga--Vilenkin construct Lorentz-invariant ghosts whose finite
+vacuum age and UV-soft nonlocal couplings yield a finite,
+time-growing rate \cite{GV2013}. The dispute matters beyond theory:
+dark-energy measurements with $w<-1$---currently hinted at---would
+make the phantom (ghost) sector a live physical hypothesis
+\cite{CHT2003,ClinePhantom2024}.
+
+This paper translates the dispute into the stochastic currency and
+finds that the translation does real work. Our main results:
+
+\begin{enumerate}
+\item \textbf{The Fock-space column of the explosion dictionary}
+(Sec.~\ref{sec:pathologies}). Feller's ladder criterion---a
+\emph{pure-birth} jump process explodes iff $\sum_n 1/\lambda_n<\infty$---is
+the discrete image of the companion paper's time-of-flight integral,
+and the transient/explosive dichotomy is a statement about growth
+\emph{laws}: algebraic blowup $n\sim(t_*-t)^{-m}$ has ladder exponent
+$\alpha_{\rm eff}=1+1/m>1$; exponential growth sits exactly at the
+marginal $\alpha_{\rm eff}=1$. Both verified numerically, including
+the box-independence signature of explosion.
+\item \textbf{Two pathologies, kept distinct}
+(Sec.~\ref{sec:pathologies}). Explosion (finite rates growing along
+the occupation ladder; escape at finite $t_*>0$) and
+\emph{instantaneity} (infinite exit rate at a single state; zero
+lifetime) are different diseases. Malicious quantum-mechanical ghosts
+realize the first; the Lorentz-invariant ghost vacuum threatens the
+second.
+\item \textbf{The factorization, verified; the dimension ladder}
+(Sec.~\ref{sec:factorization}). The vacuum rate factorizes as
+[boost-orbit volume, infinite in every dimension] $\times$ [invariant
+reduced integral over the pair invariant mass]---a structure due to
+GSTZ \cite{GSTZ2021} (implicit in CJM's regulated calculation
+\cite{CJM2004}), which we verify by brute-force constrained
+integration to $0.1\%$ in $d=1$ and whose reduced measure we find numerically to be
+UV-finite in $d=1$, $\sim\Lambda^{4}$ in $d=3$, and
+$\sim\Lambda^{8}/M_{\rm Pl}^{4}$ with the CJM gravitational
+vertex---their published scaling, recovered from the orbit-quotiented
+measure alone.
+\item \textbf{Instantaneity and the frame}
+(Sec.~\ref{sec:multiplicity}). If boost-orbit members are distinct
+outcomes with tree-level (orbit-degenerate) rates, the eternal
+Lorentz-invariant ghost vacuum has infinite exit rate per unit
+volume: an \emph{instantaneous state}, whose minimal semigroup
+degenerates to zero vacuum lifetime. A born vacuum (finite age), with
+a UV-finite \emph{causally weighted} reduced integral (a sufficiently
+UV-soft coupling; in $d=1$ a logarithmically weighted finiteness,
+Thm~\ref{thm:instantaneity}), has finite, growing rate \cite{GV2013}. Every known
+rescue that preserves definite configurations supplies a frame or a birth
+surface; in this currency, \emph{a
+coupled ghost admits a non-degenerate sample space only relative to an
+individuating structure---a frame or a birth surface}. We port the bubble literature's multiplicity-vs-redundancy
+resolution \cite{KOV1975,ColemanBounce,Dvali2011,DDP2012,GKT2013,GSV2011}
+and show its two mechanisms (saddle symmetry; excitation cost) are
+absent, at tree level, for perturbative ghost decay.
+\item \textbf{The two ladders} (Sec.~\ref{sec:lattice}). Classical
+lattice experiments at fixed volume show the classical decay rate is
+effectively marginal in $1{+}1$d (consistent with the logarithmic tadpole expectation, not cleanly separable from saturation at accessible $N$) and power-law divergent
+in $2{+}1$d---but exponent
+decomposition attributes the mechanism to the \emph{tadpole} ladder
+($\avg{\phi^2}_0\sim k_{\max}^{d-1}$), not the channel ladder: with
+the source held fixed, the channel factor is flat within resolution. Classical fields
+cannot spontaneously radiate into empty channels; the channel ladder
+is intrinsically quantum.
+\item \textbf{The foliation} (Sec.~\ref{sec:foliation}). A
+beables-first field theory chooses configurations on slices: it is
+foliation-anchored by construction, as in Bohmian field theory
+\cite{HypersurfaceBD,DGNSZ2014}. We show the foliation's
+\emph{determinacy} is a measurable property of the state, vanishing
+continuously at the vacuum (the dynamical face of
+$\avg{T^{\mu\nu}}\propto\eta^{\mu\nu}$); that a ghost sector would
+make the otherwise-hidden foliation \emph{observable}; and that the ultraviolet disposes in a
+lattice experiment while the state proposes by continuum covariance (the
+lattice could not resolve the early window at accessible sizes)---the
+dynamical content of Garriga--Vilenkin's UV-softness condition.
+\item \textbf{Causality and signaling} (Sec.~\ref{sec:causality}).
+Apparent superluminal signaling enters this framework at the two
+points we identify (the conditioning point provably the unique marginal-breaker in the finite core, over the framework's dilated local dynamics; the completions door left open), both simulated. Survival conditioning: the
+Lee--Hsieh--Flammia--Lee signal \cite{LHFL2014} is reproduced,
+located, and---in its broken-phase dimer analog---given a closed-form
+magnitude, $\mathrm{TV}(\infty)=\tilde\kappa/\sin\theta$, as a corollary
+of the companion paper's terminal-indivisibility theorem; the correctly
+bookkept (dilated) dynamics is no-signaling to $10^{-16}$.
+Conservative completions: a messaging protocol through infinity
+whose latency is distance-independent in the explosive class (in the
+cases tested) and which the minimal process silences---\emph{causality selects the
+minimal process}.
+\item \emergencystretch=2em\textbf{The trilemma} (Sec.~\ref{sec:trilemma}):
+coupled ghosts, empirical Lorentz invariance, definite
+configurations---any two, never all three (at tree level).
+\end{enumerate}
+
+Section~\ref{sec:tests} collects observational and experimental
+tests; Sec.~\ref{sec:discussion} states the limits of every claim.
+All numerics are reproducible from standalone scripts
+(\nameref{sec:code}).
+
+%=====================================================================
+\section{Two pathologies of a stochastic process}
+\label{sec:pathologies}
+
+We use the correspondence in the form of \cite{Barandes2023,Barandes2025,indivisible}: configurations carry the ontology, and the
+dynamics is a (generally indivisible) family of stochastic maps; for
+open or unbounded systems the regulator-independent object is the
+minimal, generally sub-stochastic, semigroup \cite{Feller1952}.
+
+\subsection{The Fock-space column of the explosion dictionary}
+
+Let occupation configurations form a ladder with total exit rates
+$\lambda_n$ from occupation $n$. Feller's criterion states that a
+\emph{pure-birth} chain \emph{explodes}---performs infinitely many jumps in
+finite time, with mass leaving every finite region---iff the expected
+total travel time to infinity is finite:
+\begin{equation}
+\sum_n \frac{1}{\lambda_n} < \infty .
+\label{eq:feller}
+\end{equation}
+This is the exact discrete sibling of the classical time-of-flight
+integral $T=\int^\infty\dd x/\sqrt{2(E-V)}$ of the companion
+dictionary: both are sums of sojourn times to infinity. The bridge
+to dynamics is a one-line lemma:
+
+\begin{lemma}[growth law decides]
+\label{lem:growthlaw}
+For any pure-birth ladder (rates $\lambda_n>0$, mean-field
+$\dot n=\lambda_n$) with growth $n(t)$, define
+$\alpha_{\rm eff}=\dd\log\dot n/\dd\log n$. Algebraic finite-time blowup $n\sim(t_*-t)^{-m}$ gives
+$\alpha_{\rm eff}=1+1/m>1$; exponential growth gives
+$\alpha_{\rm eff}=1$. By \eqref{eq:feller}, for power-law ladders
+$\lambda_n=n^\alpha$ ($n\ge1$) the explosive class is
+$\alpha_{\rm eff}>1$ (logarithmic
+refinements can shift the marginal case): finite-time blowup, not
+growth rate, is what explosion detects.
+\end{lemma}
+
+Numerically (\texttt{qft\_bridge\_stage2.py}): truncated-ladder
+master equations with $\lambda_n=n^\alpha$ show the explosion
+signature of \cite{indivisible}---absorbed mass at fixed time
+\emph{independent of the truncation}---switching on at $\alpha>1$
+(absorbed $0.941$--$0.988$, nearly flat (within $\sim2\%$) across truncations $200$--$1600$,
+for $\alpha=1.25,1.5$; decaying to zero for $\alpha\le1$); and the
+lemma's exponents are measured as $1.0000$ for the quadratic ghost
+cascade ($n=\sinh^2 gt$: forever-growing yet \emph{transient}) and
+$1.172$ vs.\ the predicted $7/6$ for the classical quartic
+Pais--Uhlenbeck blowup (energy proxy $n\sim(t_*-t)^{-6}$).
+
+\subsection{Explosion versus instantaneity}
+\label{sec:taxonomy}
+
+Both pathologies are failures of conservativity, but they are
+distinct and must not be conflated:
+
+\begin{itemize}
+\item \emph{Explosion}: every exit rate finite, but growing along
+the ladder so that \eqref{eq:feller} converges; jumps accumulate and
+mass exits at some finite $t_*>0$. This is a \emph{tail} phenomenon
+in configuration space. Malicious quantum-mechanical ghosts realize
+it \cite{indivisible}.
+\item \emph{Instantaneity}: the exit rate \emph{at a single state}
+diverges, $q=\sum_{\rm channels}(\text{finite rates})=\infty$. States
+with $q=\infty$ are called instantaneous; chains containing them
+exist (Kolmogorov's and Blackwell's examples
+\cite{Blackwell1958,ChungBook}) but are not \emph{stable}: they
+admit no right-continuous jump realization. The operationally sharp
+statement is obtained from regulated families: if
+$q(\Lambda)\to\infty$ as the regulator is removed, the minimal
+semigroup degenerates to \emph{instantaneous killing}---the state's
+survival probability vanishes for every $t>0$. (Zero lifetime is
+harsher than the honest instantaneous-state chains, in which the
+state is still occupied a positive fraction of time; the difference
+is that the minimal ghost-vacuum process has no return path into
+the vacuum.) Not nonexistence: a zero-lifetime state.
+\end{itemize}
+
+The mathematical neighbors of this section deserve naming: global
+existence (non-explosion) of Bell-type jump processes for lattice
+QFT was proved by Georgii and Tumulka under growth hypotheses on
+the Hamiltonian \cite{GeorgiiTumulka}, and conservativity criteria
+for minimal quantum dynamical semigroups by Chebotarev and Fagnola
+\cite{ChebotarevFagnola}; a ghost sector violates exactly the
+hypotheses of such theorems, and this paper's content is that the
+violation \emph{is} the physics. The passage from quantum mechanics
+to field theory, we now show, is the passage from the first
+pathology to the threat of the second.
+
+%=====================================================================
+\section{The ghost vacuum rate: factorization and the dimension
+ladder}
+\label{sec:factorization}
+
+Consider a ghost field coupled to ordinary matter, with vacuum decay
+$\varnothing\to(\text{matter pair})+(\text{ghost pair})$: total
+four-momentum zero, the ghost pair carrying the negative of the
+matter pair's energy--momentum, so the common pair energy is
+unbounded \cite{CHT2003,CJM2004}. Because the matter pair's
+four-momentum $Q$ must equal the sign-flipped ghost pair's, the
+golden-rule rate per volume organizes, with $\rho(s)$ the invariant
+two-body phase-space density and $s=Q^2$,
+\begin{equation}
+\frac{\Gamma}{V}
+=\Bigl[\underbrace{\textstyle\int \dd\mu_{\rm boost}}_{\infty}\Bigr]
+\times
+\Bigl[\underbrace{\textstyle\int \dd s\,
+\sigma_d(s)\,\rho_n(s)\rho_g(s)\,|\mathcal M(s)|^{2}}_{\text{reduced
+integral}}\Bigr],
+\label{eq:factorization}
+\end{equation}
+where the first factor is the volume of the boost orbit of the pair
+frame---\emph{infinite in every spatial dimension $d$}---and
+$\sigma_d(s)=\tfrac12 s^{(d-1)/2}$ is the residual invariant measure,
+the Jacobian in
+$\dd^{\,d+1}Q=\tfrac12 s^{(d-1)/2}\,\dd s\;\sinh^{d-1}\!\eta\,\dd\eta\,
+\dd\Omega_{d-1}$ (with $Q^0=\sqrt s\cosh\eta$,
+$|\vec Q|=\sqrt s\sinh\eta$), the last two factors being the
+unit-hyperboloid orbit measure $\dd\mu_{\rm boost}$ (the overall
+$\tfrac12$ is a boost-normalization convention, stripped in the
+reduced integral $I_s$ of Prop.~\ref{prop:ladder}). This factorization
+is due to Gross--Strumia--Teresi--Zirilli (their Eq.~(88) and the
+diagnosis ``the rate contains a $\dd K_0$ integral over the
+non-compact Lorentz group'' \cite{GSTZ2021}); the regulated special
+case is CJM's Eq.~(9) \cite{CJM2004}. Our contributions are a
+numerical verification and the dimension ladder of the reduced
+factor.
+
+\begin{proposition}[factorization verified; dimension ladder]
+\label{prop:ladder}
+(\texttt{qft\_bridge\_stage3.py})
+In $d=1$ with contact coupling and masses $(m_n,m_g)=(1,0.7)$,
+brute-force integration of the constrained two-pair phase space with
+rapidity cutoff $|\eta|<H$ gives $\Gamma(H)$ linear in $H$ with slope
+equal to the independently computed reduced integral
+($I_s=\int\dd s\,\rho_n\rho_g=0.6192$ to the script's finite-$s$ grid, converging to $0.6195$; slope $=I_s/(2\pi)^2$ in
+the conventions used): ratios $0.999,1.000,1.001,1.000$ at
+$H=1,2,3,4$.
+The reduced integral's UV behavior, fitted to three decimals:
+$\Lambda^{0}$ (UV-finite) in $d=1$; $\Lambda^{4}$ in $d=3$ with
+contact coupling; $\Lambda^{8}/M_{\rm Pl}^{4}$ in $d=3$ with the CJM
+gravitational vertex $|\mathcal M|^{2}\sim s^{2}/M_{\rm Pl}^{4}$---%
+recovering the published CJM scaling from the orbit-quotiented
+measure alone. Two closeouts
+(\texttt{qft\_bridge\_closeout.py}): the $d=3$ factorization is
+verified by direct Monte Carlo with the hyperboloid orbit measure
+$\sinh^{2}\!\eta\,\dd\eta$ ($\Gamma/V_{\rm orb}$ constant within the
+${\sim}3$--$7\%$ sampling errors across $H=0.5$--$1.5$; the $\Lambda^{4}$
+rung measured directly, global-fit slope $4.3$ ($4.1$ over the upper interval) as threshold effects
+fade); and the causal orbit cap $\gamma<t\sqrt s$ reproduces
+Garriga--Vilenkin's $D=2$ logarithmic growth with
+$(2\pi)^2\,\dd\Gamma/\dd\ln t=0.6193$ against $I_s=0.6192$ (the same
+stripped convention as the slope above)---their result is
+this factorization, regulated by the vacuum's age.
+\end{proposition}
+
+Two consequences frame everything that follows. First, the
+$d$-dependence everyone debates lives entirely in the reduced factor;
+the (unregulated) orbit volume diverges identically in every dimension. (A naive
+scale-counting argument that ``$d=1$ converges'' samples a non-orbit
+direction and misses a vanishing Jacobian along the boost flow; the
+numerics adjudicated for the invariance argument. Our notebook
+records the error.) Second, Garriga--Vilenkin's $D=2$ result---a
+Lorentz-invariant rate, finite and logarithmically growing in the
+vacuum's age \cite{GV2013}---is precisely the $d=1$ reduced
+factor times a causally regulated (logarithmic) orbit.
+
+%=====================================================================
+\section{Multiplicity or redundancy: the boost orbit as a
+sample-space question}
+\label{sec:multiplicity}
+
+Equation \eqref{eq:factorization} forces the question on which the
+CJM/GSTZ dispute turns: do the members of a boost orbit count as
+\emph{distinct decay channels} (rates add; the total diverges) or as
+\emph{redundant descriptions} of one outcome (quotient; the rate is
+the reduced integral)?
+
+\subsection{The bubble precedent, and why it does not transfer}
+
+The identical question has a fifty-year history in ordinary
+false-vacuum decay. Kobzarev--Okun--Voloshin observed the divergent
+boost integral \cite{KOV1975}; Coleman's Euclidean bounce resolved it
+(the $O(4)$-symmetric saddle's boost directions are a stabilizer, not
+a moduli space; integrating them would over-count
+\cite{ColemanBounce}); Dvali revived the worry \cite{Dvali2011};
+Dine--Draper--Park answered in Minkowski language: a boosted bubble is
+a \emph{different, excited} configuration whose production amplitude
+is suppressed, so the channel sum converges \cite{DDP2012}; and
+Garriga--Shlaer--Vilenkin showed the fluctuation-dressed bubble state
+is boost-invariant---boosts map it to itself \cite{GSV2011}. The
+literature's operative criterion, due in substance to Coleman and
+stated sharply by Garriga--Shlaer--Vilenkin \cite{GSV2011}: \emph{if
+the final state is a boost singlet, the boost integral is
+redundancy} (over-counting of one outcome). We use the complementary
+direction---non-singlet finals are distinct channels---together with
+the tree-level degeneracy of their amplitudes, which is what carries
+the divergence; Dine--Draper--Park's bubbles show distinctness alone
+does not suffice (a non-singlet channel sum can converge when the
+amplitudes are suppressed \cite{DDP2012}). The born-vacuum idea was
+itself anticipated in Dvali's note~5 \cite{Dvali2011}.
+
+Perturbative ghost decay fails the criterion on both counts, at the
+order computed: multiparticle final states with definite momenta are
+not boost singlets, and orbit members are exactly degenerate in
+$|\mathcal M|$---there is no saddle symmetry and no excitation cost.
+(Whether resummation generates a Dine--Draper--Park-style suppression
+is precisely GSTZ's open question restated; our statements are
+tree-level.) On the multiplicity horn, then:
+
+\begin{theorem}[instantaneity of the eternal ghost vacuum]
+\label{thm:instantaneity}
+If boost-orbit members are distinct outcomes \emph{with the
+tree-level (orbit-degenerate) golden-rule rates} and a continuous, nonnegative reduced integrand not vanishing identically on the accessible range, the exit
+rate \emph{per unit volume} of the Lorentz-invariant eternal vacuum of a coupled ghost
+theory is infinite in every spatial dimension: the vacuum is an instantaneous
+state (its total rate diverges already at any fixed finite volume), and the minimal semigroup of the regulated family degenerates
+to zero vacuum lifetime as the regulator is removed. A vacuum
+\emph{born} on a spacelike surface $\Sigma$ at finite age $t$, whose
+\emph{causally weighted} reduced integral
+$\int\dd s\,s^{(d-1)/2}\sigma_d(s)\,\rho_n(s)\rho_g(s)\,|\mathcal M(s)|^{2}$
+(this causal-cap weight $s^{(d-1)/2}$, derived in the proof below for $d\ge2$, is a second factor of the same power as, but distinct in origin from, the measure $\sigma_d$; the $d=1$ case is logarithmic)
+is finite---locally integrable (no on-shell pole in the accessible range) and ultraviolet-finite for a sufficiently UV-soft coupling (for $d=1$ the
+weight is instead \emph{logarithmic}---the capped orbit factor is
+$\operatorname{arccosh}(t\sqrt s)\sim\ln(2t)+\tfrac12\ln s$, so
+finiteness is guaranteed by the log-weighted condition
+$\int\dd s\,\sigma_1\rho_n\rho_g|\mathcal M|^{2}\,(1+|\ln s|)<\infty$
+(both the plain reduced integral and its $\ln s$ weighting), strictly
+stronger than plain UV-finiteness of the reduced integral; this
+sufficient condition is not necessary once the accessible range reaches
+$s\to0$, where the causal cap $s>1/t^2$ removes the $\ln s$ weight), has finite
+exit rate per unit volume (growing as
+$t^{\,d-1}$, logarithmically for $d=1$; e.g.\
+$\Gamma/V\sim10^{-6}(\mu^{8}/M_{\rm Pl}^{4})(\mu t)^{2}$ for UV-soft
+gravitational-strength coupling \cite{GV2013}); for a UV-local coupling
+in $d\ge2$ the causal age bound regulates only the boost orbit, and the
+reduced integral's own ultraviolet divergence (computed at $d=3$ in
+Prop.~\ref{prop:ladder} as $\sim\Lambda^{4}$; the same plain counting gives
+$\sim\Lambda$ at $d=2$, and $\sim\Lambda^{2}$ once the causal weight
+$s^{(d-1)/2}$ controlling $q(t)$ is folded in) keeps $q=\infty$---any positive
+power suffices.
+\end{theorem}
+
+\begin{proof}
+Immediate from \eqref{eq:factorization}: the reduced integral is
+positive whenever the reduced integrand does not vanish identically, and the orbit volume is
+infinite; regulating the orbit (by a frame cutoff \cite{CJM2004} or
+by the causal bound $\gamma<t\sqrt s$ \cite{CJM2004,GV2013}) gives
+finite $q(\Lambda)$, or---when the \emph{causally weighted} reduced
+integral is ultraviolet-finite---finite $q(t)$, with $q\to\infty$ as the
+regulator is removed. (The causal cap $\cosh\eta<t\sqrt s$ leaves the
+orbit integral $\int_0^{\eta_{\max}}\!\sinh^{d-1}\!\eta\,\dd\eta\simeq
+(t\sqrt s)^{\,d-1}/(d-1)$ for $d\ge2$ and $\simeq\ln(t\sqrt s)$ for
+$d=1$; the resulting factor $s^{(d-1)/2}$ migrates into the reduced
+integrand, so it is the \emph{weighted} ultraviolet finiteness, not the
+plain one, that controls $q(t)$ in $d\ge2$.) The minimal-semigroup statement is the standard limit of
+survival probabilities $\ee^{-q t}\to0$.
+\end{proof}
+
+\begin{remark}[on the golden-rule inputs]
+The reduced integrand uses the on-shell asymptotic densities
+$\rho_n(s)\rho_g(s)$. Where the ghost admits no asymptotic particle
+interpretation above threshold \cite{Buoninfante2026}, these are formal
+spectral inputs rather than S-matrix data, and the conclusion is read
+throughout as the vacuum's exit rate on the configuration sample space
+(Section~\ref{sec:discussion}), not a decay width; the instantaneity
+statement is about that configuration-space process, whose inputs
+remain the on-shell densities.
+\end{remark}
+
+\begin{claim}[the sample space requires individuating structure]
+\label{claim:frame}
+On the multiplicity horn, a coupled ghost admits a non-degenerate
+configuration-space stochastic process only relative to a structure
+that individuates the channels: a frame (CJM's cutoff frame
+\cite{CJM2004}; the ghost condensate's background
+\cite{GhostCondensate}; Ho\v rava-type explicit breaking
+\cite{Horava-ghosts}) or a birth surface (\cite{GV2013}, where
+$\Sigma$ ``breaks Lorentz invariance spontaneously''). Conversely,
+CJM's exclusion of Lorentz-invariant cutoffs is the statement that
+the individuating data cannot be specified invariantly.
+\end{claim}
+
+The redundancy horn is GSTZ's hope: a Coleman-style boost-singlet
+saddle for ghost decay, which they could not construct (no positive
+Euclidean action) \cite{GSTZ2021}. In our language the two horns are
+two \emph{sample spaces}: frame-anchored momentum configurations
+versus boost-equivalence classes. That the dispute is a choice of
+sample space---not a computational disagreement---is, we believe, its
+sharpest available formulation, and Sec.~\ref{sec:foliation} shows
+the beables framework itself takes a side.
+
+\begin{remark}[scope: the Born--Markov concession]
+\label{rem:bornmarkov}
+The jump process is derived from the golden rule; the instantaneity
+diagnosis is a \emph{translation} of the divergent perturbative rate
+and inherits both its validity and its doubts. The framework's
+contribution is that the translation exposes the disputed
+assumption---channel individuation---as a statement about the sample
+space, not that it independently settles the rate.
+\end{remark}
+
+A zero-dimensional channel model makes the dichotomy quantitative
+(\texttt{qft\_bridge\_stage2.py}): a state coupled to $M$ identical
+flat quasi-continua shows fitted decay rate tracking $M\Gamma_1$
+within $3\%$ up to $M=32$ (unbounded growth: the multiplicity trend),
+while a decaying channel measure $g_k\propto\ee^{-k/4}$ converges to
+its predicted plateau ($0.0640$ vs.\ $0.0643$): channel counting is
+the entire difference between ``catastrophic'' and ``metastable.''
+
+%=====================================================================
+\section{The two ladders: what classical field dynamics can and
+cannot see}
+\label{sec:lattice}
+
+Does classical lattice field theory---the standard nonperturbative
+tool---exhibit the channel divergence? We ran the direct experiment
+(\texttt{qft\_bridge\_e4\_2d.py}): normal field $\phi$ and ghost
+$\chi$ with coupling $\lambda\phi^{2}\chi^{2}$, correctly normalized
+zero-point (``vacuum-mimic'') initial data, at \emph{fixed physical
+volume} with the lattice cutoff $k_{\max}=\pi N/L$ swept; observable,
+the time for the normal sector to absorb a fixed energy. With all
+controls clean (the $\lambda=0$ runs silent; conserved-energy drift
+well below thresholds (worst case ${\sim}3\times$ below at the top $d{=}2$ cutoff, ${\ge}10\times$ elsewhere)):
+\begin{center}
+\begin{tabular}{lcccc}
+\toprule
+& \multicolumn{4}{c}{rate $=1/t_{\rm thr}$ vs.\ lattice cutoff}\\
+$d=1$ ($N=16,32,64,128$): & $0.013$ & $0.018$ & $0.024$ & $0.025$\\
+$d=2$ ($N=16,32,48,64$): & $0.02$ & $0.1$ & $0.2$ & $0.4$\\
+\midrule
+\multicolumn{5}{l}{\footnotesize The two rows are measured at
+\emph{different} configurations: $d=1$ at
+$\lambda=0.25$, $L=32$,}\\
+\multicolumn{5}{l}{\footnotesize $\Delta E=25$, $n=8$;
+$d=2$ at $\lambda=0.1$, $L=16$, $\Delta E=10$, $n=60$. The claim is the
+\emph{dichotomy},}\\
+\multicolumn{5}{l}{\footnotesize not a cross-row rate comparison.}\\
+\bottomrule
+\end{tabular}
+\end{center}
+The $1{+}1$d rate is effectively marginal (its tadpole driver only logarithmic in $d{=}1$---slow, unbounded growth rather than a clean continuum limit; the rate $0.013\to0.025$ is still rising at $N{=}128$, though the growth over the final doubling is within the ensemble scatter at $n=8$, so the quoted uncertainties are ensemble estimates)---while
+the $2{+}1$d rate grows as $\sim k_{\max}^{2.1}$ with no
+saturation: a dimensional dichotomy in the pre-registered direction. (The
+top-cutoff $d{=}2$ rate scatters ${\sim}20$--$40\%$ across vacuum realizations---the
+$d{=}2$ rates are medians over $60$ (the $d{=}1$ row over $8$), quoted to one
+significant figure ($d{=}1$ to two), with the threshold checked on a ${\approx}0.5$ grid; the
+$d{=}1$ values likewise carry ${\sim}{\pm}30$--$50\%$ (upper-skewed) seed-to-seed scatter, and the fitted
+exponent carries a ${\pm}0.2$ ensemble uncertainty.)
+
+But exponent decomposition (\texttt{qft\_bridge\_decomp.py})
+reattributes the mechanism. Holding the source fixed (zero-point
+support truncated to $|k|\le K_C$, $N$-independent up to
+$O((k\Delta x)^2)$ dispersion corrections (${\lesssim}3\%$)) and
+sweeping only the available channels, the purified channel factor is
+\emph{flat} in both dimensions (fitted exponents $-0.20$ ($d{=}2$) and
+$+0.11$ ($d{=}1$); ensemble noise leaves room for a residual channel-log of at
+most ${\sim}1.3\times$ across the sweep---so the naive golden-rule channel prediction (linear in the
+cutoff, ${\sim}4\times$; a residual channel-\emph{log} would give the weaker
+${\sim}2.2\times$) is excluded a fortiori); holding the channels fixed and scaling the source amplitude
+$a$, the rate goes as $a^{4.96}$ ($d{=}2$) and $a^{4.45}$ ($d{=}1$) against the
+perturbative $a^{4}$; and the reconstruction reproduces the growth to within ${\sim}30\%$ in the exponent: the measured
+$\avg{\phi^{2}}_0\propto k_{\max}^{1.16}$ raised to \emph{half} the
+$d{=}2$ amplitude power ($4.96/2=2.48$, since the rate scales as
+$a^{4.96}$ while the variance scales as $a^{2}$) predicts
+$k_{\max}^{2.9}$, over-predicting the observed ${\sim}2.1$: the sign and
+rough size of the dimensional reversal are reproduced, the precise exponent
+not.
+
+\begin{claim}[the two ladders]
+\label{claim:twoladders}
+There are two dimension ladders. The \emph{tadpole ladder}: the
+zero-point variance $\avg{\phi^{2}}=\int\dd^{d}k/(2\omega(2\pi)^d)
+\sim k_{\max}^{d-1}$ (log at $d{=}1$, linear at $d{=}2$)---this is
+what classical-statistical lattice dynamics tracks, and it is the
+true mechanism of the marginal-versus-power-law dichotomy above. The
+\emph{channel ladder}: the reduced decay measure of
+Prop.~\ref{prop:ladder} plus the boost orbit---the CJM/GSTZ object.
+Classical dynamics cannot see it, for the standard structural
+reason: emission rates into a mode go as $(n+1)$ quantum
+mechanically but as $n$ (stimulated only) in the classical wave
+limit---the missing spontaneous ``$+1$'' is exactly the golden-rule
+channel factor---so the classical cascade populates high $k$ only by
+nonlinear local-in-$k$ flux, insensitive to the far cutoff. The
+cutoff pathologies of classical-statistical simulations seeded with
+zero-point noise are documented \cite{EGW2014}, including the
+cutoff-dependent $\avg{\phi^2}$ renormalization in real-time
+false-vacuum-decay lattices \cite{LatticeFVD2022}; our decomposition
+quantifies them for the ghost problem.
+\end{claim}
+
+Methodological consequence, stated plainly: classical-statistical
+vacuum simulations are tadpole-ladder probes; channel-ladder
+questions require quantum treatment (our channel toy above, the
+phase-space integrals of Prop.~\ref{prop:ladder}, or genuine quantum
+simulation). Our notebook documents the two artifacts caught en route
+(a vacuum-normalization error, retracted with scope; Verlet
+integrator drift at marginal timestep firing the $\lambda=0$
+control)---each alone would have
+produced a publishable-looking false trend, and each was caught by an
+inline control column.
+
+%=====================================================================
+\section{The foliation}
+\label{sec:foliation}
+
+\subsection{Beables anchor a slicing; ghosts make it visible}
+
+A beables-first field theory needs configurations, and field
+configurations live on \emph{spatial slices}: choosing the
+configuration space is choosing a foliation. This is not peculiar to
+the present program---it is the known structure of Bohmian field
+theory \cite{HypersurfaceBD}, where the foliation may even be
+extracted covariantly from the quantum state itself \cite{DGNSZ2014}
+---and Barandes' own development stays on finite configuration
+spaces, deferring exactly this point \cite{Barandes2025}. Within the
+natural field-theoretic extension, then, the boost-orbit question of
+Sec.~\ref{sec:multiplicity} is answered structurally: relative to the
+theory's own foliation, orbit members are distinct
+configurations---the multiplicity horn.
+
+The standard objection to foliated ontologies is that the foliation
+is idle: in quantum equilibrium it is empirically invisible
+(no-signaling), pure metaphysical surplus. Our results replace
+``invisible'' with a \emph{criterion}:
+
+\begin{claim}[the equilibrium shield and its breaking]
+\label{claim:shield}
+\emph{In quantum equilibrium}, the foliation is empirically hidden
+(the equilibrium shield): for Bohmian mechanics this
+\emph{no-signaling} statement is Valentini's signal-locality theorem
+\cite{Valentini1991}. Its finite-configuration core in the present
+framework is Proposition~\ref{prop:shieldcore}, which assumes
+\emph{neither} a bounded-below spectrum \emph{nor} an equilibrium
+ensemble: marginal-independence holds for \emph{any} dilated local
+unitary, with spectral positivity entering only in the interacting
+extension (Open Problem~\ref{op:shield}; cf.\
+Sec.~\ref{sec:causality}). One other equilibrium route to
+foliation observability has been proposed: Bohmian arrival-time
+statistics in EPRB configurations \cite{AmblardDrezet}---a
+laboratory-scale mechanism resting on the contested measurability
+of arrival times, disjoint from the ghost route argued here. A coupled ghost sector breaks the
+shield: the vacuum-decay observables of
+Sec.~\ref{sec:multiplicity}---the rate and the decay spectrum,
+isotropic precisely in the individuating frame (with a cutoff edge in
+that frame where a frame-cutoff rescue applies)---are
+\emph{frame-dependent local observables} depending on the foliation
+(the trilemma's operative sense, Claim~\ref{claim:trilemma}: some
+observable depends on the foliation), not a superluminal signaling
+channel. \emph{Ghosts are foliation detectors.} (The no-signaling
+shield for the indivisible framework at full strength is a conjecture
+with a defined proof target, Open Problem~\ref{op:shield}; the
+breaking is Claim~\ref{claim:frame} plus kinematics.)
+\end{claim}
+
+\subsection{Determinacy: the foliation as a property of the state}
+
+The vacuum is Lorentz-invariant: $\avg{T^{\mu\nu}}\propto
+\eta^{\mu\nu}$ has no distinguished timelike eigenframe, so a
+DGNSZ-style extraction \cite{DGNSZ2014} returns nothing. We upgraded
+this algebra to a measured curve
+(\texttt{s3\_foliation\_determinacy.py}): ensembles combining a
+frame-symmetric zero-point part with boosted thermal occupations at
+temperature $T$, frame estimator $\hat v=P/E$ per realization. At
+$T=0$ the estimate is pure scatter (mean $0.001$, scatter $0.12$,
+$\mathrm{SNR}\approx0$; at $T=0.01$ the mean even lands on the wrong
+sign); the signal rises with the thermal share to
+$\mathrm{SNR}\approx51$ at $T=3$. \emph{The foliation information
+content of a state vanishes continuously at the vacuum}---which is
+Theorem~\ref{thm:instantaneity} in ontological dress: the state that
+determines no foliation is the state whose ghost dynamics is
+ill-posed (one direction only---a frame is necessary, not sufficient, to
+tame $q=\infty$). Conversely, any perfect-fluid-form state with $\rho+p\neq0$ determines a
+frame---note the boundary, $\rho+p=0$, is the phantom divide
+$w=-1$---so the actual cosmological state selects the comoving frame,
+and CJM's pragmatic choice of the CMB frame for the cutoff
+\cite{CJM2004} is what a state-extracted-foliation theory
+\emph{prescribes}.
+
+\subsection{The state proposes; the ultraviolet disposes}
+
+Is the state-selected frame dynamically stable? A lattice experiment
+(\texttt{foliation\_m3.py}): both sectors prepared as thermal baths
+boosted to $v$ relative to the lattice (traveling-wave construction;
+fixed spectral support, so the state is cutoff-independent), the
+ghost bath hotter; the frame of the secular energy transfer measured
+as $v^{*}=(\dd P/\dd t)/(\dd E/\dd t)$, which equals $v$ for
+production isotropic in the state frame and $0$ for
+lattice-anchored production. Result: a two-epoch structure. Deep in
+the evolution the transfer is UV-directed (at $N{=}64$, $54\%$ of transferred
+energy lands in the band $3<|k|\le6$, far above the bath support
+$|k|\le1.2$, and ${\sim}83\%$ above the support altogether; at $N{=}128$--$256$
+over $90\%$ lands above the support, much of it beyond $|k|{=}6$) and every band shows
+$v^{*}\approx0$: the state's frame is erased en route to the
+ultraviolet. In the early window, continuum covariance
+\emph{guarantees} state-frame anchoring as a matter of principle
+(the boosted evolution is the boost of the rest evolution, so
+$v^{*}=v$ exactly in the continuum limit); the lattice experiment,
+however, could not resolve it: small ensembles suggested a positive
+early-window signal, but a $100$-run settlement showed no significant
+positive signal ($\lesssim2\sigma$) at both $N{=}128$ and $N{=}256$ (screened means
+$+0.04\pm0.05$ and $-0.03\pm0.10$; the slope-ratio estimator is
+heavy-tailed, and runs with negligible early-window transfer must be
+excluded or they dominate the raw mean). What the experiment establishes robustly is the
+erasure side---the UV-directed cascade and the absence of the
+state's frame in every band at late times---while providing no
+positive lattice evidence of the covariant window at accessible
+sizes.
+\emph{The state proposes the foliation (by covariance); the
+ultraviolet disposes (by measurement).}
+This is the dynamical content of Garriga--Vilenkin's condition: their
+finite-age frame can hold only because their couplings are UV-soft
+\cite{GV2013}; in a UV-local theory the cascade hands the frame to
+the regulator.
+
+\subsection{The trilemma}
+\label{sec:trilemma}
+
+\begin{claim}[pick two]
+\label{claim:trilemma}
+Coupled ghosts; \emph{empirical} Lorentz invariance (no \emph{in-principle} observationally
+accessible preferred foliation---``accessible'' meaning some observable depends on the foliation with nonzero effect, realized detectability being a separate, flux-dependent question; this is the operative sense, since a
+beables ontology always carries a foliation, hidden or not, by
+Sec.~\ref{sec:foliation}); definite configurations (beables): any
+two, never all three. The born-vacuum construction \cite{GV2013}
+sits on the first horn because its birth surface is
+\emph{observable} through the frame-locked decay products, as are
+the cutoff frame \cite{CJM2004}, the condensate background
+\cite{GhostCondensate}, and explicit breaking \cite{Horava-ghosts}.
+\begin{itemize}
+\item coupled ghosts $+$ beables $\Rightarrow$ the foliation becomes
+observable (Claim~\ref{claim:shield}); every configuration-preserving rescue on record
+supplies and thereby exposes one;
+\item empirical Lorentz $+$ beables $\Rightarrow$ no coupled ghosts
+(healthy sectors; the ontological foliation exists but hides in
+quantum equilibrium);
+\item coupled ghosts $+$ empirical Lorentz $\Rightarrow$ no beables: the
+definition-level rescues---$\PT$/no-ghost quantization
+\cite{BenderMannheim2008} (which the companion paper showed exits the
+sample space \cite{indivisible}) and Euclidean state-space surgery
+\cite{HawkingHertog}.
+\end{itemize}
+The claim is a statement about combinations, verified against every
+example we could find; it does not assert which pair nature chose. The incompatibility is a tree-level statement: were a resummed suppression to render the boost-orbit multiplicity sum convergent (a Dine--Draper--Park-style escape---GSTZ's open question, Sec.~\ref{sec:discussion}), the first horn would relax and a Lorentz-invariant coupled ghost with definite beables could survive.
+Two of its three \emph{edges} are established prior art: ghosts demand a
+preferred frame (\cite{CJM2004}, and theorem-level for stable NEC
+violation \cite{DubovskyNEC}), and realist hidden-variable accounts of quantum
+correlations demand one (Hardy's theorem \cite{Hardy1992} and its
+descendants). The triangle---and the observation that the frame
+demanded by ghost regularization and the foliation demanded by
+beables can be \emph{the same object}, jointly observable---is, to
+our knowledge, new.
+\end{claim}
+
+\begin{claim}[the divergence lives in the state]
+\label{claim:state}
+At tree level, the particle-number expectation per unit volume $\avg{N(t)}/V$ of the
+evolving coupled-ghost vacuum carries the same
+$[\text{orbit volume}]\times[\text{reduced integral}]$ factorization
+as the exit rate \eqref{eq:factorization}: the number expectation
+sums the same final-state phase space as the golden-rule rate and
+boost-orbit members share a common particle number, so the orbit
+multiplicity factors out exactly as there. With the invariant reduced
+integral held ultraviolet-finite and nonvanishing (its ordinary UV divergence regulated
+as usual), it diverges iff the multiplicity sum does---so the genuinely
+instantaneous divergence is the boost-orbit one, an ontology-neutral
+expectation invoking no beable configuration space, though it remains
+conditional on the tree-level state. (Channel-toy verification,
+\texttt{s5\_state\_divergence.py}: $\dd\avg N/\dd t$ tracks
+$M\Gamma_1$ within $3\%$ to $M=32$ for the flat orbit measure,
+versus a plateau for the decaying measure.)
+\end{claim}
+
+\begin{remark}[event ontologies inherit the dichotomy]
+\label{rem:flash}
+``Definite configurations'' above means configurations on slices;
+the known foliation-free alternatives---event (``flash'') and
+mass-density ontologies, as in relativistic GRW
+\cite{Tumulka2006,Tumulka2020} (whose interacting extension is
+delicate; cf.\ the no-go of \cite{JGB2019})---have rates that are
+\emph{functionals of local quantum-state content}. By Claim~\ref{claim:state}, they do
+not escape the trilemma; they import its central question: on the
+multiplicity reading the state acquires unbounded particle content
+and any content-proportional event rate diverges with
+it---instantaneity in event clothing---while a covariant flash law
+that takes the redundancy reading must dispute the tree-level state
+itself, which is GSTZ's open question once more. The
+global-existence (non-explosion) theorems for Bell-type QFT jump
+processes \cite{GeorgiiTumulka} make the point citable: their
+hypotheses on the Hamiltonian are exactly what a ghost sector
+violates. The flank thus narrows from ``event ontologies might
+escape'' to ``event ontologies face the same multiplicity-or-redundancy
+fork,'' with the
+resummation question open for all parties equally.
+\end{remark}
+
+%=====================================================================
+\section{Causality and signaling}
+\label{sec:causality}
+
+Where, if anywhere, can superluminal signaling enter this framework?
+We identify two entry points, and both were simulated.
+
+\subsection{Conditioning: the Lee--Hsieh--Flammia--Lee signal,
+located and quantified}
+
+Ref.~\cite{LHFL2014} showed that local $\PT$ evolution on one arm of
+an entangled pair, treated as fundamental, permits superluminal
+signaling. The controversy has a resolution literature we build on:
+the apparent signal was experimentally located in the post-selected
+subspace \cite{Tang2016}, the metric-corrected treatment restores
+consistency \cite{Brody2016}, and the no-go theorems survive proper
+embedding \cite{Ju2019}---our treatments (iii), (i), and (ii)
+respectively. What the stochastic currency adds is all three in one
+classical-probability bookkeeping, plus the closed form below. In
+this currency
+(\texttt{s1\_no\_signaling.py}; Bell pair, Alice's message the loss
+orientation of a dimer, signal the total-variation distance between
+Bob's marginals): (i)~metric-corrected closed dynamics, max TV
+$1.7\times10^{-16}$; (ii)~dilated open dynamics without
+post-selection, max TV $4.4\times10^{-16}$---the framework's
+falsifiable core, clean; (iii)~survival-conditioned dynamics: the
+signal appears, with closed-form magnitude.
+
+\begin{theorem}[the conditioning signal, in closed form]
+\label{thm:lhfl}
+For the Bell state and the broken-phase dimer of \cite{indivisible}
+(loss rate $\sin\theta$, coupling $s$---the companion's dimer
+notation, unrelated to the invariant mass $s$ of Secs.~3--4---%
+$s<\sin\theta$, so $\tilde\kappa=\sqrt{\sin^{2}\theta-s^{2}}$ is real), with
+$p=c+\sin\theta\,\sigma$, $q=c-\sin\theta\,\sigma$, $r=s\sigma$
+($c=\cosh\tilde\kappa t$, $\sigma=\sinh(\tilde\kappa t)/\tilde\kappa$;
+this dimer $\sigma$ is unrelated to the residual measure $\sigma_d(s)$,
+and the amplitude $q$ here to the exit rate $q$ of the explosion
+dictionary above),
+the survival-conditioned signal between the two loss orientations is
+\begin{equation}
+\mathrm{TV}(t)=\frac{|p^{2}-q^{2}|}{p^{2}+q^{2}+2r^{2}},
+\qquad
+\mathrm{TV}(t\to\infty)=\frac{\tilde\kappa}{\sin\theta}
+=\sqrt{1-\Bigl(\frac{s}{\sin\theta}\Bigr)^{2}} :
+\label{eq:lhfl}
+\end{equation}
+zero at the exceptional point, approaching unity deep in the broken
+phase.
+\end{theorem}
+
+\begin{proof}
+$(C\otimes\mathbf 1)\ket{\psi_{\rm Bell}}$ gives Bob's conditioned
+marginal $p_B(b)=\norm{C\ket b}^{2}/\sum_i\norm{C\ket i}^{2}$; the
+squared column norms of the broken-phase contraction are
+$\ee^{-2\sin\theta\,t}(p^{2}+r^{2})$ and
+$\ee^{-2\sin\theta\,t}(q^{2}+r^{2})$ by the closed forms of
+\cite{indivisible}; the two messages exchange $p\leftrightarrow q$.
+The asymptote follows from $c,\tilde\kappa\sigma\to
+\tfrac12\ee^{\tilde\kappa t}$ and
+$\tilde\kappa^{2}+\sin^{2}\theta+s^{2}=2\sin^{2}\theta$.
+Numerics: \eqref{eq:lhfl} matches to $2.2\times10^{-16}$; the
+$s$-sweep matches $\tilde\kappa/\sin\theta$ to six digits away from
+the exceptional point.
+\end{proof}
+
+(The unbroken-phase construction of \cite{LHFL2014} itself is
+treatment (iv) in the script: conditioned signal up to $0.577$,
+identically zero under treatment (i) with the same Hamiltonians.)
+The interpretation is exact: the ``FTL'' of local $\PT$ lives only in
+treating the survival-conditioned (sub-stochastic, renormalized)
+process as the whole sample space---and even there it is not
+operational, since constructing the conditioned ensemble requires
+Alice-side survival information that travels classically. Same
+Hamiltonians, three bookkeepings, signal in exactly one.
+
+\subsection{Completions: messaging through infinity}
+
+The companion paper showed conservative completions of an explosive
+process return probability from infinity after the finite classical
+round trip \cite{indivisible}. We upgraded the observation to a
+communication protocol (\texttt{s2\_infinity\_channel.py}): Alice
+gates the right exit of $V=-x^{4}$ (explosive) or $V=-x^{2}$
+(marginal) with a barrier (her bit); Bob is a direction-resolved
+current detector near the left boundary, triggering only on flux
+entering from infinity; the completions are periodic identification
+(conservative ``wormhole'') versus absorbing layers (minimal
+process). All twenty-four runs (two potentials $\times$ two completions $\times$ three separations $L=8,10,12$ $\times$ Alice's two bit settings) are clean
+(the $L=6$ geometry is degenerate---Alice's station overlaps the
+launch packet---and is excluded, as recorded in the notebook):
+
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+ & conservative (wormhole) & minimal (absorbing)\\
+\midrule
+$V=-x^{4}$ (explosive) &
+\begin{tabular}{@{}c@{}}one-bit channel;\\latency
+$0.18/0.15/0.16$ at $L=8/10/12$:\\ \textbf{distance-independent}
+\end{tabular} &
+\begin{tabular}{@{}c@{}}silence
+($J_{\max}\le3\times10^{-5}$);\\norm $\to0.000$\end{tabular}\\
+\midrule
+$V=-x^{2}$ (marginal) &
+\begin{tabular}{@{}c@{}}channel exists; latency\\
+$0.94/1.02/1.10$: \textbf{grows with }$L$\end{tabular} &
+silence; \emph{in-box} norm $\to0.000$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The marginal potential $V=-x^{2}$ is essentially self-adjoint
+(limit-point at infinity), so its true minimal process is
+\emph{conservative}; the ``$\text{norm}\to0.000$'' in that row is the
+in-box (finite-window) norm as probability leaves the simulation box,
+and its wormhole/absorbing variants are box-boundary \emph{controls},
+not genuine self-adjoint completions. Only $V=-x^{4}$ is limit-circle,
+with real self-adjoint-extension freedom---so the three-completion
+taxonomy below is a statement about $-x^{4}$.
+
+A third completion completes the taxonomy
+(\texttt{s2b\_dirichlet.py}): hard Dirichlet walls fire the
+\emph{right-side} direction-resolved detector (reflection off
+infinity, $t_B\approx0.23$, distance-independent, left detector
+silent, norm conserved)---so the three completions of one interior
+Hamiltonian (the explosive $V=-x^{4}$) produce three distinct
+signatures: return from the
+left (wormhole), return from the right (walls), silence (minimal).
+The same interior Hamiltonian thus contains a distance-independent
+messaging channel through infinity, a distance-penalized one, or none
+at all, according to the \emph{completion}---regulator data, not
+physics in $H$. That extension choices are experimentally
+distinguishable has precedent at the \emph{origin}-singularity
+anomaly (graphene supercritical Coulomb ladders \cite{Ovdat2017});
+the taxonomy here is its counterpart at infinity. The model is nonrelativistic---there is no light cone, and
+``acausal'' here means latency that fails to scale with separation,
+the model's stand-in for light-cone violation. In that operational
+sense, the acausal channel occurs---in the cases tested ($-x^4$ and
+$-x^2$), and as the time-of-flight dictionary predicts---exactly in the
+explosive class (the dictionary's time-of-flight boundary, visible as a
+flat versus rising latency curve): \emph{causality selects the minimal
+process}.
+For a malicious ghost, probability conservation and causality cannot
+both be kept in the completions tested.
+
+\subsection{Synthesis: positivity as the pillar}
+
+Assembling Secs.~\ref{sec:foliation} and~\ref{sec:causality}: within
+a beables ontology, apparent superluminal signaling enters at the two
+points we identify (the conditioning point provably the unique
+marginal-breaker in the finite core, over the framework's dilated local
+dynamics (Prop.~\ref{prop:shieldcore}); the completions door and
+field-theoretic exhaustiveness remain open)---conditioning
+fallacies and acausal completions. The
+acausal-completions door and the equilibrium shield are gated by
+\emph{spectral positivity} (bounded-below sectors give conservative
+processes and no channel; a ghost sector opens them at once); the
+conditioning door, by contrast, is a post-selection artifact present
+even in bounded-below lossy systems (Theorem~\ref{thm:lhfl}), gated by
+whether one conditions on survival rather than by positivity. The
+finite-configuration core of the shield---no-signaling for \emph{any}
+dilated local dynamics, positivity entering only in the interacting
+extension (Open Problem~\ref{op:shield})---is a theorem:
+
+\begin{proposition}[no-signaling core of the shield]
+\label{prop:shieldcore}
+Let the joint configuration space be $C_A\times C_B$ (finite), let
+Alice's operation be any dilated local dynamics given by a
+\emph{unitary} $U_A$ on $A\otimes\mathrm{anc}_A$, Bob's any
+\emph{unitary} $U_B$ on $B\otimes\mathrm{anc}_B$, and let the joint
+process be $W=|U_A\otimes U_B|^{2}$ from an arbitrary joint amplitude
+$\Psi$, extended by the fixed initial ancilla configurations, with
+Bob's marginal summed over his ancilla configurations. Then Bob's
+marginal at every time is independent of Alice's choice of $U_A$.
+\end{proposition}
+
+\begin{proof}
+$p_B(b)=\sum_{a',\beta}|\langle a',b,\beta|(U_A\otimes U_B)\Psi\rangle|^{2}
+=\langle\Psi|(U_A^{\dagger}U_A)\otimes\bigl(U_B^{\dagger}(|b\rangle\langle
+b|\otimes\mathbf 1_{\mathrm{anc}_B})U_B\bigr)|\Psi\rangle
+=\langle\Psi|\mathbf 1\otimes U_B^{\dagger}(|b\rangle\langle
+b|\otimes\mathbf 1_{\mathrm{anc}_B})U_B|\Psi\rangle$, with $a'$ running over Alice's configurations
+\emph{including} ancilla (leak) configurations and $\beta$ over Bob's ancilla. Survival
+conditioning breaks exactly the first equality (a projector is
+inserted on the $A$ side), which is where---and only
+where---Theorem~\ref{thm:lhfl}'s signal lives.
+\end{proof}
+
+The closed-unitary case of Proposition~\ref{prop:shieldcore} is the
+no-signaling reading of the causal-locality condition Barandes, Hasan,
+and Kagan impose \cite{BHK2025} (whose marginal-factorization equations
+give it directly); our statement extends it to dilated (open, lossy) local dynamics
+and identifies survival conditioning as the unique breaking point.
+
+What remains open is the field-theoretic and statistical extension:
+
+\begin{openproblem}[the shield theorem, full strength]
+\label{op:shield}
+Extend Proposition~\ref{prop:shieldcore} to field configurations
+with interacting joint dynamics and quantum-equilibrium ensembles:
+prove that spectral positivity of all interacting sectors implies
+no-signaling with respect to the foliation (invisibility of the
+slicing), and that the implication is sharp---i.e., any coupled
+sector unbounded below yields foliation-dependent observables (the
+converse direction of Claim~\ref{claim:shield}).
+\end{openproblem}
+
+%=====================================================================
+\section{Observational and experimental probes}
+\label{sec:tests}
+
+The trilemma is empirically loaded through its conjunctions.
+
+\emph{(a) Dark energy.} Robust confirmation of $w<-1$ would make
+the ghost hypothesis live and activate the rest of this section;
+$w\ge-1$ retires it as the dark-energy explanation. Currently DESI DR2 prefers evolving dark
+energy over $\Lambda$CDM at $2.8$--$4.2\sigma$ \cite{DESIDR2} (see
+\cite{DESIreview} for a review)---with the honest caveat that the
+quoted significance depends on which supernova sample is combined, a
+principled combination giving ${\sim}3.1\sigma$ \cite{DESIskeptic}.
+
+\emph{(b) The MeV gamma-ray background, with a frame signature.} On
+the multiplicity horn, a coupled phantom fills the sky with photons
+up to the cutoff, already bounded by the diffuse gamma-ray data
+\cite{CJM2004,GV2013,ClinePhantom2024}; the current bound is
+$\Lambda\lesssim19\,$MeV \cite{ClinePhantom2024}, which places the
+spectral edge of a bound-saturating phantom inside the unobserved
+``MeV gap.'' The stochastic reading adds
+the \emph{foliation signature}: the background is isotropic in the
+individuating frame, so a detector moving at
+$\beta=v/c=1.23\times10^{-3}$ sees a Compton--Getting dipole
+\cite{CG1935} aligned with the CMB dipole (the kinematic-dipole
+toolkit for cosmological backgrounds is standard
+\cite{KachelriessSerpico}, including threshold-dependent amplitudes
+\cite{KinDipole2026}) \emph{and} a
+direction-modulated spectral edge
+$\Lambda(\theta)\simeq\Lambda(1+\beta\cos\theta)$. A mock-sky
+pipeline (\texttt{s4c\_dipole\_template.py}; exact aberration and
+Doppler transport, estimators verified against their analytic
+amplitudes) gives the template: count-rate dipole amplitudes
+$3.7$--$4.3\times10^{-3}$ depending on the threshold observable
+(all-photon rate $3\beta$; thresholded counts add
+$\beta E_{\rm thr}/(\Lambda-E_{\rm thr})$; each mock photon carries
+the arrival-rate weight $1+\beta\cos\theta$---an unweighted mock
+measures only the aberration part $2\beta$ and is blind to the rate
+factor, an error caught in our own audit and documented in the
+notebook), requiring
+$\mathbf{4.0}$--$\mathbf{5.5\times10^{6}}$ \textbf{signal
+photons for }$5\sigma$ with the apex fixed by the CMB dipole; and
+the edge modulation ($0.12\%$)---whose cosmologically integrated
+arriving spectrum is a linear \emph{wedge} rather than a sharp step
+(\texttt{s4d\_cosi\_forecast.py}), costing ${\times}5$--$10$ in
+counts---is recoverable \emph{through}
+realistic $3\%$ instrument resolution by percentile regression at
+$\sim3\sigma$ with a few$\,\times10^{6}$ photons ($5\sigma$ near
+$10^{7}$). Dilution: for
+signal fraction $f_s$ of collected diffuse counts, $N$ scales as
+$1/f_s^{2}$---and CJM's bound is set precisely by the signal
+\emph{saturating} the observed diffuse background, so \emph{at} the
+bound $f_s=O(1)$ and the measurement is exposure-limited. This is a
+knife-edge, not a generic expectation: $\Gamma\propto\Lambda^{8}$
+means a cutoff at half the bound gives $f_s\sim4\times10^{-3}$ and
+inflates $N$ by $\sim6\times10^{4}$. Two further practical caveats:
+the measured GeV-band diffuse dipole is percent-level and dominated
+by non-kinematic (astrophysical) components
+\cite{DGBdipole}, so extracting a $10^{-3}$ kinematic dipole
+requires exposure-uniformity control at that level; the edge
+observable is less exposed to both issues. The discriminant against mundane comoving
+backgrounds (which share the Compton--Getting dipole) is the edge
+modulation together with the absence of source correlation.
+
+\emph{(c) Short-range gravity.} Garriga and Vilenkin already note that
+their cascade bound ($\mu\sim10^{-3}\,$eV) is only marginally consistent
+with $0.1\,$mm tests of the inverse-square law \cite{GV2013,Kapner2007},
+leaving a narrow surviving Lorentz-invariant window near
+$\mu\approx2\times10^{-3}\,$eV; improved torsion-balance experiments can close it,
+eliminating the born-vacuum rescue outright.
+
+\emph{The decision matrix.} The decay signal is a \emph{joint}
+observable: vacuum decay requires genuinely negative-energy states
+(a modified-gravity mimic of $w<-1$ produces no such background),
+and the signal's frame-locking \emph{is} the foliation. One positive
+measurement therefore confirms both hypotheses at once, and the
+residual degeneracies close with one added axis---structure-growth
+and perturbation data distinguishing a genuine phantom field from a
+gravitational mimic:
+
+\begin{center}
+\begin{tabular}{@{}p{0.3\linewidth}p{0.3\linewidth}p{0.32\linewidth}@{}}
+\toprule
+ & \textbf{signal seen} (frame-locked dipole $+$ edge) &
+ \textbf{signal excluded} (window closed)\\
+\midrule
+\textbf{phantom field established} ($w<-1$ $+$ growth data) &
+ghosts \emph{and} foliation both confirmed, in one measurement &
+ghost real but no \emph{observable} decay: evidence \emph{against} definite
+configurations \emph{if} the frame cutoff saturates the diffuse-background
+bound---then the exit-the-sample-space horn
+\cite{BenderMannheim2008,HawkingHertog} wins (at tree level)\\
+\midrule
+\textbf{phantom excluded} &
+(inconsistent under the phantom-DE identification; a signal would otherwise indicate a non-DE ghost sector) &
+the observable ghost hypothesis retired; foliation undecided\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Both axes of the matrix are simulation-backed. The rows
+(\texttt{s4a\_books\_balance.py}): identical lattices, identical
+temperatures, identical coupling strength, only the partner
+sector's energy sign flipped---the healthy pair \emph{equilibrates}
+(transfer saturates at $7.4\pm1.0$, the equipartition scale, for
+the entire second half of the run), while the ghost pair runs away
+without bound (past $10^{3}$ by $t\approx120$; no joint equilibrium
+exists \cite{GSTZ2021}): only a genuine phantom feeds an unending
+flux. The columns (\texttt{s4b\_horn3\_silence.py}): one two-mode
+model, three quantizations---the ghost quantization reproduces the
+exact decay law $\avg n=\sinh^{2}(gt)$ to five decimals through
+$gt\lesssim1.2$ (truncation tail thereafter); the
+positive-spectrum requantization gives \emph{machine-exact zero} at
+every time (the vacuum is an eigenstate); the healthy control shows
+only bounded virtual pairs. A decay signal exists in exactly one
+quantization.
+
+Three of the four cells are informative---one (phantom established,
+signal seen) decisive for both questions, a second (phantom established,
+signal excluded) decisive for both only where the predicted flux is
+detectable (see below), the third (phantom excluded, signal excluded) for the ghost question
+alone; the fourth is inconsistent under the phantom-DE identification. The signal-excluded verdict
+\emph{against} beables is decisive only where the predicted flux is
+detectable: a frame-cutoff phantom whose cutoff $\Lambda$ sits well
+below the diffuse-background bound decays unobservably slowly with its
+configurations intact, and $\Gamma\propto\Lambda^{8}$ makes this
+\emph{undetectable}-$\Lambda$ region wide (the \emph{detectable} band
+above being the knife-edge of the dilution estimate), leaving that cell
+undecided for the foliation question.
+Conditional on the top row---exactly the measurement DESI-era
+surveys are making---the gamma-ray program is a \emph{two-sided}
+test of the foliation: the surviving window is already pinched to
+$\mu\approx2\times10^{-3}\,$eV between the cascade bound and
+short-range gravity \cite{GV2013}, so ``window closed'' is a
+realistic outcome, and it would count against the born-vacuum rescue
+outright (the low-$\Lambda$ frame-cutoff region remaining undecided, as
+above). The bottom-right cell states the honest
+floor: in a ghost-free equilibrium universe the foliation is
+undecidable \emph{in principle}, because the equilibrium shield is
+quantum mechanics' own no-signaling property---an experiment
+exposing a hidden foliation there would contradict quantum
+predictions themselves. (One speculative shield-breaker in the
+literature is primordial quantum \emph{non}-equilibrium
+\cite{Valentini2007}, which would expose the foliation without
+ghosts; the contested Bohmian arrival-time route
+(Sec.~\ref{sec:foliation}) \cite{AmblardDrezet} is another. We note
+both and set them aside.) Given ghosts, nature's choice
+among the trilemma's horns is a measurement program, not a
+philosophy seminar.
+
+\emph{(d) Analog platforms.} The ladder criterion
+(Lemma~\ref{lem:growthlaw}) is realizable in cavity/circuit QED:
+two-mode squeezing already is the transient cascade
+($\avg n=\sinh^{2}gt$ is routinely measured), and engineered
+superlinearly Bose-enhanced couplings would exhibit the transition
+toward finite-time runaway at $\alpha_{\rm eff}>1$. The
+frame-competition experiment of Sec.~\ref{sec:foliation} (state frame
+versus medium frame of an instability's emission) is native territory
+for polariton fluids and analog-gravity systems. The companion
+paper's photonic tests (the terminal-indivisibility closed forms in
+lossy couplers) probe the quantum-mechanical layer of the same
+program \cite{indivisible}.
+
+%=====================================================================
+\section{Discussion: what is established, and at what strength}
+\label{sec:discussion}
+
+\emph{Theorem-grade}: the Fock ladder criterion and growth-law lemma;
+instantaneity on the multiplicity horn
+(Thm.~\ref{thm:instantaneity}); the conditioning-signal closed form
+(Thm.~\ref{thm:lhfl}); the no-signaling core
+(Prop.~\ref{prop:shieldcore}). \emph{Measured}: the factorization verification and the dimension ladder (Prop.~\ref{prop:ladder}); the completions table; the
+tadpole/channel decomposition; the two-epoch frame competition; the
+determinacy curve. \emph{Argued}: the final-state-invariance
+criterion's verdict on tree-level ghost decay; frame individuation;
+the state-content factorization (Claim~\ref{claim:state});
+the trilemma (a verified pattern over known examples).
+\emph{Conjectured}: the shield theorem at full strength (Open
+Problem~\ref{op:shield}; its finite core is proved).
+
+Limits, stated without decoration. Everything golden-rule--based
+inherits perturbation theory (Remark~\ref{rem:bornmarkov}); the
+degeneracy of orbit members is a tree-level statement, and a
+resummed suppression would render the multiplicity sum convergent
+(a Dine--Draper--Park-style escape, distinct from redundancy)---that
+is GSTZ's open question, not ours to close. The lattice
+results are classical-statistical, with the stated blindness to
+spontaneous emission; the factorization is numerically verified to
+$0.1\%$ in $d=1$ and to ${\sim}3$--$7\%$ by Monte Carlo in $d=3$
+(Prop.~\ref{prop:ladder}), still higher $d$ resting on the invariance
+argument and GSTZ's analytics. The foliation claims live within the natural
+field-theoretic extension of the beables framework, which its author
+has not committed to; and no experiment distinguishes the ontology
+itself---only its conjunction with ghosts is testable. Finally, the
+trilemma does not say which two nature picked; it says the three
+advertised virtues of fundamental physics cannot all be kept, at tree
+level, if ghosts exist, and it prices each exit.
+
+\emph{Adjacent results, positioned.} The active
+ghost-stabilization program of Deffayet et al.\ proves benign
+behavior for finite-dof quantum mechanics \cite{Deffayet2026} and
+demonstrates it numerically for classical $1{+}1$d fields \cite{Deffayet2504}; neither engages the
+boost orbit, and both are consistent with our taxonomy (the QM
+constructions live in the companion's benign/transient classes; the
+$1{+}1$d stability sits at the mild end matched by our marginal
+(logarithmic) $d{=}1$ rate).
+Buoninfante's analysis \cite{Buoninfante2026}---ghosts above
+threshold admit no asymptotic particle interpretation---is the
+sharpest operator-theoretic challenge to any ``ghost decay''
+framing; our object is the vacuum's exit rate on a configuration
+sample space rather than an S-matrix ghost width, but if the
+dressed vacuum ultimately supports no decay interpretation, that
+would favor the convergent readings and we flag it. K\"onnig et
+al.'s slow heavy-ghost decay \cite{Konnig2016} and Kaplan--Sundrum's
+energy-parity construction \cite{KaplanSundrum} are horn-one
+examples (frame-anchored cutoffs); Babichev's identification of
+ghost decay with Cherenkov radiation \cite{Babichev2024} makes the
+frame-anchoring vivid; the modern $\Gamma/V$ formalism is
+\cite{Andreassen2016}; and the information-flow criticality of
+$\PT$ systems \cite{KAU2017} is the quantum-state-level cousin of
+the conditioning analysis of Sec.~\ref{sec:causality}.
+
+The companion paper ended by observing that the ghost problem, in the
+stochastic currency, is a recurrence-classification problem. The
+field-theoretic sequel is that it is, more deeply, a
+\emph{sample-space} problem: the divergent vacuum rate, the
+regulator dependence, the foliation, and every apparent causality
+violation we examined are one question---\emph{which configurations
+are distinct, and relative to what}---asked at increasing energy.
+Every pathology entered through that door, and every resolution on
+record pays at that door.
+
+%=====================================================================
+\phantomsection
+\section*{Author contributions and use of AI}
+\addcontentsline{toc}{section}{Author contributions and use of AI}
+
+This manuscript was produced through a collaboration, directed by the
+author, with the large language model Claude Fable~5 (Anthropic). The
+AI system carried out essentially all of the technical work: the
+research program and its strategy, the derivations and proofs, the
+design, execution, and interpretation of all simulations, the
+literature analysis, and the drafting of the manuscript, including
+this statement. J.T.\ posed the research directions, provided
+iterative review and quality pressure, and takes sole responsibility
+for the decision to circulate the manuscript. In line with prevailing
+editorial policies, the AI system is not listed as an author. The
+research notebook in the public repository records the work
+hour-by-hour, including three same-day corrections of our own errors
+and one retraction, so that the process as well as the results can be
+audited.
+
+%=====================================================================
+\phantomsection
+\section*{Code availability}
+\label{sec:code}
+\addcontentsline{toc}{section}{Code availability}
+
+This paper's scripts, source, and notebook excerpt are public at
+\begin{center}
+  \url{https://github.com/embeddetech/p03-instantaneous-ghosts}
+\end{center}
+The full running lab notebook (\texttt{notes.md}), the companion
+papers, and the provenance record live in the program's hub
+repository,
+\url{https://github.com/embeddetech/ghosts-program}.
+This paper's results are reproducible from the following scripts,
+each standalone (NumPy/SciPy), running in seconds to minutes on a
+laptop, and printing its controls inline:
+\begin{itemize}\setlength\itemsep{1pt}\raggedright
+\item \texttt{qft\_bridge\_stage2.py} --- ladder onset, growth laws,
+  channel multiplicity
+\item \texttt{qft\_bridge\_stage3.py} --- factorization, dimension
+  ladder
+\item \texttt{qft\_bridge\_e4\_2d.py} --- the dimensional dichotomy
+\item \texttt{qft\_bridge\_decomp.py} --- tadpole/channel
+  decomposition
+\item \texttt{foliation\_m3.py} --- the frame competition
+\item \texttt{s1\_no\_signaling.py},
+  \texttt{s2\_infinity\_channel.py},
+  \texttt{s3\_foliation\_determinacy.py} --- the signaling,
+  completion, and determinacy experiments
+\item \texttt{s4a\_books\_balance.py},
+  \texttt{s4b\_horn3\_silence.py},
+  \texttt{s4c\_dipole\_template.py},
+  \texttt{s4d\_cosi\_forecast.py} --- the decision-matrix
+  discriminants, the detection template, and the diffuse-background /
+  COSI-era detectability forecast
+\item \texttt{s5\_state\_divergence.py} --- the state-content
+  observable of Claim~\ref{claim:state}
+\item \texttt{qft\_bridge\_closeout.py} --- $d=3$ factorization
+  Monte Carlo; Garriga--Vilenkin log-growth replication
+\item \texttt{s2b\_dirichlet.py} --- the third completion
+  (Dirichlet walls) of the infinity-channel taxonomy
+\end{itemize}
+
+%=====================================================================
+\begin{thebibliography}{99}
+
+\bibitem{indivisible}
+J.~Torkelson,
+\emph{Indivisible stochastic processes for non-Hermitian and
+higher-derivative quantum systems: detailed balance, broken $\PT$
+symmetry, and the explosion of ghosts},
+companion paper (2026),
+\url{https://github.com/embeddetech/p01-indivisible-ghosts}.
+
+\bibitem{Barandes2023}
+J.~A.~Barandes,
+\emph{The stochastic-quantum correspondence},
+Philos.\ Phys.\ \textbf{3}(1), 8 (2025), arXiv:2302.10778.
+
+\bibitem{Barandes2025}
+J.~A.~Barandes,
+\emph{Quantum systems as indivisible stochastic processes},
+arXiv:2507.21192.
+
+\bibitem{PaisUhlenbeck1950}
+A.~Pais and G.~E.~Uhlenbeck,
+\emph{On field theories with non-localized action},
+Phys.\ Rev.\ \textbf{79}, 145 (1950).
+
+\bibitem{Smilga2005}
+A.~V.~Smilga,
+\emph{Benign vs.\ malicious ghosts in higher-derivative theories},
+Nucl.\ Phys.\ B \textbf{706}, 598 (2005).
+
+\bibitem{CHT2003}
+S.~M.~Carroll, M.~Hoffman, and M.~Trodden,
+\emph{Can the dark energy equation-of-state parameter $w$ be less
+than $-1$?},
+Phys.\ Rev.\ D \textbf{68}, 023509 (2003).
+
+\bibitem{CJM2004}
+J.~M.~Cline, S.~Jeon, and G.~D.~Moore,
+\emph{The phantom menaced: constraints on low-energy effective
+ghosts},
+Phys.\ Rev.\ D \textbf{70}, 043543 (2004), hep-ph/0311312.
+
+\bibitem{GSTZ2021}
+C.~Gross, A.~Strumia, D.~Teresi, and M.~Zirilli,
+\emph{Is negative kinetic energy metastable?},
+Phys.\ Rev.\ D \textbf{103}, 115025 (2021), arXiv:2007.05541.
+
+\bibitem{GV2013}
+J.~Garriga and A.~Vilenkin,
+\emph{Living with ghosts in Lorentz invariant theories},
+JCAP \textbf{01} (2013) 036, arXiv:1202.1239.
+
+\bibitem{Kapner2007}
+D.~J.~Kapner, T.~S.~Cook, E.~G.~Adelberger, J.~H.~Gundlach,
+B.~R.~Heckel, C.~D.~Hoyle, and H.~E.~Swanson,
+\emph{Tests of the gravitational inverse-square law below the
+dark-energy length scale},
+Phys.\ Rev.\ Lett.\ \textbf{98}, 021101 (2007), arXiv:hep-ph/0611184.
+
+\bibitem{GSV2011}
+J.~Garriga, B.~Shlaer, and A.~Vilenkin,
+\emph{Minkowski vacua can be metastable},
+JCAP \textbf{11} (2011) 035, arXiv:1109.3422.
+
+\bibitem{KOV1975}
+I.~Yu.~Kobzarev, L.~B.~Okun, and M.~B.~Voloshin,
+\emph{Bubbles in metastable vacuum},
+Sov.\ J.\ Nucl.\ Phys.\ \textbf{20}, 644 (1975).
+
+\bibitem{ColemanBounce}
+S.~Coleman,
+\emph{Fate of the false vacuum: semiclassical theory},
+Phys.\ Rev.\ D \textbf{15}, 2929 (1977); erratum \textbf{16}, 1248
+(1977);
+C.~G.~Callan and S.~Coleman,
+Phys.\ Rev.\ D \textbf{16}, 1762 (1977).
+
+\bibitem{Dvali2011}
+G.~Dvali,
+\emph{Safety of Minkowski vacuum},
+arXiv:1107.0956.
+
+\bibitem{DDP2012}
+M.~Dine, P.~Draper, and C.~Park,
+\emph{Deformed bubbles and Lorentz invariance in vacuum decay},
+Phys.\ Rev.\ D \textbf{86}, 065033 (2012), arXiv:1206.5880.
+
+\bibitem{GKT2013}
+J.~Garriga, S.~Kanno, and T.~Tanaka,
+\emph{Rest frame of bubble nucleation},
+JCAP \textbf{06} (2013) 034, arXiv:1304.6681.
+
+\bibitem{GhostCondensate}
+N.~Arkani-Hamed, H.-C.~Cheng, M.~A.~Luty, and S.~Mukohyama,
+\emph{Ghost condensation and a consistent infrared modification of
+gravity},
+JHEP \textbf{05} (2004) 074, hep-th/0312099.
+
+\bibitem{Horava-ghosts}
+S.~Ramazanov, F.~Arroja, M.~Celoria, S.~Matarrese, and L.~Pilo,
+\emph{Living with ghosts in Ho\v rava--Lifshitz gravity},
+JHEP \textbf{06} (2016) 020, arXiv:1601.05405.
+
+\bibitem{BenderMannheim2008}
+C.~M.~Bender and P.~D.~Mannheim,
+\emph{No-ghost theorem for the fourth-order derivative
+Pais--Uhlenbeck oscillator model},
+Phys.\ Rev.\ Lett.\ \textbf{100}, 110402 (2008).
+
+\bibitem{HawkingHertog}
+S.~W.~Hawking and T.~Hertog,
+\emph{Living with ghosts},
+Phys.\ Rev.\ D \textbf{65}, 103515 (2002), hep-th/0107088.
+
+\bibitem{LHFL2014}
+Y.-C.~Lee, M.-H.~Hsieh, S.~T.~Flammia, and R.-K.~Lee,
+\emph{Local $\PT$ symmetry violates the no-signaling principle},
+Phys.\ Rev.\ Lett.\ \textbf{112}, 130404 (2014).
+
+\bibitem{HypersurfaceBD}
+D.~D\"urr, S.~Goldstein, K.~M\"unch-Berndl, and N.~Zangh\`\i,
+\emph{Hypersurface Bohm--Dirac models},
+Phys.\ Rev.\ A \textbf{60}, 2729 (1999), quant-ph/9801070.
+
+\bibitem{DGNSZ2014}
+D.~D\"urr, S.~Goldstein, T.~Norsen, W.~Struyve, and N.~Zangh\`\i,
+\emph{Can Bohmian mechanics be made relativistic?},
+Proc.\ R.\ Soc.\ A \textbf{470}, 20130699 (2014), arXiv:1307.1714.
+
+\bibitem{Feller1952}
+W.~Feller,
+\emph{On the integro-differential equations of purely discontinuous
+Markoff processes},
+Trans.\ Am.\ Math.\ Soc.\ \textbf{48}, 488 (1940);
+\emph{The parabolic differential equations and the associated
+semi-groups of transformations},
+Ann.\ Math.\ \textbf{55}, 468 (1952).
+
+\bibitem{DubovskyNEC}
+S.~Dubovsky, T.~Gr\'egoire, A.~Nicolis, and R.~Rattazzi,
+\emph{Null energy condition and superluminal propagation},
+JHEP \textbf{03} (2006) 025, hep-th/0512260.
+
+\bibitem{BHK2025}
+J.~A.~Barandes, M.~Hasan, and D.~Kagan,
+\emph{The CHSH game, Tsirelson's bound, and causal locality},
+arXiv:2512.18105.
+
+\bibitem{JGB2019}
+C.~Jones, T.~Guaita, and A.~Bassi,
+\emph{Impossibility of extending the Ghirardi--Rimini--Weber model
+to relativistic particles},
+Phys.\ Rev.\ A \textbf{103}, 042216 (2021), arXiv:1907.02370.
+
+\bibitem{Tumulka2020}
+R.~Tumulka,
+\emph{A relativistic GRW flash process with interaction},
+in \emph{Do Wave Functions Jump?} (Springer, 2020),
+arXiv:2002.00482.
+
+\bibitem{Ovdat2017}
+O.~Ovdat, J.~Mao, Y.~Jiang, E.~Y.~Andrei, and E.~Akkermans,
+\emph{Observing a scale anomaly and a universal quantum phase
+transition in graphene},
+Nat.\ Commun.\ \textbf{8}, 507 (2017), arXiv:1701.04121.
+
+\bibitem{KinDipole2026}
+T.~T.~Takeuchi,
+\emph{A general formulation of the kinematic dipole as a functional
+of selection and source properties: beyond the Ellis--Baldwin
+approximation},
+Astrophys.\ J.\ Suppl.\ \textbf{285}, 3 (2026), arXiv:2602.07389.
+
+\bibitem{LatticeFVD2022}
+J.~Braden, M.~C.~Johnson, H.~V.~Peiris, A.~Pontzen, S.~Weinfurtner,
+\emph{Mass renormalization in lattice simulations of false vacuum
+decay},
+Phys.\ Rev.\ D \textbf{107}, 083509 (2023), arXiv:2204.11867.
+
+\bibitem{DESIDR2}
+DESI Collaboration,
+\emph{DESI DR2 results II: measurements of baryon acoustic
+oscillations and cosmological constraints},
+Phys.\ Rev.\ D \textbf{112}, 083515 (2025), arXiv:2503.14738.
+
+\bibitem{DESIreview}
+T.-N.~Li, G.-H.~Du, H.~Wang, Y.-H.~Li, J.-F.~Zhang, X.~Zhang,
+\emph{Dark energy in the DESI era: a brief review of evidence,
+beyond-$\Lambda$CDM interpretations, and tensions},
+Res.\ Astron.\ Astrophys.\ \textbf{26}, 084002 (2026), arXiv:2606.21826.
+
+\bibitem{DESIskeptic}
+M.~Cort\^es, A.~R.~Liddle,
+\emph{On DESI's DR2 exclusion of $\Lambda$CDM},
+Mon.\ Not.\ R.\ Astron.\ Soc.\ Lett.\ \textbf{544}, L121 (2025), arXiv:2504.15336.
+
+\bibitem{Blackwell1958}
+D.~Blackwell,
+\emph{Another countable Markov process with only instantaneous
+states},
+Ann.\ Math.\ Statist.\ \textbf{29}, 313 (1958).
+
+\bibitem{ChungBook}
+K.~L.~Chung,
+\emph{Markov Chains with Stationary Transition Probabilities},
+2nd ed.\ (Springer, Berlin, 1967).
+
+\bibitem{Valentini1991}
+A.~Valentini,
+\emph{Signal-locality, uncertainty, and the subquantum H-theorem, I
+and II},
+Phys.\ Lett.\ A \textbf{156}, 5 (1991); \textbf{158}, 1 (1991).
+
+\bibitem{Tang2016}
+J.-S.~Tang et al.,
+\emph{Experimental investigation of the no-signalling principle in
+parity--time symmetric theory using an open quantum system},
+Nat.\ Photonics \textbf{10}, 642 (2016).
+
+\bibitem{Brody2016}
+D.~C.~Brody,
+\emph{Consistency of $\PT$-symmetric quantum mechanics},
+J.\ Phys.\ A \textbf{49}, 10LT03 (2016).
+
+\bibitem{Ju2019}
+C.-Y.~Ju, A.~Miranowicz, G.-Y.~Chen, and F.~Nori,
+\emph{Non-Hermitian Hamiltonians and no-go theorems in quantum
+information},
+Phys.\ Rev.\ A \textbf{100}, 062118 (2019), arXiv:1906.08071.
+
+\bibitem{EGW2014}
+T.~Epelbaum, F.~Gelis, and B.~Wu,
+\emph{Nonrenormalizability of the classical statistical
+approximation},
+Phys.\ Rev.\ D \textbf{90}, 065029 (2014), arXiv:1402.0115.
+
+\bibitem{DGBdipole}
+A.~Kashlinsky, F.~Atrio-Barandela, and C.~S.~Shrader,
+\emph{Probing the dipole of the diffuse gamma-ray background},
+Astrophys.\ J.\ Lett.\ \textbf{961}, L1 (2024), arXiv:2401.04564.
+
+\bibitem{Hardy1992}
+L.~Hardy,
+\emph{Quantum mechanics, local realistic theories, and
+Lorentz-invariant realistic theories},
+Phys.\ Rev.\ Lett.\ \textbf{68}, 2981 (1992).
+
+\bibitem{KachelriessSerpico}
+M.~Kachelrie{\ss} and P.~D.~Serpico,
+\emph{The Compton--Getting effect on ultra-high energy cosmic rays
+of cosmological origin},
+Phys.\ Lett.\ B \textbf{640}, 225 (2006), astro-ph/0605462.
+
+\bibitem{AmblardDrezet}
+A.~Amblard and A.~Drezet,
+\emph{Arrival-time distributions as a probe of the preferred
+foliation in relativistic Bohmian mechanics},
+arXiv:2604.17507.
+
+\bibitem{GeorgiiTumulka}
+H.-O.~Georgii and R.~Tumulka,
+\emph{Global existence of Bell's time-inhomogeneous jump process
+for lattice quantum field theory},
+Markov Proc.\ Relat.\ Fields \textbf{11}, 1 (2005), math/0312294.
+
+\bibitem{ChebotarevFagnola}
+A.~M.~Chebotarev and F.~Fagnola,
+\emph{Sufficient conditions for conservativity of minimal quantum
+dynamical semigroups},
+J.\ Funct.\ Anal.\ \textbf{153}, 382 (1998), funct-an/9711006.
+
+\bibitem{ClinePhantom2024}
+J.~M.~Cline et al.,
+\emph{Phantom fluid cosmology: impact of a phantom hidden sector on
+cosmological observables},
+Phys.\ Rev.\ D \textbf{108}, 095033 (2023), arXiv:2308.12989;
+\emph{Boosted dark matter from a phantom fluid},
+Phys.\ Lett.\ B \textbf{848}, 138377 (2024), arXiv:2308.01333.
+
+\bibitem{Deffayet2504}
+C.~Deffayet, A.~Held, S.~Mukohyama, and A.~Vikman,
+\emph{Ghostly interactions in $(1{+}1)$ dimensional classical field
+theory},
+arXiv:2504.11437.
+
+\bibitem{Deffayet2026}
+C.~Deffayet, A.~Fathe Jalali, A.~Held, S.~Mukohyama, and A.~Vikman,
+\emph{Unitary time evolution and vacuum for a quantum stable ghost},
+arXiv:2604.21823.
+
+\bibitem{KAU2017}
+K.~Kawabata, Y.~Ashida, and M.~Ueda,
+\emph{Information retrieval and criticality in parity-time-symmetric
+systems},
+Phys.\ Rev.\ Lett.\ \textbf{119}, 190401 (2017).
+
+\bibitem{Konnig2016}
+F.~K\"onnig, H.~Nersisyan, Y.~Akrami, L.~Amendola, and
+M.~Zumalac\'arregui,
+\emph{A spectre is haunting the cosmos: quantum stability of massive
+gravity with ghosts},
+JHEP \textbf{11} (2016) 118, arXiv:1605.08757.
+
+\bibitem{Babichev2024}
+E.~Babichev,
+\emph{Cherenkov radiation as ghost instability},
+Phys.\ Rev.\ D \textbf{112}, 084007 (2025), arXiv:2412.20093.
+
+\bibitem{Buoninfante2026}
+L.~Buoninfante,
+\emph{Ghosts versus unstable particles in quantum field theory},
+arXiv:2606.18349.
+
+\bibitem{Andreassen2016}
+A.~Andreassen, D.~Farhi, W.~Frost, and M.~D.~Schwartz,
+\emph{Precision decay rate calculations in quantum field theory},
+Phys.\ Rev.\ D \textbf{95}, 085011 (2017), arXiv:1604.06090.
+
+\bibitem{KaplanSundrum}
+D.~E.~Kaplan and R.~Sundrum,
+\emph{A symmetry for the cosmological constant},
+JHEP \textbf{07} (2006) 042, hep-th/0505265.
+
+\bibitem{Tumulka2006}
+R.~Tumulka,
+\emph{A relativistic version of the Ghirardi--Rimini--Weber model},
+J.\ Stat.\ Phys.\ \textbf{125}, 821 (2006), quant-ph/0406094.
+
+\bibitem{Valentini2007}
+A.~Valentini,
+\emph{Astrophysical and cosmological tests of quantum theory},
+J.\ Phys.\ A \textbf{40}, 3285 (2007), hep-th/0610032.
+
+\bibitem{CG1935}
+A.~H.~Compton and I.~A.~Getting,
+\emph{An apparent effect of galactic rotation on the intensity of
+cosmic rays},
+Phys.\ Rev.\ \textbf{47}, 817 (1935).
+
+\end{thebibliography}
+
+\end{document}

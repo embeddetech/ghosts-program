@@ -1,0 +1,598 @@
+% ---------------------------------------------------------------------
+% Companion note to Theorem \ref{thm:dictionary} (2)(a)-(b) and Lemma
+% \ref{lem:feller}(iii) of paper1/main.tex:
+%
+%   the boundary-condition dictionary between
+%   (Q) the self-adjoint extensions of H = p^2/2 + V at a limit-circle
+%       escaping end (U(1) per end, U(2) for two ends), and
+%   (S) the Feller--Wentzell lateral boundary conditions of the escape
+%       diffusion at its regular boundary.
+%
+% MAIN RESULT: the correspondence is NOT a bijection.  It is a
+% surjection of U(n) onto a small, exactly characterized face C of the
+% Feller--Wentzell cone (conservative + instantaneous + boundary-
+% supported + reciprocal), with phase-torus fibers.  For one end C is a
+% single point (pure reflection): the whole U(1) of phases collapses.
+% For two ends C is a segment [0,1] (reflection weight R vs. passage
+% through infinity 1-R, necessarily equal at both ends).  Killing
+% (absorbing/elastic), stickiness, interior jump-in, and asymmetric
+% passage are all excluded, each by a different exact invariant; the
+% sub-Markov side is instead matched by the maximal-DISSIPATIVE
+% completions (contractive boundary data), of which the self-adjoint
+% family is the unitary boundary.  Verdict at end of file.
+% ---------------------------------------------------------------------
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.05in]{geometry}
+\usepackage{array}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Ext}{\mathrm{Ext}}
+\newcommand{\lam}{\lambda}
+
+\title{The extension--lateral-condition dictionary:\\
+self-adjoint completions at infinity versus\\ Feller--Wentzell boundary
+data of the escape diffusion}
+\author{Companion note to Theorem~6.1(2)(a)--(b) and Lemma
+(\texttt{lem:feller})(iii)}
+\date{}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Summary.}  The paper asserts (Thm.~6.1(2)(a)--(b),
+Lem.~\texttt{lem:feller}(iii)) that the Feller lateral conditions at
+the regular boundary of the escape diffusion are ``the stochastic
+mirror'' of the $U(1)$ (resp.\ $U(2)$) family of self-adjoint
+extensions.  This note makes the mirror a theorem and, in doing so,
+shows it is \emph{not} a bijection: the correct statement is a
+surjection onto a small, exactly characterized face of the
+Feller--Wentzell cone, with the unitary phases collapsing to a point
+fiberwise.  The two-sided failure of bijectivity is itself the result:
+the quantum side carries phase (interference/spectral) data invisible
+to probability, and the stochastic side carries dissipative and
+boundary-mass data forbidden to unitarity.
+
+%======================================================================
+\section{Setup and the two parametrizations}
+\label{sec:setup}
+
+Throughout, $\tau\psi=-\tfrac12\psi''+V\psi$ on the interval
+$I=(r_-,r_+)$ with $r_+=+\infty$ an \emph{escaping end}: $V\in C^1$,
+$V\to-\infty$ eventually monotonically, $|V'|\,|V|^{-3/2}$ bounded (the
+mechanism model of Thm.~6.1), and classical time of flight
+$T_+(E)=\int^{\infty}\dd x/\sqrt{2(E-V)}<\infty$, so that $r_+$ is
+limit circle for $\tau$ \cite{ReedSimon2} and a \emph{regular} Feller
+boundary for the escape diffusion (companion note, Lemma~1(i)).  Two
+cases:
+\begin{itemize}
+\item[$n=1$:] $r_-$ confining (limit point, no boundary data);
+deficiency indices $(1,1)$; extensions $\cong U(1)$.
+\item[$n=2$:] $r_-=-\infty$ also escaping with $T_-(E)<\infty$
+(e.g.\ $V=-x^4$); deficiency $(2,2)$; extensions $\cong U(2)$.
+\end{itemize}
+Fix once and for all a real energy $E$ with $V<E$ on a neighborhood of
+each escaping end---the same $E$ at which the escape diffusion
+$\dd X=\sqrt{2(E-V(X))}\circ(\dd t+\varepsilon\,\dd W)$ (or its
+driftless variant, scale $s=\tau_{\rm clock}$, speed
+$m=2\,\dd x/v$) is built.
+
+\paragraph{Quantum boundary data (rigorous).}
+For $\psi,\varphi\in D(\tau_{\max})$ the Lagrange bracket
+$[\bar\psi,\varphi]_x=\bar\psi\varphi'-\bar\psi'\varphi$ has limits at
+each end, and Green's identity localizes the boundary form at the ends:
+\begin{equation}
+\langle\tau\psi,\varphi\rangle-\langle\psi,\tau\varphi\rangle
+=\tfrac12\Bigl([\bar\psi,\varphi]_{r_+}-[\bar\psi,\varphi]_{r_-}\Bigr)
+=:\,i\,\Omega(\psi,\varphi).
+\label{eq:green}
+\end{equation}
+$\Omega$ descends to the $2n$-complex-dimensional boundary space
+$\mathcal B=D(\tau_{\max})/D(\tau_{\min})$, where it is a
+nondegenerate Hermitian form of signature $(n,n)$; self-adjoint
+extensions are in bijection with the \emph{maximal $\Omega$-neutral}
+subspaces of $\mathcal B$ (complex-symplectic/boundary-triple theory
+\cite{EverittMarkus,BHS,Weidmann,Zettl}).  Physically,
+$\Omega(\psi,\psi)$ is the total \emph{outward probability current} at
+the ends: with $j(\psi)=\operatorname{Im}(\bar\psi\psi')$ one has
+$\partial_t|\psi_t|^2+\partial_x j(\psi_t)=0$ pointwise in $I$ for
+\emph{every} extension (all extensions act as the same differential
+expression), and $\Omega(\psi,\psi)=j(\psi)(r_+)-j(\psi)(r_-)$.
+
+At each escaping end, the solution germs
+$N_E^{\pm}=\{u:\tau u=Eu \text{ near } r_\pm\}$ form a
+$2$-complex-dimensional space on which the per-end current form
+\[
+J^{r_+}(u,w)=\tfrac1{2i}\,[\bar u,w]_{r_+},\qquad
+J^{r_-}(u,w)=-\tfrac1{2i}\,[\bar u,w]_{r_-}
+\quad(\text{sign: current \emph{toward} the end})
+\]
+is constant in $x$, Hermitian, of signature $(1,1)$: choosing real
+solutions $u_1,u_2$ with Wronskian $1$, the combinations
+$\psi_\pm=u_1\pm iu_2$ satisfy $J(\psi_\pm,\psi_\pm)=\pm1$,
+$J(\psi_+,\psi_-)=0$.  (Under the mechanism hypotheses the
+Liouville--Green asymptotics
+$\psi_\pm\sim v^{-1/2}e^{\pm i\int v\,\dd x}$, $v=\sqrt{2(E-V)}$, hold
+with Olver's error bounds \cite{Olver}; this is used only for the
+dynamical interpretation, not for the algebra.)  Write
+$u=a\,\psi_++b\,\psi_-$ near each escaping end: $a$ is the
+current-normalized \emph{incident} (toward-the-boundary) amplitude and
+$b$ the \emph{returned} one, and
+$J(u,u)=|a|^2-|b|^2$.  Because $T_\pm<\infty$ (limit circle), the trace
+map $N_E:=\bigoplus_i N_E^{(i)}\to\mathcal B$ (germs to boundary data)
+is an isomorphism for every $E\in\R$ \cite{Weidmann,Zettl}.
+
+\paragraph{Stochastic boundary data (rigorous; Feller).}
+At the regular boundary $r_+$ of the escape diffusion, with generator
+$G=D_mD_s$, the sub-Markov $C_0$-semigroup extensions of the minimal
+(absorbed) semigroup are in bijection with \emph{lateral conditions}
+\begin{equation}
+p_0\,u(r_+)\;-\;p_1\,\frac{\dd u}{\dd s}(r_+)\;+\;p_2\,(Gu)(r_+)
+\;=\;\int \bigl(u(y)-u(r_+)\bigr)\,\nu(\dd y),
+\label{eq:wentzell}
+\end{equation}
+$p_0,p_1,p_2\ge0$, $\nu\ge0$ a measure on $\bar I\setminus\{r_+\}$
+(interior and, in the two-ended problem, the other boundary point),
+not all data zero, modulo positive scaling
+\cite{Feller1952,Feller1957,ItoMcKean}.  Terminology: $p_0$
+\emph{killing} (absorbing $=p_0$ alone, i.e.\ $u(r_+)=0$, the minimal
+explosive semigroup; elastic $=p_0,p_1>0$), $p_1$ \emph{reflection},
+$p_2$ \emph{stickiness} (boundary carries a speed-measure atom
+$p_2\delta_{r_+}$; the process spends positive Lebesgue time at
+$r_+$), $\nu$ \emph{jump-in} (re-entry, possibly at the other
+boundary: Feller's ``circle-type'' passage).  Applying
+\eqref{eq:wentzell} to $u=\mathbf 1$ shows: \emph{the extension is
+conservative iff $p_0=0$ at every regular end} (no killing anywhere;
+$\nu$ may be arbitrary).  Denote by $\mathcal W$ the set of lateral
+data (one datum per regular end), a cone of infinite dimension
+(because of $\nu$).
+
+%======================================================================
+\section{The boundary unitary of a self-adjoint extension}
+
+\begin{proposition}[boundary scattering matrix at fixed energy]
+\label{prop:S}
+Fix $E\in\R$ as above and let $\tilde H$ be any self-adjoint extension,
+with maximal $\Omega$-neutral boundary subspace
+$L\subset\mathcal B$.  Let
+$\mathcal S_L=\{u\in N_E:\ \Gamma u\in L\}$ (germ solutions at energy
+$E$ admissible for $\tilde H$), and let $a=(a_i)$, $b=(b_i)\in\C^n$ be
+the incident/returned amplitude coordinates at the escaping ends.
+Then:
+\begin{itemize}
+\item[(i)] $\dim_\C\mathcal S_L=n$, and for $u\in\mathcal S_L$,
+$\sum_i\bigl(|a_i|^2-|b_i|^2\bigr)=0$ \emph{(exact current
+conservation)};
+\item[(ii)] the map $u\mapsto a$ is injective on $\mathcal S_L$, hence
+bijective onto $\C^n$, and there is a unique
+$S_{\tilde H}(E)\in U(n)$ with $b=S_{\tilde H}(E)\,a$ on
+$\mathcal S_L$;
+\item[(iii)] $\tilde H\mapsto S_{\tilde H}(E)$ is a bijection from the
+self-adjoint extensions onto $U(n)$.  Separated boundary conditions
+correspond to diagonal $S$ (the torus $U(1)^n\subset U(n)$); for $n=1$,
+$S_\theta(E)=e^{i\alpha(\theta,E)}$ recovers the $U(1)$ of
+Thm.~6.1(2)(a).
+\end{itemize}
+For comparison, the same construction with ``maximal neutral''
+relaxed to ``maximal nonpositive'' ($\Omega(u,u)\le0$ on $L$, i.e.\
+net outward current $\ge0$: maximal-dissipative extensions, contraction
+semigroups $e^{-it\tilde H}$) yields exactly the closed matrix ball
+$\|S\|\le1$ \cite{BHS}; the self-adjoint family is its unitary
+boundary.
+\end{proposition}
+
+\begin{proof}
+(i) The trace map $N_E\to\mathcal B$ is an isomorphism (limit circle at
+each escaping end; the confining end contributes no data), so
+$\mathcal S_L\cong L\cap\mathcal B=L$, of dimension $n$.  For
+$u\in\mathcal S_L$: $\Omega(u,u)=0$ by neutrality of $L$, and
+$\Omega(u,u)=\sum_i J^{(i)}(u,u)=\sum_i(|a_i|^2-|b_i|^2)$ by the
+constancy of the per-end bracket on solutions.
+
+(ii) If $a=0$ then (i) gives $\sum|b_i|^2=0$, so $u=0$: injective;
+by dimension count onto $\C^n$.  Define $S$ by $b=Sa$; (i) says
+$\|Sa\|=\|a\|$ for all $a$, i.e.\ $S\in U(n)$.
+
+(iii) $\mathcal S_L$ is recovered from $S$ as
+$\{a\,\psi_++Sa\,\psi_-\}$, and $L=\Gamma\mathcal S_L$; conversely any
+maximal neutral subspace of a signature-$(n,n)$ space is the graph of a
+unitary from the positive to the negative part (if $(0,b')\in L$,
+neutrality forces $b'=0$; then the $a$-projection is bijective and the
+graph map is isometric).  In the $(a,b)$ coordinates at energy $E$,
+$\Omega=\mathrm{diag}(+I_n,-I_n)$, so maximal neutral subspaces
+$\leftrightarrow$ $U(n)$, and by the trace isomorphism these are
+exactly the extension subspaces.  Separated conditions constrain each
+end's data independently, giving block-diagonal (here $1\times1$
+blocks, i.e.\ diagonal) $S$.  For the dissipative case replace
+``isometric graph'' by ``contractive graph.''
+\end{proof}
+
+\begin{remark}[$E$-covariance]\label{rem:Ecov}
+The extension $\tilde H$ is fixed; the frames $\psi_\pm(E)$ rotate with
+$E$ by an end-local $U(1,1)$ M\"obius action, under which unitarity of
+$S(E)$ is preserved but the moduli $|S_{ij}(E)|$ in general drift with
+$E$.  Two subfamilies are $E$-uniform: separated conditions (diagonal
+$S$ for all $E$) and the smooth gluing (the paper's periodic
+identification: the glued clock-circle problem has no defect at the
+seam, so $S$ is antidiagonal---perfect transmission---at every $E$).
+The dictionary below is stated at the mechanism energy $E$, the same
+$E$ at which the escape diffusion itself is defined; this matching of
+reference energies is intrinsic to the construction, not a defect.
+\end{remark}
+
+%======================================================================
+\section{The dictionary}
+
+\begin{definition}[flux correspondence]\label{def:phi}
+For a self-adjoint extension $\tilde H$ define the lateral datum
+$\Phi_E(\tilde H)\in\mathcal W$ by: at each escaping end $i$,
+\[
+p_0^{(i)}=0,\qquad p_2^{(i)}=0,\qquad
+p_1^{(i)}=|S_{ii}(E)|^2,\qquad
+\nu^{(i)}=\sum_{j\ne i}|S_{ij}(E)|^2\,\delta_{r_j},
+\]
+i.e.\ conservative, instantaneous, boundary-supported, with reflection
+weight $|S_{ii}|^2$ and passage-to-the-other-end weight $|S_{ij}|^2$.
+(For $\varepsilon>0$ the pair $(p_1,\nu)$ is to be read projectively:
+re-entry at local-time rate $\nu/p_1$; in the transport limit
+$\varepsilon\downarrow0$ the weights are literal per-arrival branching
+probabilities.  See Remark~\ref{rem:rate}.)
+\end{definition}
+
+\begin{theorem}[extension--lateral-condition dictionary; $n\in\{1,2\}$
+escaping ends, $T_i(E)<\infty$]
+\label{thm:main}
+Let $\mathcal C\subset\mathcal W$ be the set of lateral data that are
+simultaneously
+\emph{(c1) conservative} ($p_0^{(i)}=0$ for all $i$),
+\emph{(c2) instantaneous} ($p_2^{(i)}=0$),
+\emph{(c3) boundary-supported} ($\nu^{(i)}$ charges only the other
+escaping end, not the interior), and
+\emph{(c4) reciprocal} (for $n=2$: the passage weights in the two
+directions are equal, equivalently the reflection weights at the two
+ends are equal).
+Then:
+\begin{itemize}
+\item[(1)] \textbf{(image)} $\Phi_E$ maps the self-adjoint extensions
+\emph{onto} $\mathcal C$ and \emph{only into} $\mathcal C$.  The
+correspondence is not a bijection in either direction:
+\item[(2)] \textbf{($n=1$: total collapse)} $\mathcal C=\{\text{pure
+reflection}\}$ is a single point and $\Phi_E$ is the \emph{constant}
+map: every phase $\theta$ corresponds to the reflecting condition
+$\dd u/\dd s\,(r_+)=0$.  The fiber is the whole $U(1)$: the phase
+$\alpha(\theta,E)$ fixes the eigenvalue positions (interference data)
+and has no sub-Markov counterpart.
+\item[(3)] \textbf{($n=2$: a segment)} $\mathcal C\cong[0,1]\ni R$,
+the convex family ``reflect with weight $R$, pass through infinity
+($r_+\!\to r_-$ and $r_-\!\to r_+$) with weight $1-R$, the same $R$ at
+both ends.''  $\Phi_E$ is onto: $R=|S_{11}(E)|^2$, realized e.g.\ by
+$S=\bigl(\begin{smallmatrix}\sqrt R& i\sqrt{1-R}\\
+i\sqrt{1-R}&\sqrt R\end{smallmatrix}\bigr)$; $R=1$ are the separated
+completions (e.g.\ Dirichlet wall), $R=0$ the wormhole/gluing
+completions (perfect passage; stochastically Feller's circle-type
+passage, the clock-circle ``darning'' of the two boundary points
+\cite{ChenFukushima}).  The fibers are the phase tori
+$\{U\in U(2):|U_{11}|^2=R\}$ (dimension $\ge2$; $\dim U(2)=4$ against
+$\dim\mathcal C=1$).
+\item[(4)] \textbf{(exact exclusions; the asymmetry)}  No self-adjoint
+extension corresponds to any lateral datum outside $\mathcal C$; each
+of the four defining constraints is enforced by a distinct exact
+invariant:
+\begin{itemize}
+\item[(c1)] \emph{killing} ($p_0>0$: absorbing, elastic) is excluded by
+unitarity: $\|e^{-it\tilde H}\psi\|\equiv\|\psi\|$, while any
+$p_0>0$ datum strictly loses mass ($T<\infty$ makes the boundary
+accessible from everywhere at every positive time).  The
+absorbing/minimal (explosive) semigroup---the regulator-independent
+object of Thm.~6.1(2)(c)---is precisely the completion \emph{missing}
+from the self-adjoint family; it corresponds instead to the maximal
+\emph{dissipative} completion $S=0$ (outgoing/radiation condition
+$b=0$), and elastic data to strictly contractive $0<\|S\|<1$
+(Proposition~\ref{prop:S}, last part).
+\item[(c2)] \emph{stickiness} ($p_2>0$) is excluded because a sticky
+process holds positive probability \emph{at} the boundary point
+($\Prob(X_t=r_+)>0$ on a set of times of positive measure; the boundary
+carries a speed-measure atom, and the semigroup is symmetric only in
+$L^2(m+p_2\delta_{r_+})$), whereas every self-adjoint extension acts in
+$L^2(I,\dd x)$, whose measure has no boundary atom:
+$|\psi_t|^2\dd x(\{r_+\})=0$ for all $t$.  A quantum counterpart would
+require enlarging the Hilbert space to
+$L^2(I)\oplus\C$ (a boundary state)---an extension of a
+\emph{different} symmetric operator, outside the $U(n)$ family.
+\item[(c3)] \emph{interior jump-in} ($\nu(I^\circ)>0$) is excluded at
+the classification level: by \eqref{eq:green} the boundary form of
+$\tau$ is supported on the ends, so extension domains constrain
+\emph{only} end data, and $\Ext(H)\cong U(n)$ is exhausted by
+end-channel unitaries---there is no parameter available to encode an
+interior re-entry point.  (Semiclassically the same: wave packets
+return through the ends.)
+\item[(c4)] \emph{asymmetric passage} is excluded by unitarity again:
+for $U\in U(2)$ the matrix $(|U_{ij}|^2)$ is doubly stochastic, hence
+$|S_{12}|^2=|S_{21}|^2$ and $|S_{11}|^2=|S_{22}|^2$.  Independent
+lateral data at the two ends form a $2$-parameter family
+$(R_+,R_-)$; the image is exactly its diagonal.
+\end{itemize}
+\item[(5)] \textbf{(dynamical content; semiclassical)}  For a WKB wave
+packet of mean energy $E$ launched toward end $i$: it reaches the
+boundary after the classical time of flight ($\approx T_i(E)$, the
+$\varepsilon\downarrow0$ explosion time of the escape diffusion,
+companion Lemma~1(ii)), and the fraction $|S_{ji}(E)|^2$ of its
+probability re-emerges from end $j$ after the finite round trip---the
+paper's revival numerics (Dirichlet wall: return from the right;
+periodic gluing: return from the left) are the two extreme points
+$R=1,0$.  This matches the $\varepsilon\downarrow0$ escape diffusion
+with branching lateral datum $\Phi_E(\tilde H)$, for which the boundary
+behavior per arrival is literally ``reflect w.p.\ $R$ / pass w.p.\
+$1-R$.''
+\end{itemize}
+\end{theorem}
+
+\begin{proof}
+(1)--(3): By Proposition~\ref{prop:S}, $\tilde H\mapsto S(E)$ is a
+bijection onto $U(n)$, and $\Phi_E$ factors through it.  For $n=1$,
+$|S|=1$ forces reflection weight $1$: the constant map; the fiber is
+$U(1)$.  (Equivalently, without Proposition~\ref{prop:S}: any separated
+real boundary condition $\cos\theta\,\Gamma_1u+\sin\theta\,\Gamma_2u=0$
+is real, so its admissible germ line is spanned by a \emph{real}
+solution $u=a\psi_++\bar a\psi_-$, whence $|b/a|=1$: total
+reflection for every $\theta$.)  For $n=2$, double stochasticity of
+$(|S_{ij}|^2)$ (row and column sums $1$) gives
+$|S_{11}|^2=|S_{22}|^2=:R$ and $|S_{12}|^2=|S_{21}|^2=1-R$, so the
+image lies in the diagonal family of (3), which is contained in
+$\mathcal C$ by construction of $\Phi_E$.  Ontoness: the displayed
+matrix is unitary for every $R\in[0,1]$.  Fibers: fixing the moduli of
+a $2\times2$ unitary leaves the phases, a torus of dimension
+$\ge2$.
+
+(4): (c1) Unitarity versus strict mass loss: if $p_0>0$, start the
+process at any $x\in I^\circ$; since $r_+$ is regular and accessible
+($\Sigma<\infty$; companion Lemma~1), $\Prob_x(\text{hit } r_+\le
+t)>0$ for every $t>0$, and each boundary visit kills a positive
+fraction of local time mass, so
+$\E_x[\mathbf 1_{\{\text{alive}\}}]<1$ for $t>0$; no
+mass-preserving evolution can correspond to it under any pairing that
+matches total probability.  The dissipative statements are
+Proposition~\ref{prop:S}: maximal nonpositive boundary subspaces are
+contractive graphs $\|S\|\le1$; $S=0$ is the condition $b=0$ (no
+returned amplitude: every admissible germ is purely outgoing), the
+quantum radiation condition, whose semigroup loses exactly the arriving
+flux, as does the absorbing/minimal semigroup; $0<\|S\|<1$ returns the
+fraction $\|Sa\|^2/\|a\|^2<1$, as does the elastic condition
+(per-arrival kill fraction $1-|S|^2$ in the transport limit).
+
+(c2) For a sticky datum, $\E\!\int_0^t\mathbf 1_{\{X_s=r_+\}}\dd s>0$
+after the first boundary hit (speed atom $p_2\delta_{r_+}$;
+\cite{ItoMcKean}, \S3.7), so $\Prob(X_s=r_+)>0$ on a time set of
+positive measure, while the quantum state space $L^2(I,\dd x)$ assigns
+the boundary zero mass at all times.  Any pairing matching the measure
+class of the state space excludes it.
+
+(c3) Green's identity \eqref{eq:green}: the form
+$\Omega$ vanishes on compactly supported interior functions, i.e.\ the
+self-adjointness constraint is a condition on end data alone; the
+classification $\Ext(H)\leftrightarrow$ maximal neutral subspaces of
+the \emph{end} boundary space is exhaustive, so no extension encodes an
+interior channel; $\Phi_E$'s jump measures are supported on
+$\{r_-,r_+\}$ by construction, and no refinement of $\Phi_E$ through
+boundary data can do otherwise.
+
+(c4) is the double-stochasticity computation above.
+
+(5) Proof sketch (the only non-exact leg).  Under the mechanism
+hypotheses the Liouville--Green solutions carry Olver-type error bounds
+($\int|v^{-1/2}(v^{-1/2})''|\,\dd x<\infty$ follows from
+$|V'||V|^{-3/2}$ bounded and $V\to-\infty$ monotonically), so
+$\psi_\pm=v^{-1/2}e^{\pm i\int v}(1+o(1))$ with controlled remainders.
+A packet $\int\chi(\lam)u_\lam\,e^{-i\lam t}\dd\lam$ built on admissible
+solutions ($b(\lam)=S(\lam)a(\lam)$) has, by stationary phase, incident
+front arriving at the end at the classical time and returned fronts of
+weight $|S_{ji}|^2$ emerging at end $j$, with corrections
+$O(\text{window}^{-1})+o(1)_{\rm WKB}$; the discrete spectrum
+(spacing $\pi/T_{\rm cross}$, Thm.~6.1(2)(b)) does not obstruct because
+the packet width covers many levels.  On the stochastic side,
+$\varepsilon\downarrow0$ reduces the escape diffusion to the transport
+flow $\dot x=v$ (companion Lemma~1(ii): $\zeta\to T$ a.s.), for which
+the branching lateral datum acts per arrival with probabilities
+$R,1-R$.  The two evolutions then agree at the level of arrival times
+and returned/passed mass fractions.  This leg is asymptotic by nature
+(the exact statements are (1)--(4)).
+\end{proof}
+
+\begin{remark}[rate normalization at $\varepsilon>0$]\label{rem:rate}
+At $\varepsilon>0$ a regular boundary is visited on a local-time set,
+so ``reflect w.p.\ $R$ per bounce'' is ill-posed; the correct $\nu$-vs-$p_1$
+normalization is an excursion-theoretic convention (jump at local-time
+rate $\propto(1-R)/R$), and only the $\varepsilon\downarrow0$ limit
+makes the weights literal per-arrival probabilities.  We therefore
+claim the quantitative identification of $R$ only in that limit; the
+class-level statements (which face of the cone, which ends linked,
+reciprocity) are exact for every $\varepsilon>0$.
+\end{remark}
+
+\begin{remark}[why the phases must collapse]\label{rem:winding}
+The collapse of the $U(1)$ fibers is structural, not an artifact of the
+map chosen.  On the escaping end $v\ge v_{\min}>0$, so the quantum
+phase $\int^\infty v\,\dd x=\infty$ diverges while the clock
+$\int^\infty\dd x/v=T<\infty$ converges: the quantum boundary basis
+$\psi_\pm$ winds \emph{infinitely often} approaching the end (solutions
+have infinitely many zeros accumulating at $+\infty$), whereas the
+diffusion's boundary basis---the $G$-harmonic functions $1$ and
+$s$---is monotone with finite boundary limits.  No linear
+identification of the two $2$-dimensional boundary spaces can be
+canonical (there is no preferred ``zeroth winding''), and the only
+basis-independent quantities transferable to the probabilistic side are
+the current moduli $|S_{ij}|^2$.  The phase is precisely the datum the
+$|\cdot|^2$ functor forgets.
+\end{remark}
+
+\begin{remark}[what would see the phases]\label{rem:sticky}
+Two natural extensions of the stochastic side, both outside Feller's
+lateral-condition cone for the escape diffusion in $L^2(m)$, are the
+plausible receptacles for the lost data, and we record them as
+\emph{conjectural} dictionary entries: (a) sticky data $p_2>0$
+correspond to self-adjoint operators on $L^2(I)\oplus\C$ (a boundary
+degree of freedom; Wentzell-type quantum boundary conditions), not to
+any extension of $H$ in $L^2(I)$; (b) the Wigner delay
+$\partial\alpha/\partial E$ of a fixed extension is the natural phase
+shadow of boundary delay, but it can be negative and is not
+constant-per-visit, so it does \emph{not} match any sub-Markov sticky
+parameter---consistent with (c2) being an exact exclusion rather than a
+near miss.
+\end{remark}
+
+%======================================================================
+\section{The correspondence table}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.35}
+\small
+\begin{tabular}{p{0.30\textwidth}|p{0.14\textwidth}|p{0.28\textwidth}|p{0.17\textwidth}}
+\textbf{Quantum completion (at $E$)} & \textbf{Flux data $S(E)$} &
+\textbf{Feller--Wentzell lateral datum} & \textbf{status}\\
+\hline
+any self-adjoint ext., one end (every phase $\theta$) &
+$e^{i\alpha}$, $|S|=1$ &
+reflecting: $\dd u/\dd s(r_+)=0$ &
+proved (class); timing WKB\\
+separated completions, two ends $(\theta_+,\theta_-)$ &
+diagonal, $R=1$ &
+independent reflection at each end &
+proved\\
+smooth gluing (``periodic through $\infty$'') &
+antidiagonal, $R=0$, all $E$ &
+passage $r_+\!\leftrightarrow r_-$ (circle-type jump; clock-circle
+darning) &
+proved (class)\\
+generic coupled $U\in U(2)$ &
+$0<R<1$ &
+reflect wt.\ $R$ $+$ jump to other end wt.\ $1-R$, same at both ends &
+proved (class); $R$ generically $E$-dependent; rate conv.\
+Rem.~\ref{rem:rate}\\
+relative phases $\arg S_{ij}$ &
+invisible &
+--- (fibers of $\Phi_E$; eigenvalue positions) &
+proved\\
+\hline
+maximal dissipative, radiation cond.\ $b=0$ &
+$S=0$ &
+absorbing $u(r_+)=0$: minimal explosive semigroup &
+proved (flux); \emph{not} self-adjoint\\
+strictly contractive boundary data &
+$0<\|S\|<1$ &
+elastic ($p_0,p_1>0$: partial kill) &
+proved (flux); \emph{not} self-adjoint\\
+\hline
+none in $L^2(I,\dd x)$ (needs $L^2\oplus\C$) & --- &
+sticky ($p_2>0$) &
+exclusion proved; enlarged-space entry conjectural\\
+none (no interior channels in $\Ext(H)$) & --- &
+jump-in to interior ($\nu(I^\circ)>0$) &
+exclusion proved\\
+none (double stochasticity) & --- &
+asymmetric passage $R_+\ne R_-$ &
+exclusion proved\\
+\end{tabular}
+\end{center}
+
+%======================================================================
+\section*{Verdict}
+
+\noindent\textbf{PARTIAL-WITH-CHARACTERIZED-IMAGE; the class-level
+dictionary is PROVED.}  The correspondence between self-adjoint
+extensions and Feller--Wentzell lateral conditions is \emph{not} a
+bijection and should not be presented as one.  Precisely
+(Theorem~\ref{thm:main}): the flux functor $\Phi_E$ is a surjection of
+the $U(n)$ extension family onto the face
+$\mathcal C=\{$conservative $\wedge$ instantaneous $\wedge$
+boundary-supported $\wedge$ reciprocal$\}$ of the Feller--Wentzell
+cone---a \emph{point} (pure reflection) for one escaping end, a
+\emph{segment} $R\in[0,1]$ (reflection vs.\ reciprocal passage through
+infinity) for two---with phase-torus fibers; the paper's wormhole
+completion is exactly the passage datum $R=0$.  Absorbing and elastic
+data are matched not by self-adjoint but by maximal-\emph{dissipative}
+completions ($\|S\|\le1$ matrix ball, sub-unitary
+$\leftrightarrow$ sub-Markov, unitary boundary $\leftrightarrow$
+conservative face); sticky and interior-jump data have no counterpart
+in $L^2(I,\dd x)$ at all.  All exclusions and the image
+characterization are exact; only the dynamical (wave-packet
+arrival/revival) interpretation is semiclassical
+(PROOF-SKETCH-SOLID), and the $\varepsilon>0$ jump-rate normalization
+is conventional.  For the paper: Thm.~6.1(2)(a)--(b) and
+Lem.~\texttt{lem:feller}(iii) are correct as worded (``stochastic
+mirror,'' ``parametrize''), provided ``mirror'' is not sharpened to a
+bijection; the safe sharp citation is: \emph{the conservative
+instantaneous boundary-supported reciprocal lateral conditions are
+exactly the flux shadows of the self-adjoint family, the phases being
+spectral data with no stochastic counterpart.}
+
+\begin{thebibliography}{9}
+
+\bibitem{ReedSimon2}
+M.~Reed and B.~Simon,
+\emph{Methods of Modern Mathematical Physics II}
+(Academic Press, New York, 1975), Thms.~X.7--X.10.
+
+\bibitem{Weidmann}
+J.~Weidmann,
+\emph{Spectral Theory of Ordinary Differential Operators},
+Lecture Notes in Math.~1258 (Springer, Berlin, 1987), \S\S8, 13--15.
+
+\bibitem{Zettl}
+A.~Zettl,
+\emph{Sturm--Liouville Theory},
+Math.\ Surveys Monogr.~121 (AMS, Providence, 2005), Ch.~10
+(limit-circle boundary conditions; surjectivity of the trace map).
+
+\bibitem{EverittMarkus}
+W.~N.~Everitt and L.~Markus,
+\emph{Boundary Value Problems and Symplectic Algebra for Ordinary
+Differential and Quasi-differential Operators},
+Math.\ Surveys Monogr.~61 (AMS, Providence, 1999).
+
+\bibitem{BHS}
+J.~Behrndt, S.~Hassi, and H.~de~Snoo,
+\emph{Boundary Value Problems, Weyl Functions, and Differential
+Operators} (Birkh\"auser, Cham, 2020) (boundary triples; unitary and
+contractive boundary relations; maximal dissipative extensions).
+
+\bibitem{Feller1952}
+W.~Feller,
+Ann.\ Math.\ \textbf{55}, 468--519 (1952).
+
+\bibitem{Feller1957}
+W.~Feller,
+\emph{Generalized second order differential operators and their
+lateral conditions},
+Illinois J.\ Math.\ \textbf{1}, 459--504 (1957).
+
+\bibitem{ItoMcKean}
+K.~It\^o and H.~P.~McKean, Jr.,
+\emph{Diffusion Processes and their Sample Paths}
+(Springer, Berlin, 1974), \S\S3.7--3.8, 4.1--4.6.
+
+\bibitem{ChenFukushima}
+Z.-Q.~Chen and M.~Fukushima,
+\emph{Symmetric Markov Processes, Time Change, and Boundary Theory}
+(Princeton Univ.\ Press, 2012), Ch.~7 (one-point extensions,
+darning).
+
+\bibitem{Olver}
+F.~W.~J.~Olver,
+\emph{Asymptotics and Special Functions}
+(Academic Press, New York, 1974), Ch.~6 (Liouville--Green error
+bounds).
+
+\end{thebibliography}
+
+\end{document}

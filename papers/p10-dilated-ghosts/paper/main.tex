@@ -1,0 +1,1601 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1.1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!60!black,citecolor=blue!60!black,urlcolor=blue!60!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{claim}[theorem]{Claim}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\PT}{\mathcal{PT}}
+\newcommand{\ii}{\mathrm{i}}
+\newcommand{\ee}{\mathrm{e}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\rh}{r_{\mathrm{h}}}
+\newcommand{\rstar}{r_{*}}
+
+\title{A boundary only by the clock:\\
+the black-hole horizon between natural and exit,\\
+the membrane paradigm as the minimal semigroup,\\
+and the price of exterior unitarity}
+
+\author{Jonathan Torkelson\\[2pt]
+\small Embeddetech, Inc., Tulsa, Oklahoma, USA\\
+\small\texttt{jtorkelson@embeddetech.com}}
+\date{July 19, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent\textbf{Draft --- not for circulation.}\medskip
+
+\noindent
+The first paper of this series priced incomplete dynamics in a single
+currency: for a half-line Schr\"odinger or diffusion problem, one
+classical time-of-flight integral simultaneously decides classical
+completeness, the Weyl limit-point/limit-circle alternative, and the
+Feller boundary type; conservative dynamics beyond the limit-point
+regime is a \emph{choice} of self-adjoint extension (boundary data);
+and the choice-free, regulator-independent object is the minimal
+sub-stochastic semigroup. This paper runs that dictionary at a
+black-hole horizon, where it acquires an axis the non-relativistic
+theory did not have: the classification is \emph{clock-dependent}.
+Three results, for a scalar field and its radial diffusion analogue on
+fixed Schwarzschild (with Rindler as warm-up). (i)~\emph{A
+clock-dependence theorem.} In Killing time the horizon is Weyl limit
+point and a Feller \emph{natural} boundary: infinite time-of-flight,
+essentially self-adjoint generator, conservative minimal semigroup, no
+room for boundary data. In horizon-adapted clocks
+(Painlev\'e--Gullstrand, infalling proper, hyperboloidal) the time-of-flight is
+finite and the horizon generically becomes an \emph{exit} boundary
+(unless the noise can climb an e-folding of the lapse; see below): the
+exterior generator is only dissipative (non-normal), its minimal semigroup is
+sub-stochastic, and the lost mass is exactly the flux through the
+horizon. The two pictures are related by a singular time change whose
+rate is set by the lapse, and Feller boundary type is not invariant
+under singular time changes. The stochastic half is proved here---with
+an exact identity equating Feller's attainability integral to the
+clock's ingoing time-of-flight---while the quantum half is assembled
+from known limit-point facts and the hyperboloidal-slicing program,
+cited rather than re-derived. A byproduct of the proof: the finer
+exit-versus-regular alternative is decided by the \emph{outgoing}
+integral, and the boundary-data (limit-circle-like) regime opens only
+when the noise can climb an e-folding of the lapse---the stochastic
+twin of the near-horizon conformal-quantum-mechanics regime of the
+literature, and a feature of the isotropic clock idealization that the
+body argues does not survive a genuine (anisotropic) graph clock.
+(ii)~\emph{The membrane paradigm as the minimal process.} Stretched-horizon
+completions---brick-wall Dirichlet walls, near-horizon $U(1)$ extension
+families, antipodal S-matrix identifications---are conservative
+dilations carrying boundary data at a regularized wall; they are
+mutually equivalent for exterior scattering and thermality---rigorously
+for the $U(1)$ extension family, conjecturally in the multichannel
+(antipodal) case---but inequivalent for entropy counting, which is
+exactly the brick wall's notorious cutoff dependence, read as extension
+dependence. The
+wall-independent object is the minimal sub-stochastic semigroup, and
+wall-removal universality (for local wall conditions) is the exit
+property (strictly, its interior $\kappa p D<v_0$).
+(iii)~\emph{A dictionary entry for the information paradox}---not a
+resolution. ``Does the horizon need extra data?'' has a clock-indexed
+answer: no in Killing time; in infalling time only if one insists on
+exterior conservativity, in which case the data parameterize
+inequivalent unitary completions. Firewall-type tensions, insofar as
+they demand a single clock-independent verdict on what the horizon
+carries, ask a question that---at the level of a test field's boundary
+type---has no clock-independent answer: provably so for the radial
+diffusion analogue, and at the cited strength of the hyperboloidal
+program for the field itself.
+\end{abstract}
+
+\newpage
+\begin{quote}
+\small\noindent\textbf{Note on provenance.} This manuscript is an
+experiment in AI-conducted research as much as a physics paper. The
+project began when the author asked the large language model Claude
+Fable~5 (Anthropic): \emph{``Is it not possible that the antilinear
+PT/time-reversal symmetry element could maybe predict indivisible
+non-Markovian processes?''} Everything that followed was performed by
+the model: the research program, the theorems and proofs, the numerical
+experiments, the literature search, and this text. The model was
+repeatedly prompted to attack its own results adversarially and to
+search for prior work. The author, a professional engineer rather than
+a physicist, directed and reviewed the sessions but makes no claim to
+comprehension of the findings, and is circulating the manuscript for
+independent review by professional physicists. Accordingly, nothing
+here should be taken on trust: every result is stated with the proof
+it actually has---here entirely closed-form derivations and cited
+results, with no numerical experiments;
+the originating conversation, project briefing, and full research
+notebook are preserved in the program's hub repository,
+\url{https://github.com/embeddetech/ghosts-program}.
+\end{quote}
+
+\newpage
+\tableofcontents
+
+%=====================================================================
+\section{Introduction}
+\label{sec:intro}
+
+\subsection{The question}
+
+Does a black-hole horizon carry boundary data? The question splits the
+literature into camps that rarely cite one another's mathematics. On
+one side, the folklore of the tortoise coordinate: the radial wave
+equation outside a Schwarzschild black hole, written in Killing time,
+is a Schr\"odinger problem on the whole line whose potential dies
+exponentially toward the horizon; the operator is essentially
+self-adjoint; nothing may be prescribed at the horizon, and the
+familiar ``purely ingoing'' condition of quasinormal-mode theory is an
+asymptotic regularity selection, not a boundary condition in the
+extension-theoretic sense. On another side, the near-horizon
+conformal-quantum-mechanics literature finds, in a proper-distance-like
+variable, an inverse-square operator in its limit-circle regime and a
+$U(1)$ family of self-adjoint extensions whose choice feeds the
+entropy \cite{GuptaSen2002,CamblongOrdonez2005,Balachandran2018}. On a
+third, the membrane paradigm
+\cite{Damour1978,ThornePriceMacdonald,ParikhWilczek1998} treats the
+horizon as a dissipative fluid membrane---manifestly \emph{not}
+conservative dynamics---while 't~Hooft's brick wall
+\cite{tHooftBrickWall1985} and antipodal identification
+\cite{tHooftAntipodal2016} restore unitarity by installing data at or
+near the horizon. Each camp is internally consistent. Their mutual
+tension---no data possible, a family of data required, dissipation
+instead of data, data restoring unitarity---is the subject of this
+paper.
+
+The claim defended here is that all four camps are right, because they
+are answering four different well-posed questions, and that a single
+piece of arithmetic separates the questions: the classical
+time-of-flight integral to the horizon, \emph{evaluated with a
+specified clock}. The framework is the explosion dictionary of the
+first paper of this series \cite{indivisible}, which established, for
+half-line Schr\"odinger and diffusion problems, a three-column
+correspondence: (i)~finite classical time-of-flight to an endpoint
+signals loss of essential self-adjointness (Weyl limit circle);
+(ii)~conservative dynamics then requires a choice of self-adjoint
+extension---boundary data, a $U(1)$ phase or, in multichannel form, a
+unitary S-matrix at the endpoint; (iii)~the choice-free,
+regulator-independent object is the minimal Feller semigroup, which is
+sub-stochastic (mass leaks through the endpoint); and (iv)~one
+time-of-flight integral decides classical completeness, the Weyl
+alternative, and the Feller boundary type
+(regular/exit/entrance/natural) simultaneously, for the potential
+classes treated there.
+
+At a horizon this dictionary meets a genuinely new phenomenon. The
+time-of-flight to the horizon is \emph{infinite} in Killing time and
+\emph{finite} in the proper time of an infalling observer---the oldest
+fact in black-hole physics. In the dictionary's terms this is not a
+curiosity but a theorem generator: the boundary classification of the
+horizon is \emph{clock-dependent}, the two classifications are related
+by a singular time change (the rate degenerating like a power of the
+metric function $f$), and
+Feller boundary type is not invariant under singular time changes. The
+horizon is the starkest example the dictionary allows: a
+single endpoint that is a natural boundary for one clock and an exit
+boundary for another.
+
+\subsection{Results}
+
+Throughout, the setting is a test scalar field, and a radial transport
+diffusion modeled on it, on the \emph{fixed} exterior Schwarzschild
+geometry (Section~\ref{sec:schw}), with the Rindler wedge as warm-up
+(Section~\ref{sec:rindler}). Backreaction, evaporation, and any
+holographic interpretation are outside the scope; see the scope
+statement in Section~\ref{subsec:notclaimed}.
+
+\paragraph{S1 (clock-dependence theorem, Section~\ref{sec:clock}).}
+For the exterior radial problem:
+\begin{itemize}
+\item In \emph{Killing time} the horizon is Weyl limit point and a
+Feller \emph{natural} boundary: the time-of-flight diverges
+(logarithmically, rate set by the surface gravity $\kappa$); the
+spatial generator is essentially self-adjoint
+(Proposition~\ref{prop:essa}); the minimal diffusion semigroup is
+conservative; no boundary condition can be imposed
+(Theorem~\ref{thm:clock}(a)).
+\item In \emph{horizon-adapted clocks} (Painlev\'e--Gullstrand,
+infalling proper, hyperboloidal) the time-of-flight is finite and the
+horizon becomes an \emph{exit} boundary in the generic regime
+$\kappa pD\le v_{0}$ (the complementary regime is regular,
+Theorem~\ref{thm:clock}(c)): the process reaches it almost
+surely in finite clock time, cannot return, the minimal semigroup is
+strictly sub-stochastic with mass deficit equal to the accumulated
+probability flux through the horizon, and every conservative
+completion requires adjoining horizon degrees of freedom
+(Theorem~\ref{thm:clock}(b,c), Corollary~\ref{cor:flux}).
+\item The two descriptions are related by a singular time change with
+rate degenerating like a power of the lapse function $f$ (the metric
+function $g_{tt}=-f$; the ADM lapse proper is $\sqrt f$, the Rindler
+$\rho$ of the warm-up, so ``a power of $f$'' is that power of the squared
+lapse); Feller type
+is not invariant under such time changes. The decider is exact, not
+merely asymptotic: Feller's attainability integral for the
+time-changed process \emph{equals} the adapted clock's ingoing
+time-of-flight integral, for every admissible rate function
+(equation~\eqref{eq:sigma-tof}).
+\item A finer statement falls out of the proof. The
+exit-versus-regular alternative at the horizon in adapted time is
+decided by the \emph{outgoing} integral: the boundary is exit iff
+$\kappa p D \le v_{0}$, where $D$ is the noise strength, $v_{0}$ the
+ingoing transport speed, and $p$ the lapse power of the clock rate.
+Equivalently, boundary data become possible in adapted time exactly
+when the noise's upstream penetration depth $D/v_{0}$ exceeds the
+lapse e-folding length $1/\kappa p$. Macroscopic horizons sit deep in
+the exit regime; the regular regime is the stochastic twin of the
+near-horizon limit-circle (conformal quantum mechanics) regime of
+\cite{GuptaSen2002,CamblongOrdonez2005,Balachandran2018}
+(Remark~\ref{rem:tworegime})---though it is a feature of the isotropic
+clock idealization that the body argues (at sketch strength) does not
+survive a genuine graph clock (Remark~\ref{rem:shift}(iii)).
+\end{itemize}
+The stochastic half of S1 is proved in full. The quantum half is
+deliberately assembled from the literature: essential
+self-adjointness in the Killing pair is proved here because the proof
+is three lines, while the dissipativity of the horizon-adapted
+\emph{quantum} generator is the hyperboloidal-slicing program of
+Warnick \cite{Warnick2015} and Jaramillo--Panosso
+Macedo--Al~Sheikh \cite{Jaramillo2021}, imported as
+Proposition~\ref{prop:imported} and not re-derived. The honest
+formulation of ``changing the clock'' (the Painlev\'e--Gullstrand time
+function is generated by the \emph{same} Killing field) is discussed
+in Section~\ref{subsec:whichclock}: what changes is the
+parameterization of the transported process, respectively the
+(Hilbert space, slicing) pair, and it is the diffusion version that is
+theorem-grade today.
+
+\paragraph{S2 (membrane paradigm $=$ minimal process,
+Section~\ref{sec:membrane}).} In horizon-adapted time the exterior
+problem has a canonical choice-free description: the minimal
+sub-stochastic semigroup. We identify this object with the membrane
+paradigm: dissipative, positivity-preserving, contractive, with the
+membrane's absorption law as the mass-flux identity, and
+regulator-independent in a precise sense---it is the monotone limit of
+absorbing-wall (stochastic Dirichlet) regularizations, and in the exit
+regime (strictly, $\kappa pD<v_{0}$) \emph{every local} wall condition
+(Dirichlet, Neumann, elastic, sticky)
+converges to it as the wall is removed
+(Proposition~\ref{prop:wall}); non-local re-injection (jump) walls,
+which return lost mass to the interior, are the exception. Unitary or conservative completions
+---'t~Hooft's brick wall, the Balachandran--de~Queiroz--Saa $U(1)$
+extension family, the antipodal S-matrix, and (in the Rindler warm-up)
+the global Minkowski dynamics itself---are conservative dilations
+carrying boundary data at a stretched horizon; on exterior scattering
+and thermality they agree with each other---rigorously for the $U(1)$
+extension family (the equivalence lemma of \cite{Balachandran2018}),
+conjecturally in the multichannel/antipodal case---and
+with the minimal object itself only in the scalar diffusion analogue
+(Proposition~\ref{prop:wall}(ii), one domination step at sketch
+strength; the re-injection walls excepted)---and
+disagree on entropy counting, which
+is exactly the brick wall's cutoff dependence read as extension
+dependence. No entropy theorem is
+claimed; the entropy statements are dictionary readings of cited
+results.
+
+\paragraph{S3 (information-paradox dictionary entry,
+Section~\ref{sec:info}).} A carefully fenced discussion, structural
+rather than resolving: ``does the horizon need extra data?'' is
+clock-indexed. In Killing time, no---exterior unitarity is the unique
+conservative dynamics and involves no choice. In infalling time,
+data are generically optional: refusing them yields the minimal
+sub-stochastic description (information loss \emph{for the exterior algebra});
+insisting on exterior conservativity forces a choice of dilation data
+at the horizon, and inequivalent choices exist. Firewall-type
+arguments \cite{AMPS2013}, \emph{insofar as} they presuppose a single
+clock-independent classification of what the horizon carries,
+presuppose something that---by S1, at the level of a test field's
+boundary type---does not exist; whether they in fact require it is a
+quantum-gravity question this dictionary leaves open.
+
+\subsection{What is not claimed, and whose results are load-bearing}
+\label{subsec:notclaimed}
+
+Three neighboring results are used and must not be confused with the
+contribution of this paper.
+
+First, \emph{conservative dynamics $=$ choice of positive self-adjoint
+extension} in static spacetimes is Wald's 1980 prescription
+\cite{Wald1980} together with the Ishibashi--Wald classification
+theorems \cite{IshibashiWald2003,IshibashiWald2004}: any conservative,
+locally determined, energy-conserving dynamics in a static region
+corresponds to some positive self-adjoint extension of the spatial
+operator. They applied this to naked singularities and to the AdS
+timelike boundary; the horizon instance in Killing time is the trivial
+case (the extension is unique). Our quantum column stands entirely on
+their template.
+
+Second, \emph{dissipative horizon $\Rightarrow$ non-self-adjoint
+generator} is the hyperboloidal/pseudospectrum program
+\cite{Warnick2015,GajicWarnick2020,Jaramillo2021}: quasinormal modes as genuine
+eigenvalues of a non-self-adjoint generator on horizon-crossing
+slicings, with non-normality tied to losses through the boundary. We
+import this as the quantum half of the adapted-clock column.
+
+Third, \emph{the near-horizon $U(1)$ extension family and the brick
+wall} belong to Gupta--Sen \cite{GuptaSen2002}, Camblong--Ord\'o\~nez
+\cite{CamblongOrdonez2005,CamblongOrdonez2007}, and
+Balachandran--de~Queiroz--Saa \cite{Balachandran2018}, the last
+explicitly framing the extension family as a generalization of the
+brick wall and proving the scattering/thermality equivalence of
+extensions.
+
+What this paper adds is the column none of these literatures has: the
+\emph{probabilistic} one---the Feller boundary classification of the
+horizon, which appears to be genuinely absent from the literature---
+together with the single time-of-flight integral as the cross-column
+decider and the clock-dependence theorem that the three columns jointly
+enforce. The scope guard, stated once and observed throughout: a test
+scalar field and its radial diffusion analogue on fixed Schwarzschild
+(plus Rindler); no evaporation, no backreaction, no holography.
+
+%=====================================================================
+\section{The explosion dictionary on a half-line, recalled}
+\label{sec:dictionary}
+
+We recall from \cite{indivisible} the minimum needed here; proofs and
+the full dictionary are in that paper and the classical references
+\cite{Feller1952,ItoMcKean,KarlinTaylor,ReedSimon2}.
+
+\paragraph{Weyl alternative.} For a Sturm--Liouville operator
+$A=-\dd^{2}/\dd x^{2}+V$ on an interval, each endpoint is either
+\emph{limit point} (LP)---no boundary condition possible or needed---or
+\emph{limit circle} (LC)---a one-parameter $U(1)$ family of boundary
+conditions, each yielding a distinct self-adjoint extension and hence
+a distinct conservative quantum dynamics. If both endpoints are LP,
+$A$ is essentially self-adjoint on $C_{c}^{\infty}$: the conservative
+dynamics is unique. A sufficient LP criterion used repeatedly below:
+at an endpoint at infinite coordinate distance, $V$ bounded below
+suffices \cite[Thm.~X.8 and Appendix to X.1]{ReedSimon2}.
+
+\paragraph{Feller classification.} For a one-dimensional diffusion
+with scale function $s$ and speed measure $m$ on $(l,r)$, fix an
+interior reference point $x_{0}$ and define, for the left endpoint
+$l$,
+\begin{equation}
+\Sigma(l)=\int_{l}^{x_{0}}\bigl[\mathcal{M}(x_{0})-\mathcal{M}(\xi)\bigr]\,\dd s(\xi),
+\qquad
+N(l)=\int_{l}^{x_{0}}\bigl[s(x_{0})-s(\eta)\bigr]\,\dd \mathcal{M}(\eta),
+\label{eq:sigmaN}
+\end{equation}
+with $\mathcal{M}$ any primitive of $m$. Then $l$ is \emph{regular} if
+$\Sigma<\infty$ and $N<\infty$ (attainable and enterable: boundary
+conditions from Feller's lateral-condition menu---absorbing,
+reflecting, elastic, sticky---parameterize the possible dynamics);
+\emph{exit} if $\Sigma<\infty$, $N=\infty$ (attainable, not
+enterable: the process can be lost through $l$ but no lateral
+condition on the open interval restores conservativity);
+\emph{entrance} if $\Sigma=\infty$, $N<\infty$ (enterable, not
+attainable); \emph{natural} if both diverge (the boundary is
+dynamically infinitely far: unattainable, unenterable, no data
+possible) \cite{Feller1952,ItoMcKean,KarlinTaylor}.
+
+\paragraph{Minimal semigroup.} On the open interval, killing the
+process at the endpoints defines the \emph{minimal} semigroup
+$P^{\min}_{t}$: positivity-preserving, contractive, sub-stochastic. It
+is the smallest positive semigroup compatible with the local
+generator, is independent of any regulator, and every conservative
+dynamics dominates it. When an endpoint is exit,
+$1-P^{\min}_{t}\mathbf{1}(x)=\mathbb{P}_{x}[\text{lost through the
+endpoint by }t]>0$: the deficit is a boundary flux, and
+conservativity can be restored only by enlarging the state space
+(adjoining the endpoint as an absorbing cemetery, or re-injecting).
+In \cite{indivisible} this object is the regulator-free description of
+an exploding quantum/stochastic system, and self-adjoint extensions
+are its conservative completions.
+
+\paragraph{Time-of-flight decider.} For the half-line problems of
+\cite{indivisible}, the single integral $T=\int^{x}\dd x'/v(x')$
+(classical time-of-flight to the endpoint at local speed $v$) decides
+all columns at once: $T=\infty$ gives LP/natural (no data), $T<\infty$
+gives LC/accessible (data or loss). (The equivalence holds for the
+potential classes of \cite{indivisible}; a \emph{repulsive}
+inverse-square tail $+c/x^{2}$ with $0<c<\tfrac34$ is the textbook
+exception---the classical barrier makes the endpoint unattainable,
+$T=\infty$, yet it is limit circle---so $T=\infty\Rightarrow$ LP is not
+universal. The near-horizon operator of
+Section~\ref{subsec:rindlercqm} is the opposite, decider-consistent
+case: \emph{attractive} coupling, finite $T$, limit circle.) The new
+feature at horizons is
+that $v$---hence $T$, hence everything---depends on the clock.
+
+%=====================================================================
+\section{Warm-up: the Rindler wedge}
+\label{sec:rindler}
+
+\subsection{Geometry and clocks}
+
+The right Rindler wedge of Minkowski space, $X>|T|$, carries
+coordinates $(\eta,\rho)$ with $T=\rho\sinh\eta$, $X=\rho\cosh\eta$
+and metric
+\begin{equation}
+\dd s^{2}=-\rho^{2}\,\dd\eta^{2}+\dd\rho^{2}+\dd y_{\perp}^{2}.
+\end{equation}
+The boost field $\partial_{\eta}$ is the wedge's Killing time; the
+horizon is $\rho=0$; the lapse is $\rho$ (unit surface gravity in
+these conventions). Two clocks present themselves: boost time $\eta$
+(the wedge-static observer's clock, rescaled) and inertial Minkowski
+time $T$ (the clock of an observer who falls through the horizon).
+
+The classical time-of-flight already splits. A radial null ray has
+$\dd\rho/\dd\eta=\pm\rho$, so the boost-time flight to the horizon
+from $\rho_{0}$ is $\int_{0}^{\rho_{0}}\dd\rho/\rho=\infty$
+(logarithmic divergence---the tortoise coordinate $x=\ln\rho$ is this
+divergence made into a coordinate). The same ray reaches $\rho=0$ at
+finite inertial time $T$. Along the ingoing ray $\rho=\rho_{0}\ee^{-\eta}$,
+so the inertial clock rate relative to boost time is
+$\dd T/\dd\eta=\rho\,\ee^{-\eta}=\rho^{2}/\rho_{0}\sim\rho^{2}$:
+quadratic in the boost lapse $\rho$ (equivalently linear in $f=\rho^{2}$,
+matching the $p=1$ of the infalling clock).
+
+\subsection{The Killing pair and its operator}
+
+A massive scalar with transverse momentum $k_{\perp}$, in boost time
+$\eta$, separates as $\phi=\ee^{-\ii\omega\eta}\psi(\rho)$ with
+\begin{equation}
+A_{R}\,\psi=-\rho\,\partial_{\rho}(\rho\,\partial_{\rho}\psi)
++\mu^{2}\rho^{2}\psi=\omega^{2}\psi,
+\qquad \mu^{2}=m_{\phi}^{2}+k_{\perp}^{2},
+\end{equation}
+where $A_{R}$ is symmetric on the \emph{weighted} space
+$L^{2}\bigl((0,\infty),\rho^{-1}\dd\rho\bigr)$---the weight is the
+inverse lapse, inherited from the boost-energy norm, and tracking it
+is not pedantry: it is what decides the Weyl classification below. In
+the tortoise coordinate $x=\ln\rho\in\mathbb{R}$ the weight
+flattens, $\rho^{-1}\dd\rho=\dd x$, and
+\begin{equation}
+A_{R}\;\cong\;-\frac{\dd^{2}}{\dd x^{2}}+\mu^{2}\ee^{2x}
+\quad\text{on } L^{2}(\mathbb{R},\dd x).
+\label{eq:rindlerop}
+\end{equation}
+The potential vanishes exponentially toward the horizon
+($x\to-\infty$) and grows at $x\to+\infty$; both endpoints are at
+infinite distance with $V$ bounded below, hence both are limit point,
+and $A_{R}$ is essentially self-adjoint on
+$C_{c}^{\infty}(\mathbb{R})$ \cite[Thm.~X.8]{ReedSimon2}. In the
+boost pair (boost clock, inverse-lapse weight) the horizon admits no
+boundary data: the Rindler instance of the tortoise folklore.
+
+\subsection{The adapted pair and the inverse-square foreshadowing}
+\label{subsec:rindlercqm}
+
+Transcribe the same fixed-frequency equation to the proper-distance
+variable $\rho$ with \emph{flat} measure $\dd\rho$---the pairing
+adapted to the infalling clock. Near the horizon
+(drop $\mu^{2}\rho^{2}$), $\psi=\rho^{\pm\ii\omega}$, i.e.
+$\chi=\rho^{1/2}\psi\sim\rho^{1/2\pm\ii\omega}$ solves
+\begin{equation}
+-\chi''-\frac{\omega^{2}+\tfrac14}{\rho^{2}}\,\chi=0 ,
+\end{equation}
+as the indicial equation $s(s-1)=-(\omega^{2}+\frac14)$,
+$s=\frac12\pm\ii\omega$, confirms. This is the inverse-square problem
+at super-critical (oscillatory) coupling for $\omega\neq0$ ($\omega=0$
+is the marginal critical case, coupling $\tfrac14$): a finite endpoint,
+limit-circle behavior, ``fall to the center,'' and a $U(1)$ of
+boundary data---precisely the near-horizon conformal quantum mechanics
+of \cite{GuptaSen2002,CamblongOrdonez2005,CamblongOrdonez2007}. Same
+mode equation, different (weight, clock) pair, opposite Weyl verdict.
+Section~\ref{subsec:arbitration} arbitrates.
+
+\subsection{The stochastic columns and the global dilation}
+
+Anticipating the Schwarzschild theorem, note what the wedge makes
+obvious. A diffusing particle in the wedge, watched in boost time,
+never reaches $\rho=0$ (Theorem~\ref{thm:clock}(a)): the horizon is a
+natural boundary, and the boost-time
+exterior dynamics is conservative on its own. Watched in inertial
+time, the same particle crosses in finite time; the exterior
+restriction loses mass through $\rho=0$ (exit boundary in the generic
+regime $\kappa pD\le v_0$, Theorem~\ref{thm:clock}(b,c)). And here the conservative dilation of
+the lossy exterior semigroup is not hypothetical: it is literally the
+global Minkowski dynamics, with the ``boundary data'' being the state
+on the complementary wedge. The membrane-paradigm fork of
+Section~\ref{sec:membrane}---minimal lossy description versus
+completion by hidden degrees of freedom---is, in Rindler, the choice
+between the wedge-restricted process and the global one. What is a
+modeling fork at a black-hole horizon is, in flat space, resolved by
+the known global spacetime; the black-hole case differs in that no
+completion is canonically selected.
+
+%=====================================================================
+\section{Schwarzschild: radial reduction, weights, and clocks}
+\label{sec:schw}
+
+\subsection{Reduction with the weight kept honest}
+
+On the exterior Schwarzschild geometry ($G=c=1$)
+\begin{equation}
+\dd s^{2}=-f(r)\,\dd t^{2}+f(r)^{-1}\dd r^{2}+r^{2}\dd\Omega^{2},
+\qquad f(r)=1-\frac{2M}{r},
+\end{equation}
+with horizon $\rh=2M$ and surface gravity
+$\kappa=f'(\rh)/2=1/4M$, the Klein--Gordon equation
+$(\Box-m_{\phi}^{2})\phi=0$ separates as
+$\phi=\ee^{-\ii\omega t}\,Y_{\ell m}(\theta,\varphi)\,u(r)/r$ with
+\begin{equation}
+f\,\frac{\dd}{\dd r}\Bigl(f\,\frac{\dd u}{\dd r}\Bigr)
++\bigl[\omega^{2}-V_{\ell}(r)\bigr]u=0,
+\qquad
+V_{\ell}(r)=f(r)\Bigl(\frac{\ell(\ell+1)}{r^{2}}
++\frac{2M}{r^{3}}+m_{\phi}^{2}\Bigr),
+\label{eq:radial}
+\end{equation}
+the spin-zero Regge--Wheeler potential \cite{ReggeWheeler1957}. The
+mode dynamics in Killing time is $\partial_{t}^{2}u=-A_{\ell}u$ with
+\begin{equation}
+A_{\ell}=-f\,\frac{\dd}{\dd r}\Bigl(f\,\frac{\dd}{\dd r}\Bigr)
++V_{\ell}
+\qquad\text{on}\qquad
+\mathcal{H}=L^{2}\bigl((\rh,\infty),\,f(r)^{-1}\dd r\bigr).
+\label{eq:Aell}
+\end{equation}
+The weight $f^{-1}\dd r$ is forced by symmetry of $A_{\ell}$ (equivalently
+by the conserved Killing energy): integrating by parts,
+$\langle u,A_{\ell}v\rangle_{\mathcal H}
+=\int f\,\bar u' v'\,\dd r+\int V_{\ell}\,\bar u v\,f^{-1}\dd r$
+on compactly supported functions. We flag now, and use in
+Section~\ref{subsec:arbitration}, that this weight is exactly what
+moves the horizon endpoint between Weyl classes: it places the horizon
+at infinite $L^{2}$ distance, while the flat weight of the
+proper-distance variable places it at finite distance.
+
+The tortoise coordinate $\rstar=r+2M\ln\bigl((r-2M)/2M\bigr)$,
+$\dd\rstar=\dd r/f$, flattens the weight,
+$\mathcal H\cong L^{2}(\mathbb{R},\dd\rstar)$, and
+\begin{equation}
+A_{\ell}\;\cong\;-\frac{\dd^{2}}{\dd\rstar^{2}}+V_{\ell}(r(\rstar)),
+\qquad
+V_{\ell}\sim C_{\ell}\,\ee^{2\kappa\rstar}\ (\rstar\to-\infty),
+\qquad
+V_{\ell}\to m_{\phi}^{2}\ (\rstar\to+\infty).
+\label{eq:tortoiseop}
+\end{equation}
+Near the horizon $f\simeq 2\kappa(r-\rh)\simeq
+\mathrm{const}\times\ee^{2\kappa\rstar}$: the lapse degenerates
+exponentially in the tortoise coordinate, at rate $2\kappa$.
+
+\subsection{Clocks and their time-of-flight integrals}
+\label{subsec:clocks}
+
+An ingoing radial null ray has $\dd r/\dd t=-f$: the Killing-time
+flight from $r_{0}$ to the horizon is
+\begin{equation}
+T_{\mathrm{Killing}}
+=\int_{\rh}^{r_{0}}\frac{\dd r}{f(r)}
+\;\sim\;\frac{1}{2\kappa}\,\ln\frac{1}{r-\rh}\;\longrightarrow\;\infty .
+\label{eq:tofkilling}
+\end{equation}
+The Painlev\'e--Gullstrand (PG) time function $T=t+h(r)$,
+$h'(r)=\sqrt{2M/r}\,/f$, has unit lapse, regular horizon-crossing
+slices, and coincides with the proper time of observers falling from
+rest at infinity \cite{MartelPoisson2001}; for such an observer
+$\dd r/\dd T=-\sqrt{2M/r}$ and
+\begin{equation}
+T_{\mathrm{PG}}
+=\int_{\rh}^{r_{0}}\frac{\dd r}{\sqrt{2M/r}}
+=\frac{2}{3\sqrt{2M}}\bigl(r_{0}^{3/2}-\rh^{3/2}\bigr)<\infty .
+\label{eq:tofpg}
+\end{equation}
+Along the \emph{ingoing null ray}, the PG clock rate relative to
+Killing time is
+\begin{equation}
+\frac{\dd T}{\dd t}
+=1+h'(r)\frac{\dd r}{\dd t}
+=1-\sqrt{\frac{2M}{r}}
+\;\simeq\;\frac{f}{2}\qquad(r\to\rh):
+\label{eq:pgrate}
+\end{equation}
+a rate degenerating like the \emph{first} power of the lapse
+function. The static observer's proper clock has rate $\sqrt f$
+(half-power); hyperboloidal time functions
+\cite{Warnick2015,Jaramillo2021} are constructed precisely so that
+their rate along ingoing rays degenerates like $f$ and the flight is
+finite. Along the \emph{outgoing} ray, by contrast,
+$\dd T/\dd t=1+\sqrt{2M/r}\to 2$: outgoing rays take infinite PG time
+to climb away from the horizon. The horizon splits the time-of-flight
+integral into an ingoing one (finite in adapted clocks) and an
+outgoing one (infinite in a genuine graph horizon-crossing clock, whose
+outgoing rate stays non-degenerate; the isotropic idealization of
+Definition~\ref{def:clock} instead charges the outgoing leg at the same
+(degenerate) rate as the ingoing one, for a finite accumulated flight,
+which is exactly the source of its regular regime): this asymmetry is the trapping,
+and its noise-weighted counterpart is Feller's $\Sigma$/$N$ asymmetry
+in the exit regime---the signature of an exit boundary ($N$ itself
+becomes finite once the noise can climb the lapse, the regular case).
+
+Interior continuation is not used in this paper except as the Rindler
+section's ``global dilation'' has an analogue: the PG slices continue
+smoothly to $r<\rh$, and any dynamics continued across is one
+particular conservative completion of the exterior problem. The
+singularity then poses its own boundary problem
+\cite{HorowitzMarolf1995,HorowitzMaldacena}, which we do not touch.
+
+%=====================================================================
+\section{The clock-dependence theorem}
+\label{sec:clock}
+
+\subsection{The stochastic model}
+
+We now prove the flagship in the column where it is theorem-grade.
+The model is the \emph{radial transport diffusion}: the diffusion
+limit of a radially propagating exterior excitation subject to
+microscopic scattering.
+
+\begin{definition}[exterior transport diffusion]
+\label{def:model}
+Fix $D>0$ (noise strength) and $v_{0}\ge 0$ (ingoing transport
+speed). In Killing time $t$ and the tortoise coordinate
+$x=\rstar\in\mathbb{R}$, let
+\begin{equation}
+\dd X_{t}=-v_{0}\,\dd t+\sqrt{D}\,\dd W_{t}.
+\label{eq:sde}
+\end{equation}
+The value $v_{0}=1$ is the transport value (radial characteristics
+move at unit tortoise speed, equation~\eqref{eq:tofkilling}); results
+are stated for general $v_{0}>0$, with the driftless case $v_{0}=0$
+treated in Remark~\ref{rem:whitehole}.
+\end{definition}
+
+\begin{definition}[adapted clock]
+\label{def:clock}
+An \emph{adapted clock of lapse power $p>0$} is a time change
+$\tau(t)=\int_{0}^{t}\theta(X_{s})\,\dd s$ with rate
+$\theta:\mathbb{R}\to(0,\infty)$ continuous, bounded above, bounded
+away from zero on $[x_{1},\infty)$ for some $x_{1}$, and
+\begin{equation}
+\theta(x)=c\,\ee^{2\kappa p x}\bigl(1+o(1)\bigr),
+\qquad x\to-\infty,\quad c>0 .
+\end{equation}
+By \eqref{eq:pgrate} and the discussion following it: PG and
+hyperboloidal clocks have $p=1$; the static proper clock has
+$p=\tfrac12$ (a formal, interpolating time change---no static observer
+reaches the horizon, unlike the infalling PG family at $p=1$); the
+Killing clock itself is $\theta\equiv1$ (``$p=0$'').
+This scalar time change is \emph{isotropic}---$\theta$ depends on
+position alone, so ingoing and outgoing legs are charged at the same
+rate---and it reproduces the ingoing-null time-of-flight exactly;
+the genuine PG/hyperboloidal clock $T=t+h(r)$ is instead a graph
+functional whose rate differs on ingoing and outgoing legs
+(equation~\eqref{eq:pgrate}), an anisotropy whose effect on the
+classification is taken up in Remark~\ref{rem:shift}(iii).
+The time-changed process is
+$Y_{\sigma}=X_{\tau^{-1}(\sigma)}$, a regular diffusion with
+generator $\theta^{-1}\bigl(\tfrac{D}{2}\partial_{x}^{2}
+-v_{0}\partial_{x}\bigr)$, unchanged scale function, and speed measure
+multiplied by $\theta$.
+\end{definition}
+
+\begin{theorem}[clock dependence of the horizon boundary type]
+\label{thm:clock}
+Let $X$ be as in Definition~\ref{def:model} with $v_{0}>0$, and let
+$Y$ be its time change under an adapted clock of lapse power $p>0$.
+Then, for the horizon endpoint $x\to-\infty$:
+\begin{itemize}
+\item[(a)] \textup{(Killing clock)} The horizon is a \emph{natural}
+boundary for $X$. In particular $X_{t}\to-\infty$ almost surely as
+$t\to\infty$ but $X$ never attains the horizon in finite time, the
+minimal semigroup is conservative, and no lateral (boundary)
+condition at the horizon is available: the Killing-time exterior
+dynamics is unique and conservative.
+\item[(b)] \textup{(adapted clock: attainability)} The total clock
+time $\tau_{\infty}=\int_{0}^{\infty}\theta(X_{s})\,\dd s$ is finite
+almost surely; $Y$ attains the horizon at the finite time
+$\tau_{\infty}$. Feller's attainability integral is \emph{exactly}
+the ingoing time-of-flight of the clock: with
+$\Sigma$ as in \eqref{eq:sigmaN},
+\begin{equation}
+\Sigma(-\infty)
+=\frac{1}{v_{0}}\int_{-\infty}^{x_{0}}\theta(z)\,\dd z
+=T^{\mathrm{in}}_{\tau}(x_{0}),
+\label{eq:sigma-tof}
+\end{equation}
+the clock time accumulated along the ingoing characteristic
+$x(t)=x_{0}-v_{0}t$. For the Killing clock ($\theta\equiv1$) this
+integral diverges, consistently with (a).
+\item[(c)] \textup{(adapted clock: type)} The horizon is an
+\emph{exit} boundary for $Y$ if $\kappa p D\le v_{0}$ and a
+\emph{regular} boundary if $\kappa pD>v_{0}$. In the exit case the
+minimal semigroup of $Y$ is strictly sub-stochastic, no lateral
+condition on the open exterior restores conservativity, and every
+conservative completion enlarges the state space by horizon degrees
+of freedom. In the regular case Feller's full menu of boundary
+conditions (Dirichlet/absorbing, Neumann/reflecting, elastic, sticky)
+opens at the horizon itself. The critical case $\kappa pD=v_{0}$ is
+exit by the classification above, and
+Proposition~\ref{prop:wall}(i) (Dirichlet monotonicity) still applies
+there; but it sits outside the hypotheses of the universality and
+distinctness items, Proposition~\ref{prop:wall}(ii)--(iii), which
+assume strict inequality on either side. What general wall data do
+\emph{at} equality we leave open.
+\end{itemize}
+\end{theorem}
+
+\begin{proof}
+The scale and speed of $X$ are
+$s'(x)=\ee^{2v_{0}x/D}$, so $s(x)=(D/2v_{0})\,\ee^{2v_{0}x/D}$ with
+$s(-\infty)=0$, and $m'(x)=(2/D)\,\ee^{-2v_{0}x/D}$. Time change
+leaves $s$ fixed and multiplies the speed density by $\theta$:
+$m_{Y}'(x)=(2/D)\,\theta(x)\,\ee^{-2v_{0}x/D}$
+\cite{ItoMcKean,KarlinTaylor}.
+
+(a) Take $\theta\equiv1$. In \eqref{eq:sigmaN},
+$\mathcal{M}(x_{0})-\mathcal{M}(\xi)=\int_{\xi}^{x_{0}}(2/D)\ee^{-2v_{0}z/D}\dd z
+\sim(1/v_{0})\ee^{-2v_{0}\xi/D}$ as $\xi\to-\infty$, while
+$\dd s(\xi)=\ee^{2v_{0}\xi/D}\dd\xi$; the integrand of $\Sigma$ tends
+to the constant $1/v_{0}$ and $\Sigma=\infty$. Likewise
+$s(x_{0})-s(\eta)\to s(x_{0})>0$ while
+$\dd \mathcal{M}(\eta)=(2/D)\ee^{-2v_{0}\eta/D}\dd\eta$ diverges, so
+$N=\infty$. Both integrals infinite: natural. That $X_{t}\to-\infty$
+a.s.\ is the strong law for \eqref{eq:sde}; unattainability in finite
+time and conservativity of the minimal semigroup are the standard
+consequences of the natural classification, and Feller's
+lateral-condition theory attaches conditions only at accessible
+boundaries \cite{Feller1952,ItoMcKean}.
+
+(b) By the strong law there is an a.s.-finite $T(\omega)$ with
+$X_{s}\le -v_{0}s/2$ for $s\ge T$; hence
+$\theta(X_{s})\le C\ee^{-\kappa p v_{0}s}$ eventually and
+$\tau_{\infty}<\infty$ a.s. Since $X_{t}\to-\infty$ while
+$\tau(t)\uparrow\tau_{\infty}$, the time-changed path
+$Y_{\sigma}$ converges to the horizon as
+$\sigma\uparrow\tau_{\infty}$: the boundary is attained at the finite
+time $\tau_{\infty}$, almost surely. The identity
+\eqref{eq:sigma-tof} is Tonelli (nonnegative integrand):
+\begin{equation*}
+\Sigma(-\infty)
+=\int_{-\infty}^{x_{0}}\!\!\dd \mathcal{M}_{Y}(z)\int_{-\infty}^{z}\!\dd s(\xi)
+=\int_{-\infty}^{x_{0}}\frac{2\theta(z)}{D}\,\ee^{-2v_{0}z/D}\cdot
+\frac{D}{2v_{0}}\,\ee^{2v_{0}z/D}\,\dd z
+=\frac{1}{v_{0}}\int_{-\infty}^{x_{0}}\theta(z)\,\dd z ,
+\end{equation*}
+finite for every adapted clock (exponentially decaying $\theta$), and
+equal to the clock time along the ingoing characteristic, for which
+$\dd\tau=\theta\,\dd t=\theta\,|\dd x|/v_{0}$.
+
+(c) The entrance integral is
+\begin{equation}
+N(-\infty)
+=\frac{1}{v_{0}}\int_{-\infty}^{x_{0}}
+\theta(\eta)\,\Bigl(\ee^{2v_{0}(x_{0}-\eta)/D}-1\Bigr)\,\dd\eta ,
+\label{eq:Nintegral}
+\end{equation}
+whose integrand behaves as
+$\mathrm{const}\times\ee^{2(\kappa p-v_{0}/D)\eta}$ for
+$\eta\to-\infty$: divergent iff $\kappa p\le v_{0}/D$. With
+$\Sigma<\infty$ always, the classification
+\eqref{eq:sigmaN} gives exit iff $\kappa pD\le v_{0}$ and regular iff
+$\kappa pD>v_{0}$. In the exit case, strict sub-stochasticity is (b):
+$P^{\min}_{\sigma}\mathbf{1}(x)
+=\mathbb{P}_{x}[\tau_{\infty}>\sigma]<1$ for $\sigma>0$; the
+statements on lateral conditions and on conservative completions
+(absorption at an adjoined cemetery state, or re-injection
+mechanisms, all involving the boundary point as a new state) are
+Feller's exit-boundary theory \cite{Feller1952,ItoMcKean}.
+\end{proof}
+
+\begin{corollary}[mass--flux identity: the membrane's absorption law]
+\label{cor:flux}
+In the exit regime, the minimal semigroup's deficit is the horizon
+flux:
+\begin{equation}
+1-P^{\min}_{\sigma}\mathbf{1}(x)
+=\mathbb{P}_{x}\bigl[\tau_{\infty}\le\sigma\bigr],
+\qquad
+-\frac{\dd}{\dd\sigma}P^{\min}_{\sigma}\mathbf{1}(x)
+=\Phi_{\mathrm{h}}(\sigma;x),
+\end{equation}
+where $\Phi_{\mathrm{h}}(\sigma;x)$ is the probability flux through
+the horizon at clock time $\sigma$. Nothing is ``lost'': the deficit
+is accounted, to the exterior observer, as absorption by the
+boundary---the defining bookkeeping of the membrane paradigm
+(Section~\ref{sec:membrane}).
+\end{corollary}
+
+\begin{remark}[the two regimes and the stretched-horizon skin depth]
+\label{rem:tworegime}
+The exit condition $\kappa pD\le v_{0}$ says: the noise's upstream
+penetration depth $D/v_{0}$ (the distance over which diffusion can
+fight the ingoing transport) does not exceed the lapse e-folding
+length $1/\kappa p$ of the clock rate.\footnote{Both lengths are quoted
+without the factor of $2$ carried by the exponents of the scale density
+and clock rate ($s'\propto\ee^{2v_{0}x/D}$, $\theta\propto\ee^{2\kappa px}$); the
+natural $e$-folding lengths are $D/2v_{0}$ and $1/2\kappa p$. The factor
+cancels in the ratio, so the exit inequality $\kappa pD\le v_{0}$ is
+unaffected.} For a macroscopic horizon,
+$1/\kappa=4M$ is macroscopic while $D/v_{0}$ is set by microphysics:
+deep exit regime; the horizon is a one-way membrane and no boundary
+data exist even in the adapted clock. The opposite regime
+$\kappa pD>v_{0}$---noise that can climb an e-folding of the
+lapse---renders the horizon \emph{regular}: attainable \emph{and}
+enterable, with a full family of boundary conditions (this regular
+regime is a feature of the isotropic clock idealization and does not
+survive a genuine graph clock; see Remark~\ref{rem:shift}(iii)). This is the
+stochastic twin of the near-horizon limit-circle regime of conformal
+quantum mechanics
+\cite{GuptaSen2002,CamblongOrdonez2005,Balachandran2018}
+(cf.\ Sections~\ref{subsec:rindlercqm} and \ref{subsec:arbitration}),
+and it is exactly the regime in which brick-wall data survive wall
+removal (Proposition~\ref{prop:wall}). The classification is decided
+by \emph{two} time-of-flight integrals---ingoing
+($\Sigma$, equation~\eqref{eq:sigma-tof}) and outgoing
+($N$, equation~\eqref{eq:Nintegral}, the clock time of upstream
+excursions weighted \emph{inversely} by their gambler's-ruin rarity
+$\ee^{-2v_{0}\Delta x/D}$, i.e.\ by $\ee^{2v_{0}\Delta x/D}$)---which
+coincide in the symmetric half-line
+problems of \cite{indivisible} but split at a horizon. The split
+\emph{is} the trapping.
+\end{remark}
+
+\begin{remark}[driftless clock change: a white-hole boundary]
+\label{rem:whitehole}
+For $v_{0}=0$ (pure noise, no transport) the same computation gives
+$\Sigma=\infty$, $N<\infty$ under any adapted clock: an
+\emph{entrance} boundary---unattainable from outside but a legitimate
+starting point. This driftless case is marginal; a genuine white-hole
+horizon carries \emph{outward} drift ($v_{0}<0$, the mirrored model:
+Definition~\ref{def:model} fixes $v_{0}\ge0$), which likewise makes
+the boundary entrance. Exit and entrance are
+exchanged by time reversal, as they should be: the classification
+tracks the transport structure, not the geometry alone.
+\end{remark}
+
+\begin{remark}[robustness and the shift caveat]
+\label{rem:shift}
+Two honesty notes. (i)~The theorem is stated for the model of
+Definition~\ref{def:model}, but the classification depends only on
+the near-horizon asymptotics of scale and speed: any diffusion whose
+Killing-time coefficients in the tortoise coordinate are bounded,
+uniformly elliptic, and asymptotically constant near $\rstar=-\infty$
+yields the same conclusions with $v_{0},D$ read off from the limits.
+(ii)~A scalar time change is the exact transported dynamics only for
+clock functions constant on the transported slices; the PG slicing in
+addition tilts the slices (the same Killing field generates the
+evolution; the \emph{slicing} changes---see
+Section~\ref{subsec:whichclock}), which in the reduced dynamics
+contributes an additional bounded \emph{inward} drift near the
+horizon. Inspection of \eqref{eq:sigma-tof} and \eqref{eq:Nintegral}
+shows both integrals are monotone in the ingoing drift in the
+direction of attainability and exit: the neglected term can only
+reinforce the exit verdict. So the exit half is robust---macroscopic
+horizons sit deep in $\kappa pD\ll v_{0}$---whereas the \emph{regular}
+regime near the knife-edge $\kappa pD\approx v_{0}$ is the fragile
+side: the same neglected inward drift can push it across into exit, so
+the boundary-data-survive conclusion is the delicate one and is
+offered as such. We flag rather than formalize this,
+and correspondingly attribute to the theorem only the time-change
+statement. (iii)~The time change of Definition~\ref{def:clock} is
+isotropic, whereas the genuine graph clock $T=t+h(r)$ is not a scalar
+time change at all: along the diffusion $\dd T=\dd t+h'(r)\,\dd X$
+mixes drift and noise, and on \emph{outgoing} (upstream) legs its rate
+does not degenerate (outgoing rays take infinite adapted time to climb
+away from the horizon; see the discussion at \eqref{eq:pgrate}). The
+one robust consequence is that a genuine clock charges each closed
+upstream excursion its full, non-degenerate duration---the $h$-terms
+cancel over a round trip---so the analogue of the entrance integral
+\eqref{eq:Nintegral} diverges and no boundary data open at the horizon: the regular regime
+$\kappa pD>v_{0}$ is thus specific to the isotropic idealization and
+does not survive an honest graph clock, consistent with the paper's own
+observation that a genuine graph clock's outgoing time-of-flight does
+not degenerate.
+We do \emph{not} read a sharp attainability verdict off the honest
+functional---at the transport value $v_{0}=1$ it is not even monotone
+in $t$, and a faithful treatment is the slicing-level SDE with its tilt
+drift (ii), or the relativistic diffusion of \cite{FranchiLeJan2007},
+neither carried out here. What we retain is the negative statement:
+boundary-data survival (the regular regime) is a model artifact,
+consistent with its fragile status in
+Proposition~\ref{prop:wall}(iii).
+\end{remark}
+
+\begin{remark}[relation to relativistic diffusions]
+The genuinely relativistic diffusion on Schwarzschild
+(white-noise-in-proper-time acceleration) was constructed by
+Franchi and Le~Jan \cite{FranchiLeJan2007}, who prove capture by the
+black hole in finite proper time---the attainability half of our exit
+verdict, for a process with the causal structure built in. A Feller
+boundary classification of the horizon for their process, and the
+natural/exit flip as a parameterization statement, do not appear
+there or, to our knowledge, anywhere; Theorem~\ref{thm:clock} is the
+transport-diffusion version, and extending it to the Franchi--Le~Jan
+process is listed in Section~\ref{sec:outlook}.
+\end{remark}
+
+\subsection{The quantum column: proved and imported}
+\label{subsec:quantum}
+
+\begin{proposition}[Killing pair: essential self-adjointness]
+\label{prop:essa}
+For every $\ell$ and $m_{\phi}\ge0$, the operator $A_{\ell}$ of
+\eqref{eq:Aell} is essentially self-adjoint on
+$C_{c}^{\infty}(\rh,\infty)$; equivalently
+\eqref{eq:tortoiseop} is essentially self-adjoint on
+$C_{c}^{\infty}(\mathbb{R})$. The Killing-time mode dynamics is the
+unique conservative dynamics; the Wald--Ishibashi--Wald prescription
+\cite{Wald1980,IshibashiWald2003} is available and trivial (the
+positive self-adjoint extension is unique); no horizon boundary data
+exist. The same holds for the Rindler operator \eqref{eq:rindlerop}.
+\end{proposition}
+
+\begin{proof}
+The unitary $\mathcal H\to L^{2}(\mathbb{R},\dd\rstar)$ is the
+identification along $\dd\rstar=\dd r/f$. In
+\eqref{eq:tortoiseop} the potential is continuous and bounded below
+(by $0$) with both endpoints at infinite coordinate distance; the
+classical Weyl/Sears limit-point criteria apply at both ends
+\cite[Thm.~X.8 and Appendix to X.1]{ReedSimon2}.
+\end{proof}
+
+This is folklore---stated in passing throughout the quantum-singularity
+and quasinormal-mode literatures (e.g.\
+\cite{HorowitzMarolf1995})---and is included only because the proof is
+shorter than a citation trail. The point of dwelling on it is the
+pairing: limit point holds \emph{in the Killing pair} (Killing clock,
+inverse-lapse weight $f^{-1}\dd r$), where the horizon sits at
+infinite $L^{2}$ distance.
+
+\begin{proposition}[adapted pair: imported]
+\label{prop:imported}
+On horizon-crossing (hyperboloidal) slicings, the generator of the
+exterior mode evolution is non-self-adjoint on the natural energy
+Hilbert space; it generates a strongly continuous semigroup whose
+spectrum contains the quasinormal frequencies as genuine eigenvalues,
+and its non-normality is associated with energy loss through the
+horizon (and through null infinity). This is Warnick's theorem
+\cite{Warnick2015} (established for asymptotically anti-de~Sitter black
+holes; the asymptotically-flat generator-eigenvalue statement, with
+loss through null infinity, is Gajic--Warnick \cite{GajicWarnick2020},
+in a model problem)
+and the pseudospectrum analysis of
+\cite{Jaramillo2021}; we import it as the quantum statement of the
+adapted-clock column and re-derive none of it.
+\end{proposition}
+
+The division of labor between Propositions~\ref{prop:essa} and
+\ref{prop:imported} is deliberate and should be read as a caveat: for
+the \emph{diffusion}, the passage between clocks is an honest time
+change and Theorem~\ref{thm:clock} is a theorem; for the \emph{field},
+the passage between the static and hyperboloidal descriptions
+involves the energy norms of the hyperboloidal program, and the
+clock-dependence statement at QFT strength is exactly as strong as
+the cited results---no stronger. The dictionary claim of this paper
+is that the two columns exhibit the same structure, with the
+stochastic column proved and the quantum column cited.
+
+\subsection{Arbitrating limit point versus limit circle at the horizon}
+\label{subsec:arbitration}
+
+The tension advertised in the introduction can now be discharged. The
+tortoise-coordinate folklore (limit point, no data) and the
+near-horizon conformal-QM literature (limit circle, $U(1)$ of data)
+are talking about \emph{different pairs}:
+
+\begin{center}
+\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+ & Killing pair & adapted pair \\
+\midrule
+weight & $f^{-1}\dd r$ (inverse lapse) & flat ($\dd\rho$,
+proper-distance-like) \\
+horizon $L^{2}$ distance & infinite & finite \\
+fixed-$\omega$ operator & $-\partial_{\rstar}^{2}+V$, $V\to0$ &
+inverse-square, coupling $>\tfrac14$ ($\omega\neq0$) \\
+Weyl verdict & limit point & limit circle (oscillatory; flat-weight, see text) \\
+time-of-flight & infinite \eqref{eq:tofkilling} & finite
+\eqref{eq:tofpg} \\
+Feller verdict (Thm.~\ref{thm:clock}) & natural & exit
+(regular if $\kappa pD>v_{0}$) \\
+boundary data & none possible & $U(1)$ (Weyl, LC);
+none/menu (Feller: exit/regular) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent
+One asymmetry between the columns should be read off the table
+explicitly: the exit/regular refinement is a \emph{Feller-column}
+phenomenon, keyed to $\kappa pD$ versus $v_{0}$; the Weyl column has no
+such split---the adapted-pair operator is limit circle (oscillatory)
+for every $\omega\neq0$ irrespective of that ratio---so the
+``exit''/``regular'' annotations in the boundary-data row are the
+stochastic reading, not a quantum dichotomy---and the ``regular'' entry
+is itself a feature of the isotropic clock idealization that a genuine
+graph clock removes (Remark~\ref{rem:shift}(iii)). The two columns share the
+natural/Killing-pair verdict and the finite-versus-infinite
+time-of-flight that drives everything; they need not agree on the finer
+lateral structure, and the paper's ``same structure'' claim is at the
+level of that shared decider, not of the exit/regular subdivision.
+Each column is internally consistent, and the dictionary's decider
+predicts each verdict from that column's time-of-flight integral. The
+near-horizon truncation of
+\cite{GuptaSen2002,CamblongOrdonez2005} works in the
+adapted pair, where the horizon is at finite distance and data
+\emph{can} live---in the stochastic column, precisely in the regular
+regime of Remark~\ref{rem:tworegime}. One detail of
+\cite{Balachandran2018} deserves emphasis because it anticipates
+Section~\ref{sec:membrane}: their deficiency indices $(1,1)$ and
+$U(1)$ family arise on a truncated near-horizon region
+$(-\infty,x_{\max}]$, with the extension living at the \emph{outer
+edge} $x_{\max}$---a stretched-horizon wall---while the horizon end
+itself remains limit point. The boundary data of the near-horizon
+literature are wall data, not horizon data; the dictionary will say
+the same thing probabilistically.
+
+\subsection{States versus domains; which ``clock''}
+\label{subsec:whichclock}
+
+Two further honesty caveats, kept separate from the theorems.
+
+\emph{States versus domains.} The Boulware/Unruh/Hartle--Hawking
+choices, and the Kay--Wald uniqueness theorem for the Hartle--Hawking
+state on the bifurcate horizon \cite{KayWald1991}, concern boundary
+data at the level of \emph{states} (two-point functions, positive
+frequency splits). Everything in this paper lives at the level of
+\emph{generators and domains}---which dynamics, not which state. The
+two axes are independent: the Killing-pair dynamics is unique
+(Proposition~\ref{prop:essa}) while the state choice on it remains
+free; conversely the adapted-clock completions of
+Section~\ref{sec:membrane} are dynamics choices made before any state
+is selected. Conflating the axes is a standard referee objection to
+horizon-boundary claims, and nothing below trades on it.
+
+\emph{Which clock.} PG time is generated by the \emph{same} Killing
+field as Schwarzschild time: the exterior is stationary either way,
+and ``changing the clock'' is not a change of coordinates on a fixed
+problem but a change of the pair (space of data on slices,
+parameterization of evolution)---in the stochastic column, of the
+parameterization of the transported process, which is where
+Theorem~\ref{thm:clock} lives; in the quantum column, of the
+(Hilbert space, slicing) pair, which is where
+Proposition~\ref{prop:imported} lives. The invariant content of S1 is:
+the Feller/Weyl classification is a property of the pair, not of the
+geometry; the geometry supplies only the two time-of-flight integrals
+that decide each pair's verdict.
+
+%=====================================================================
+\section{The membrane paradigm as the minimal process}
+\label{sec:membrane}
+
+\subsection{The membrane paradigm, restated}
+
+The membrane paradigm
+\cite{Damour1978,ThornePriceMacdonald,ParikhWilczek1998} replaces the
+black-hole interior, for exterior purposes, by a fictitious
+dissipative fluid on a stretched horizon: a timelike surface just
+outside $\rh$ endowed with Ohmic resistivity, shear and (negative)
+bulk viscosity, and absorptivity, tuned so that exterior physics is
+reproduced. Parikh and Wilczek derived it from a variational
+principle: discarding the interior ruins the action's stationarity,
+and a surface term on the stretched horizon must be added to restore
+it---dissipation as the price of truncation. Susskind, Thorlacius,
+and Uglum \cite{STU1993} promoted the stretched horizon to the
+carrier of the complementarity degrees of freedom.
+
+In the dictionary, ``truncate the interior and pay a dissipative
+surface term'' has an exact translation: pass to the exterior
+restriction of the dynamics, i.e.\ to the \emph{minimal semigroup} of
+the exterior problem in a horizon-adapted clock. By
+Theorem~\ref{thm:clock}(b,c) this object is sub-stochastic,
+contractive, and its deficit is precisely the horizon flux
+(Corollary~\ref{cor:flux}): the membrane's absorption law. The
+identification to be defended in this section is:
+\begin{quote}
+\emph{membrane paradigm $=$ minimal sub-stochastic semigroup of the
+exterior problem in horizon-adapted time; unitary completions $=$
+conservative dilations, parameterized by data at a stretched-horizon
+wall; the minimal object, and only it, is regulator-independent.}
+\end{quote}
+
+\noindent This identification is theorem-grade for the radial diffusion
+$Y$---Proposition~\ref{prop:wall} and Corollary~\ref{cor:flux} establish
+it there---while for the field it is a dictionary reading carried by the
+same operator data, not a separate theorem.
+
+\subsection{Walls, completions, and the wall-removal limit}
+
+A stretched horizon at $r=\rh+\epsilon$ is, in the tortoise
+coordinate, a wall at $x=-R$ with
+$R\simeq(2\kappa)^{-1}\ln(1/\epsilon)\to\infty$: an ordinary interior
+point promoted to a boundary. For the truncated problem on
+$[-R,\infty)$ the wall is a \emph{regular} boundary, so Feller's full
+menu of lateral conditions is available there---absorbing
+(stochastic Dirichlet), reflecting (Neumann), elastic, sticky. A word
+on ``Dirichlet,'' which flips sense between the columns: 't~Hooft's
+brick wall \cite{tHooftBrickWall1985} imposes $\phi=0$ on the
+\emph{field}, a flux-free (hence conservative, unitarity-preserving)
+reflecting box, whose stochastic counterpart is the \emph{reflecting}
+(Neumann) condition; the stochastic \emph{Dirichlet} (absorbing)
+condition, by contrast, kills the process and builds the minimal
+semigroup (Proposition~\ref{prop:wall}(i)), and is not a conservative
+completion at all. In the quantum column, the $U(1)$
+extension family at the wall of \cite{Balachandran2018}, and, in
+multichannel form, S-matrix identifications of which 't~Hooft's
+antipodal map \cite{tHooftAntipodal2016} is the structural example
+(a channel-scrambling unitary at the boundary, in the completion menu
+of \cite{indivisible}). Each conservative wall condition defines a
+conservative dynamics: a dilation of the exterior evolution carrying
+boundary data. The Rindler wedge (Section~\ref{sec:rindler}) shows
+the construction is not exotic: there, one particular dilation is the
+global Minkowski dynamics, with the second wedge as the ``wall''
+degrees of freedom; on Schwarzschild, continuation through the
+horizon on PG slices plays the same role. Abstract dilation theory
+\cite{SzNagyFoias,Davies1980} guarantees a unitary dilation
+\emph{exists} (the minimal one is essentially unique); the
+\emph{multiplicity} of conservative completions---which boundary
+data---is not a dilation-theoretic freedom but the family of lateral
+(self-adjoint-extension) conditions at the regular wall. The physical
+question is which member the horizon selects.
+
+\begin{proposition}[the minimal object and wall removal]
+\label{prop:wall}
+Consider the adapted-clock process $Y$ of Theorem~\ref{thm:clock} with
+walls at $-R\to-\infty$; the boundary regime is stated per item (exit
+$\kappa pD\le v_{0}$ for (i)--(ii), strict where indicated; regular
+$\kappa pD>v_{0}$ for (iii)).
+\begin{itemize}
+\item[(i)] \textup{(Dirichlet monotonicity)} The Dirichlet-wall
+semigroups increase monotonically to the minimal semigroup as
+$R\to\infty$, independently of the regularization sequence:
+$P^{(R),\mathrm{Dir}}_{\sigma}\uparrow P^{\min}_{\sigma}$.
+\item[(ii)] \textup{(wall-removal universality for local conditions,
+exit regime, $\kappa pD<v_{0}$)} Every \emph{local} lateral condition
+converges to the same limit.
+Quantitatively, for the reflecting wall: the expected clock time for
+$Y$ started at the wall to return to a fixed exterior level $x_{0}$
+diverges as
+\begin{equation}
+\mathbb{E}_{-R}\bigl[T_{x_{0}}\bigr]
+=\int_{-R}^{x_{0}}\bigl[\mathcal{M}_{Y}(\xi)-\mathcal{M}_{Y}(-R)\bigr]\dd s(\xi)
+\;\asymp\;\ee^{\,2(v_{0}-\kappa pD)R/D}
+\;\longrightarrow\;\infty ,
+\end{equation}
+and for every fixed clock horizon $\sigma$ and compact exterior set,
+the probability that a wall-touching path re-enters by time $\sigma$
+is $O\!\bigl(\sigma\,\ee^{-2(v_{0}-\kappa pD)R/D}\bigr)$; since every
+\emph{local} lateral condition is dominated between the
+Dirichlet (absorbing) and reflecting (Neumann) extremes, all such
+wall dynamics converge to $P^{\min}$ on exterior
+observables as $R\to\infty$. The domination sandwich is what fails for
+non-local (Feller--Wentzell jump/re-injection) conditions: a wall that
+re-injects the lost mass at a fixed exterior point is not dominated by
+the reflecting extreme and keeps the dynamics conservative, so the
+universality is asserted for the local menu only. This is the
+probabilistic counterpart of the abstract's ``rigorously for the
+$U(1)$ family, conjecturally in the multichannel (antipodal) case''
+hedge: the channel-scrambling (antipodal) boundary conditions are the
+non-local ones the sandwich does not reach.
+\item[(iii)] \textup{(regular regime)} If $\kappa pD>v_{0}$, return
+times from the wall remain bounded as $R\to\infty$, distinct wall
+conditions retain distinct limits, and boundary data survive wall
+removal: the brick-wall family becomes a genuine horizon family. (This
+regular regime is the fragile side of the classification; see the
+tilt-drift caveat and Remark~\ref{rem:shift}(iii), where a genuine
+(anisotropic) graph clock removes this regime altogether. Its distinctness claim is at
+the same sketch strength as (ii).)
+\end{itemize}
+\end{proposition}
+
+\begin{proof}[Proof (with two steps at sketch strength)]
+(i) is the standard construction of the minimal semigroup as the
+monotone limit of killed semigroups on an exhausting sequence of
+subdomains \cite{ItoMcKean,Davies1980}. (ii): the displayed formula
+is the classical expected-hitting-time formula for a reflected
+diffusion \cite[Ch.~15]{KarlinTaylor}; with
+$m_{Y}'(\xi)\asymp\ee^{2(\kappa p-v_{0}/D)\xi}$ and
+$\dd s(\xi)=\ee^{2v_{0}\xi/D}\dd\xi$ the stated growth follows. For
+the re-entry probability, decompose the reflected path at the wall
+into excursions crossing $[-R,-R+1]$: each excursion reaches $x_{0}$
+before returning to the wall with probability
+$p_{R}=[s(-R+1)-s(-R)]/[s(x_{0})-s(-R)]\asymp\ee^{-2v_{0}R/D}$
+(gambler's ruin in scale), while the mean excursion duration is
+$\mu_{R}\asymp\ee^{-2\kappa pR}$ (speed density times scale increment
+near the wall), so
+the expected number of excursions by clock time $\sigma$ is
+$O(\sigma/\mu_{R})$ and
+$\mathbb{P}[\text{re-entry by }\sigma]
+=O(\sigma p_{R}/\mu_{R})
+=O\!\bigl(\sigma\ee^{-2(v_{0}-\kappa pD)R/D}\bigr)$; the constants,
+and the domination of intermediate lateral conditions between the
+absorbing and reflecting extremes, are standard but not spelled out
+here, and we grade this step a sketch. (iii): the same formulas with
+$\kappa pD>v_{0}$ give bounded return times and non-vanishing
+re-entry probabilities; distinctness of the limits follows from
+distinctness at any fixed wall together with the uniform
+non-degeneracy of the re-entry channel---graded a sketch at the same
+strength as (ii).
+\end{proof}
+
+\subsection{The dictionary of completions}
+
+\begin{center}
+\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+membrane-paradigm object & dictionary object \\
+\midrule
+stretched horizon at $\rh+\epsilon$ & regular wall at tortoise depth
+$R\sim\frac{1}{2\kappa}\ln\frac{1}{\epsilon}$ \\
+membrane dissipation (Ohmic absorption) & sub-stochastic deficit
+$=$ horizon flux (Cor.~\ref{cor:flux}) \\
+Parikh--Wilczek surface term & generator's boundary bookkeeping after
+truncation \\
+brick wall (field Dirichlet $=$ reflecting box)
+\cite{tHooftBrickWall1985} & reflecting (Neumann) condition: a
+conservative dilation \\
+stochastic Dirichlet (absorbing) wall & $P^{\min}$-approximant
+(Prop.~\ref{prop:wall}(i)), not a completion \\
+near-horizon $U(1)$ family \cite{Balachandran2018,GuptaSen2002} &
+elastic/mixed conditions (wall extension family) \\
+antipodal S-matrix \cite{tHooftAntipodal2016} & channel-scrambling
+unitary boundary condition \\
+complementarity DOF \cite{STU1993} & dilation (boundary) degrees of
+freedom \\
+interior continuation (PG/Kruskal) & one particular conservative
+dilation \\
+membrane paradigm itself & the minimal sub-stochastic semigroup \\
+wall-position independence & exit property $+$
+Prop.~\ref{prop:wall}(ii) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Scattering equivalence, entropy inequivalence}
+\label{subsec:entropy}
+
+Balachandran, de~Queiroz, and Saa proved that their $U(1)$ of wall
+extensions are mutually equivalent for exterior scattering and for
+thermal response \cite{Balachandran2018}: exterior S-matrix
+observables do not see the extension parameter.
+Proposition~\ref{prop:wall}(ii) is the diffusion analogue and a
+structural extension of that lemma: in the exit regime, \emph{all
+local} wall completions---not only the $U(1)$ family---collapse onto the
+minimal semigroup for exterior observables as the wall is removed
+(non-local re-injection completions excepted, as in the proposition).
+Exterior scattering and thermality are properties of the minimal
+object; the completions decorate it invisibly.
+
+Entropy is different, and here we claim no theorem---only a reading
+of cited results. The brick-wall entropy diverges as the wall
+approaches the horizon and depends on the wall position
+\cite{tHooftBrickWall1985}; the near-horizon extension parameter
+feeds the entropy in
+\cite{GuptaSen2002,CamblongOrdonez2005,CamblongOrdonez2007}; and
+\cite{Balachandran2018} frames the family as a brick-wall
+generalization. In the dictionary this pattern is forced: entropy
+counts \emph{boundary} (dilation) states, which are exactly the
+states that do not survive the wall-removal limit
+(Proposition~\ref{prop:wall}(ii): the re-entry channel closes; the
+boundary states decouple from exterior dynamics but are still
+counted). Entropy is a property of the chosen dilation, not of the
+minimal object; extension dependence of horizon entropy is then the
+expected behavior, and the brick wall's notorious cutoff dependence
+is extension dependence in the Wald--Ishibashi--Wald sense
+\cite{Wald1980,IshibashiWald2003}. The divergence as
+$\epsilon\to0$ is, in this reading, the price of insisting on a
+conservative exterior: the dilation must supply ever more boundary
+states as its wall chases a boundary that---in the exit regime---can
+carry none.
+
+%=====================================================================
+\section{The information paradox as a dictionary entry}
+\label{sec:info}
+
+This section is a discussion, fenced as follows: fixed Schwarzschild
+background; no evaporation, no backreaction, no holography; all
+statements concern the exterior algebra of a test field and its
+diffusion analogue; ``information'' means conservativity
+(stochasticity/unitarity) of the exterior dynamics, not fine-grained
+entropy of radiation. Within that fence, the dictionary contributes
+one structural sentence to the paradox: \emph{``does the horizon need
+extra data?'' is a clock-indexed question, and its two answers are
+not in tension because the boundary classification they refer to is
+not clock-invariant} (Theorem~\ref{thm:clock}).
+
+In Killing time the horizon is natural: no data can be imposed, the
+exterior dynamics is unique and conservative
+(Proposition~\ref{prop:essa}), and the distant observer's unitarity
+involves no choice whatsoever. This is the mathematically precise
+core of the ``no drama at the level of exterior dynamics'' intuition,
+and of complementarity's outside story \cite{STU1993}: exterior
+unitarity is not an assumption to be defended but the unique option
+in that pair.
+
+In infalling time the horizon is generically exit: the choice-free
+description is the minimal, sub-stochastic one---the membrane
+(Section~\ref{sec:membrane})---and it is \emph{lossy for the exterior
+algebra} by theorem, not by approximation. An exterior observer who
+insists on conservativity in this clock must complete the dynamics,
+and every completion installs boundary data (dilation degrees of
+freedom) at a stretched horizon: brick wall, $U(1)$ extension,
+antipodal S-matrix, or interior continuation. The data are optional
+(refusing them is the membrane), underdetermined (inequivalent
+choices exist), and exterior-scattering-invisible
+(Section~\ref{subsec:entropy})---which is why the debate about them
+is conducted in entropy accounting rather than in S-matrix elements.
+
+The firewall argument \cite{AMPS2013} sharpens a contradiction among
+assumptions that include exterior unitarity and interior regularity
+for the infalling observer. The dictionary does not adjudicate the
+quantum-gravitational content of that argument, and nothing here
+claims to. What it does say is narrower: \emph{insofar as} the argument
+presupposes a single, slicing-invariant verdict on what the horizon
+carries, that presupposition is unavailable already at the level of a
+test field's boundary classification---the Killing-clock answer
+(``nothing, necessarily'') and the infalling-clock answer (``either
+loss or data, your choice'') are both correct and refer to different
+(clock, Hilbert-space) pairs. To the extent a tension rests on that
+presupposition, it is relieved once the pair is specified and is not a
+property of the horizon itself. Whether the firewall argument in fact
+rests on it is a quantum-gravity question this dictionary does not
+settle.
+
+Two boundary-data proposals sit outside this discussion and are
+flagged to prevent conflation: the Horowitz--Maldacena final-state
+condition \cite{HorowitzMaldacena} installs data at the
+\emph{singularity}, the interior's own boundary problem
+\cite{HorowitzMarolf1995}, which the exterior dictionary does not
+reach; and vacuum choice (Boulware/Unruh/Hartle--Hawking,
+\cite{KayWald1991}) is state selection, orthogonal to every domain
+statement made here (Section~\ref{subsec:whichclock}).
+
+%=====================================================================
+\section{Outlook}
+\label{sec:outlook}
+
+Four continuations are concrete. \emph{(1) Analogue horizons.} The
+acoustic horizon of a transonic flow \cite{Unruh1981,BLV2005} is a
+laboratory half-line problem in which the two regimes of
+Remark~\ref{rem:tworegime} are physical dials: subluminal dispersion
+regularizes the horizon into an effectively enterable (regular-like)
+boundary---mode conversion replacing boundary data
+\cite{CoutantParentani2012}---while dissipative near-horizon physics
+selects the minimal semigroup. A Feller classification of acoustic
+horizons, with the dispersive scale playing $D/v_{0}$ against the
+analogue surface gravity, is directly testable in principle in BEC
+platforms. \emph{(2) The QFT upgrade of S1.} Promoting the
+adapted-clock column from cited (Proposition~\ref{prop:imported}) to
+proved requires the hyperboloidal energy norms of
+\cite{Warnick2015,Jaramillo2021}; the target is a theorem equating
+the Feller time-change statement with a similarity/domain statement
+for the field generator pair. \emph{(3) Relativistic diffusions.}
+Extending Theorem~\ref{thm:clock} to the Franchi--Le~Jan process
+\cite{FranchiLeJan2007}, whose causal structure enforces the exit
+regime without a model parameter, would remove
+Definition~\ref{def:model}'s modeling freedom. \emph{(4) Rotation.}
+Kerr adds superradiance---an energy flux with a sign structure the
+sub-stochastic column does not yet have---and the near-horizon
+geometry of extremality, where $\kappa\to0$ degenerates the
+e-folding length and the two-regime boundary
+$\kappa pD=v_{0}$ collapses. Evaporation and backreaction remain
+outside the program's scope until the fixed-background dictionary is
+exhausted.
+
+The summary sentence of the paper: a horizon is not a boundary
+\emph{simpliciter}; it is a boundary relative to a clock, and one
+time-of-flight integral per clock---two once trapping splits them---
+prices everything: the loss of self-adjointness, the availability of
+boundary data, the sub-stochastic deficit of the membrane, and the
+entropy bill of every attempt to refuse it.
+
+%=====================================================================
+\section*{Acknowledgments}
+The framework applied here is that of the companion papers
+\cite{indivisible,instantaneous}; the debts to Wald and
+Ishibashi--Wald, to the hyperboloidal program, and to the
+near-horizon extension literature are recorded in
+Section~\ref{subsec:notclaimed}.
+
+%=====================================================================
+\begin{thebibliography}{99}\small
+
+\bibitem{indivisible}
+J.~Torkelson,
+\emph{Indivisible stochastic processes for non-Hermitian and
+higher-derivative quantum systems: detailed balance, broken $\PT$
+symmetry, and the explosion of ghosts},
+companion paper (2026),
+\url{https://github.com/embeddetech/p01-indivisible-ghosts}.
+
+\bibitem{instantaneous}
+J.~Torkelson,
+\emph{Ghost vacuum decay as a stochastic process: instantaneous
+states, the boost-orbit measure, and the foliation that ghosts make
+visible},
+companion paper (2026),
+\url{https://github.com/embeddetech/p03-instantaneous-ghosts}.
+
+\bibitem{Wald1980}
+R.~M.~Wald,
+\emph{Dynamics in nonglobally hyperbolic, static space-times},
+J.\ Math.\ Phys.\ \textbf{21}, 2802 (1980).
+
+\bibitem{IshibashiWald2003}
+A.~Ishibashi and R.~M.~Wald,
+\emph{Dynamics in non-globally-hyperbolic static space-times II:
+general analysis of prescriptions for dynamics},
+Class.\ Quantum Grav.\ \textbf{20}, 3815 (2003),
+arXiv:gr-qc/0305012.
+
+\bibitem{IshibashiWald2004}
+A.~Ishibashi and R.~M.~Wald,
+\emph{Dynamics in non-globally-hyperbolic static space-times III:
+anti-de Sitter space-time},
+Class.\ Quantum Grav.\ \textbf{21}, 2981 (2004),
+arXiv:hep-th/0402184.
+
+\bibitem{HorowitzMarolf1995}
+G.~T.~Horowitz and D.~Marolf,
+\emph{Quantum probes of spacetime singularities},
+Phys.\ Rev.\ D \textbf{52}, 5670 (1995), arXiv:gr-qc/9504028.
+
+\bibitem{ReggeWheeler1957}
+T.~Regge and J.~A.~Wheeler,
+\emph{Stability of a Schwarzschild singularity},
+Phys.\ Rev.\ \textbf{108}, 1063 (1957).
+
+\bibitem{MartelPoisson2001}
+K.~Martel and E.~Poisson,
+\emph{Regular coordinate systems for Schwarzschild and other
+spherical spacetimes},
+Am.\ J.\ Phys.\ \textbf{69}, 476 (2001), arXiv:gr-qc/0001069.
+
+\bibitem{ReedSimon2}
+M.~Reed and B.~Simon,
+\emph{Methods of Modern Mathematical Physics II: Fourier Analysis,
+Self-Adjointness},
+Academic Press, New York (1975).
+
+\bibitem{Feller1952}
+W.~Feller,
+\emph{The parabolic differential equations and the associated
+semi-groups of transformations},
+Ann.\ of Math.\ \textbf{55}, 468 (1952).
+
+\bibitem{ItoMcKean}
+K.~It\^o and H.~P.~McKean, Jr.,
+\emph{Diffusion Processes and their Sample Paths},
+Springer, Berlin (1965).
+
+\bibitem{KarlinTaylor}
+S.~Karlin and H.~M.~Taylor,
+\emph{A Second Course in Stochastic Processes},
+Academic Press, New York (1981).
+
+\bibitem{Davies1980}
+E.~B.~Davies,
+\emph{One-Parameter Semigroups},
+Academic Press, London (1980).
+
+\bibitem{SzNagyFoias}
+B.~Sz.-Nagy and C.~Foia\c{s},
+\emph{Harmonic Analysis of Operators on Hilbert Space},
+North-Holland, Amsterdam (1970).
+
+\bibitem{Warnick2015}
+C.~M.~Warnick,
+\emph{On quasinormal modes of asymptotically anti-de Sitter black
+holes},
+Commun.\ Math.\ Phys.\ \textbf{333}, 959 (2015), arXiv:1306.5760.
+
+\bibitem{GajicWarnick2020}
+D.~Gajic and C.~M.~Warnick,
+\emph{A model problem for quasinormal ringdown of asymptotically flat
+or extremal black holes},
+J.\ Math.\ Phys.\ \textbf{61}, 102501 (2020), arXiv:1910.08481.
+
+\bibitem{Jaramillo2021}
+J.~L.~Jaramillo, R.~Panosso Macedo, and L.~Al~Sheikh,
+\emph{Pseudospectrum and black hole quasinormal mode (in)stability},
+Phys.\ Rev.\ X \textbf{11}, 031003 (2021), arXiv:2004.06434.
+
+\bibitem{Balachandran2018}
+A.~P.~Balachandran, A.~R.~de~Queiroz, and A.~Saa,
+\emph{Near-horizon modes and self-adjoint extensions of the
+Schr\"odinger operator},
+in \emph{Classical and Quantum Physics}, Springer Proc.\ Phys.\
+\textbf{229} (2019), arXiv:1810.00020.
+
+\bibitem{GuptaSen2002}
+K.~S.~Gupta and S.~Sen,
+\emph{Further evidence for the conformal structure of a Schwarzschild
+black hole in an algebraic approach},
+Phys.\ Lett.\ B \textbf{526}, 121 (2002), arXiv:hep-th/0112041.
+
+\bibitem{CamblongOrdonez2005}
+H.~E.~Camblong and C.~R.~Ord\'o\~nez,
+\emph{Black hole thermodynamics from near-horizon conformal quantum
+mechanics},
+Phys.\ Rev.\ D \textbf{71}, 104029 (2005), arXiv:hep-th/0411008.
+
+\bibitem{CamblongOrdonez2007}
+H.~E.~Camblong and C.~R.~Ord\'o\~nez,
+\emph{Conformal enhancement of holographic scaling in black hole
+thermodynamics: a near-horizon heat-kernel framework},
+JHEP \textbf{0712}, 099 (2007), arXiv:0709.2942.
+
+\bibitem{FranchiLeJan2007}
+J.~Franchi and Y.~Le~Jan,
+\emph{Relativistic diffusions and Schwarzschild geometry},
+Comm.\ Pure Appl.\ Math.\ \textbf{60}, 187 (2007),
+arXiv:math/0410485.
+
+\bibitem{Damour1978}
+T.~Damour,
+\emph{Black-hole eddy currents},
+Phys.\ Rev.\ D \textbf{18}, 3598 (1978).
+
+\bibitem{ThornePriceMacdonald}
+K.~S.~Thorne, R.~H.~Price, and D.~A.~Macdonald (eds.),
+\emph{Black Holes: The Membrane Paradigm},
+Yale University Press, New Haven (1986).
+
+\bibitem{ParikhWilczek1998}
+M.~Parikh and F.~Wilczek,
+\emph{An action for black hole membranes},
+Phys.\ Rev.\ D \textbf{58}, 064011 (1998), arXiv:gr-qc/9712077.
+
+\bibitem{STU1993}
+L.~Susskind, L.~Thorlacius, and J.~Uglum,
+\emph{The stretched horizon and black hole complementarity},
+Phys.\ Rev.\ D \textbf{48}, 3743 (1993), arXiv:hep-th/9306069.
+
+\bibitem{tHooftBrickWall1985}
+G.~'t~Hooft,
+\emph{On the quantum structure of a black hole},
+Nucl.\ Phys.\ B \textbf{256}, 727 (1985).
+
+\bibitem{tHooftAntipodal2016}
+G.~'t~Hooft,
+\emph{Black hole unitarity and antipodal entanglement},
+Found.\ Phys.\ \textbf{46}, 1185 (2016), arXiv:1601.03447.
+
+\bibitem{AMPS2013}
+A.~Almheiri, D.~Marolf, J.~Polchinski, and J.~Sully,
+\emph{Black holes: complementarity or firewalls?},
+JHEP \textbf{02} (2013) 062, arXiv:1207.3123.
+
+\bibitem{HorowitzMaldacena}
+G.~T.~Horowitz and J.~Maldacena,
+\emph{The black hole final state},
+JHEP \textbf{02} (2004) 008, arXiv:hep-th/0310281.
+
+\bibitem{KayWald1991}
+B.~S.~Kay and R.~M.~Wald,
+\emph{Theorems on the uniqueness and thermal properties of
+stationary, nonsingular, quasifree states on space-times with a
+bifurcate Killing horizon},
+Phys.\ Rep.\ \textbf{207}, 49 (1991).
+
+\bibitem{Unruh1981}
+W.~G.~Unruh,
+\emph{Experimental black hole evaporation?},
+Phys.\ Rev.\ Lett.\ \textbf{46}, 1351 (1981).
+
+\bibitem{BLV2005}
+C.~Barcel\'o, S.~Liberati, and M.~Visser,
+\emph{Analogue gravity},
+Living Rev.\ Relativ.\ \textbf{29}, 1 (2026), arXiv:gr-qc/0505065.
+
+\bibitem{CoutantParentani2012}
+A.~Coutant, R.~Parentani, and S.~Finazzi,
+\emph{Black hole radiation with short distance dispersion, an
+analytical S-matrix approach},
+Phys.\ Rev.\ D \textbf{85}, 024021 (2012), arXiv:1108.1821.
+
+\end{thebibliography}
+
+\end{document}

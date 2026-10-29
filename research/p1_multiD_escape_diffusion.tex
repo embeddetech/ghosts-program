@@ -1,0 +1,811 @@
+% ---------------------------------------------------------------------
+% Companion note to paper1/main.tex, Secs. 6 and 8 (thm:dictionary,
+% thm:channels, thm:kato, thm:stability, prop:directintegral) and to the
+% 1D construction research/p1_thm_dictionary_feller_leg_proof.tex
+% ("the 1D Lemma" below).
+%
+% QUESTION.  Does the escape-diffusion / Feller-boundary dictionary
+% proved in 1D extend to the multidimensional / channel-based setting?
+%
+% ANSWER (proved here, honest labels throughout):
+%   - separable and central cases: FULL per-channel generalization
+%     (Theorem A, Corollary B), including the lateral-condition mirror
+%     of deficiency (infinity,infinity);
+%   - bounded channel mixing: dictionary survives (Theorem C), the
+%     stochastic mirror of Kato stability (paper's thm:kato);
+%   - genuine obstruction: UNBOUNDED CHANNEL TRANSFER.  The per-channel
+%     integrals {T_n} provably do NOT determine the coupled
+%     classification (Propositions E1, E2); the failure to explode is
+%     "channel riding", and the failure to remain conservative is
+%     ghost-specific (Theorem F: impossible when h_perp is bounded
+%     below).  The channel tail n = infinity is a second Feller
+%     boundary with its own one-sum criterion (Proposition G).
+% VERDICT at the end of the file: PER-CHANNEL-ONLY (with the coupled
+% classification reduced to a clean conjecture, and the quantum tail
+% open exactly where the paper's Open Problem sits).
+% ---------------------------------------------------------------------
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.05in]{geometry}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\calE}{\mathcal{E}}
+\newcommand{\ii}{\mathrm{i}}
+
+\title{The escape dictionary beyond one dimension:\\
+channel diffusions, switched escape processes,\\ and the exact
+obstruction}
+\author{Companion note to Theorem~6.1 and Secs.~8--9 of the paper\\
+(builds on the 1D Lemma of
+\texttt{p1\_thm\_dictionary\_feller\_leg\_proof.tex})}
+\date{}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status conventions.}  Every statement below is tagged
+\emph{[proved]}, \emph{[proved, sketch]} (rigorous reduction to cited
+standard machinery, details routine but not written), or
+\emph{[conjecture]}.  ``The 1D Lemma'' means the Lemma of the companion
+note: for the escape diffusion
+$\dd X=v(X)\circ(\beta\,\dd t+\varepsilon\,\dd W)$,
+$v=\sqrt{2(E-V)}$, on $[x_{0},\infty)$ (reflected at $x_{0}$, minimal
+at $+\infty$), the boundary $+\infty$ is \emph{regular} iff the
+classical time of flight $T=\int^{\infty}\dd x/v$ is finite (minimal
+semigroup sub-stochastic and explosive, mean lifetime
+$T^{2}$ for $\beta=0$, $T+O(\varepsilon^{2})$ for $\beta=1$) and
+\emph{natural} iff $T=\infty$ (conservative and the unique Feller
+realization); the driftless speed measure is the WKB deficiency
+density $2[2(E-V)]^{-1/2}\dd x$; only continuity of $V$ and eventual
+$V<E$ are used.
+
+%======================================================================
+\section{What replaces the single end and the single integral}
+\label{sec:setting}
+
+In one dimension the escaping end is a point and one integral $T(E)$
+decides all three legs.  In the paper's multidimensional setting the
+transverse dynamics is resolved into channels: for the separable model
+of the channel-additivity theorem (paper Thm.~8.2, \texttt{thm:channels}),
+\[
+H \;=\; h_{1}\otimes\mathbf 1+\mathbf 1\otimes h_{\perp}
+\quad\text{on } L^{2}(\R\times\R^{m}),
+\qquad h_{1}=\tfrac12p^{2}+V_{1},\quad
+h_{\perp}\varphi_{n}=E_{n}\varphi_{n},
+\]
+the classical escape mechanism conserves the transverse energy, and the
+quantum deficiency vectors are $u_{n}^{\pm}\otimes\varphi_{n}$.  The
+correct multidimensional replacements, established below, are:
+\begin{itemize}
+\item the single escaping end $+\infty$ becomes the \emph{countable set
+of channel ends} $\{\infty_{n}\}_{n\in\N}$ (one per transverse
+eigenstate); for continuous transverse spectrum, a measure space of
+fiber ends (Sec.~\ref{sec:tail});
+\item the time of flight becomes the \emph{per-channel} family
+\[
+T_{n}\;=\;T(E-E_{n})
+\;=\;\int_{x_{n}}^{\infty}\frac{\dd x}{\sqrt{2\,(E-E_{n}-V_{1}(x))}},
+\qquad
+x_{n}\ \text{any base point with }\sup_{x\ge x_{n}}V_{1}<E-E_{n};
+\]
+this is the precise form taken by the anticipated
+``direction-dependent $T(E,\omega)$'': the direction label $\omega$ is
+quantized into the channel label $n$ (for central potentials,
+literally the angular decomposition, Corollary~\ref{cor:central});
+\item and---genuinely new in $d>1$---there is a \emph{second} kind of
+end, the \emph{channel tail} $n\to\infty$ at finite or co-moving $x$,
+which has no 1D counterpart and which is exactly where the clean
+dictionary stops being a theorem (Secs.~\ref{sec:obstruction}--\ref{sec:tail}).
+\end{itemize}
+
+Throughout, $V_{1}$ is continuous with $V_{1}(x)\to-\infty$; where the
+quantum leg is invoked we assume in addition the paper's Theorem~6.1
+regularity.  A first elementary but structurally important fact:
+
+\begin{lemma}[channel class equality; proved]\label{lem:classeq}
+If $V_{1}(x)\to-\infty$ then for all $n,m$:
+$T_{n}<\infty\iff T_{m}<\infty$.  Hence the \emph{qualitative}
+classification is channel-uniform; only the \emph{quantitative} data
+$(T_{n})_{n}$ is channel-dependent.
+\end{lemma}
+
+\begin{proof}
+$\dfrac{E-E_{n}-V_{1}(x)}{E-E_{m}-V_{1}(x)}\to1$ as $x\to\infty$, so the
+integrands are comparable near $+\infty$; the finite parts are finite by
+continuity and the choice of base points.
+\end{proof}
+
+This is the stochastic shadow of the $\lambda$-independence of the
+limit-point/limit-circle dichotomy used in the paper's channel-additivity
+proof: there, every channel is limit circle because one channel is;
+here, every channel end is regular because one is.
+
+%======================================================================
+\section{The separable case: full per-channel generalization}
+\label{sec:separable}
+
+\paragraph{The channel escape process.}
+Define the state space as the disjoint union of half-lines
+\[
+\calE\;=\;\bigsqcup_{n\in\N} I_{n},\qquad I_{n}=[x_{n},\infty),
+\]
+and on each $I_{n}$ the channel escape diffusion $X^{(n)}$ of the 1D
+Lemma with speed
+$v_{n}(x)=\sqrt{2(E-E_{n}-V_{1}(x))}$, clock
+$\tau_{n}(x)=\int_{x_{n}}^{x}\dd y/v_{n}(y)$, reflection at $x_{n}$,
+minimal (absorbing) convention at $\infty_{n}$; generator
+$\mathcal L=\bigoplus_{n}L_{n}$,
+$L_{n}=\tfrac{\varepsilon^{2}}{2}(v_{n}\partial_{x})^{2}
++\beta\,v_{n}\partial_{x}$, $\beta\in\{0,1\}$.  This is the stochastic
+realization of the separable mechanism: the transverse motion is
+bounded oscillation whose only dynamical residue is its conserved
+energy, i.e.\ the frozen channel label.
+
+\begin{theorem}[channel dictionary, separable case; proved except (iv)
+countable part]\label{thm:A}
+Let $V_{1}$ be continuous, $V_{1}\to-\infty$, and let
+$(E_{n},\varphi_{n})$ be as above.  Then:
+\begin{itemize}
+\item[(i)] \textbf{(per-channel classification)}  Each channel end
+$\infty_{n}$ is \emph{regular} iff $T_{n}<\infty$ and \emph{natural}
+iff $T_{n}=\infty$ (never exit, never entrance); by
+Lemma~\ref{lem:classeq} all channel ends are in the same class.  For
+$\beta=0$ the Feller test integrals in channel $n$ are
+$\Sigma_{n}=N_{n}=T_{n}^{2}$.
+\item[(ii)] \textbf{(explosion)}  If $T_{n}<\infty$ (equivalently, for
+all $n$): started in channel $n$, the process explodes a.s.\ with mean
+lifetime $T_{n}^{2}$ ($\beta=0$) resp.\
+$T_{n}-\tfrac{\varepsilon^{2}}{2}(1-e^{-2T_{n}/\varepsilon^{2}})
+\in(T_{n}-\tfrac{\varepsilon^{2}}{2},T_{n}]$ ($\beta=1$), and
+$\zeta\to T_{n}$ a.s.\ as $\varepsilon\downarrow0$: \emph{each channel
+loses its mass at its own classical escape time}.  The minimal
+semigroup $\bigoplus_{n}P^{\min,n}_{t}$ is strictly sub-stochastic on
+every channel.  If $T_{n}=\infty$ for one (hence every) $n$, the direct
+sum is conservative and is the unique Feller realization of
+$\mathcal L$ with the given reflecting data.
+\item[(iii)] \textbf{(deficiency $=$ speed-measure data, channel by
+channel)}  The driftless speed measure of channel $n$ is the WKB
+density of the paper's deficiency vector $u_{n}\otimes\varphi_{n}$:
+\[
+m_{n}(\dd x)\;=\;2\bigl[2(E-E_{n}-V_{1}(x))\bigr]^{-1/2}\dd x
+\;\approx\;2\,|u_{n}^{\rm WKB}(x)|^{2}\,\dd x,
+\qquad
+m_{n}\bigl((x,\infty)\bigr)\approx
+2\!\int_{x}^{\infty}\!|u_{n}|^{2},
+\]
+and the scale mass of channel $n$ near $\infty_{n}$ is $T_{n}$.  Thus
+deficiency indices $(\infty,\infty)$ correspond exactly to
+\emph{countably many boundary ends, each carrying finite scale and
+speed mass}---one Feller datum per deficiency channel.
+\item[(iv)] \textbf{(lateral conditions $=$ the $S$-matrix at
+infinity)}  Suppose $T_{n}<\infty$ for all $n$, and truncate to $M$
+channels.  The sub-Markov Feller extensions of the minimal process are
+exactly the Feller--Wentzell lateral conditions at the $M$ regular ends:
+at each $\infty_{n}$ a convex datum (absorption, killing, reflection,
+stickiness, and a jump-in measure $\nu_{n}$ on $\calE$), the jump-in
+measures being allowed to charge \emph{other} channels.  The
+conservative extensions are those with no absorption/killing; a packet
+escaping in channel $n$ then re-enters distributed according to
+$\nu_{n}$---a channel-\emph{mixing} return law, the stochastic mirror
+of the paper's unitary $S$-matrix at infinity, and different lateral
+data reproduce the regulator-dependence of the returned mixture seen in
+the paper's four-channel figure.  \emph{[Finite $M$: proved via
+Feller's lateral conditions and the Freidlin--Wentzell gluing theory;
+countable $M$: proved-sketch via It\^o excursion theory, with a
+summability condition on the excursion entrance laws; the
+\emph{completeness} claim (that all Feller extensions arise this way)
+is standard for finite $M$ and labeled conjectural for countable
+$M$.]}
+\end{itemize}
+\end{theorem}
+
+\begin{proof}
+(i)--(iii) are channelwise reductions.  The direct sum has no
+interaction between channels, so every path quantity is computed in the
+channel where the process starts; the 1D Lemma applied with potential
+$V_{1}+E_{n}$ (equivalently spectral shift $E\mapsto E-E_{n}$) gives
+(i) and (ii) verbatim, and Lemma~\ref{lem:classeq} gives the class
+equality.  Uniqueness in (ii): at a natural end no lateral condition
+exists (Feller), channel by channel, and a Feller extension of a direct
+sum that respects the generator must respect the direct-sum structure
+away from the boundary; since no boundary is accessible, the minimal
+realization is the only one.  For (iii), the deficiency equation in
+channel $n$ is $(h_{1}-(\pm\ii-E_{n}))u=0$; to leading WKB order at
+real reference energy the modulus is
+$|u_{n}|^{2}\approx[2(E-E_{n}-V_{1})]^{-1/2}$ (the shift of the
+spectral parameter off the real axis affects the phase, not the leading
+modulus---the same convention already used in the paper's one-line
+identity), which is $\tfrac12 m_{n}$; the scale mass is
+$\int^{\infty}\dd\tau_{n}=T_{n}$ as in 1D.
+
+(iv), finite $M$.  Each $\infty_{n}$ is regular by (i).  Realize
+$\calE_{M}=\bigsqcup_{n\le M}I_{n}$, compactify each half-line by its
+end, and consider the star obtained by the disjoint boundary set
+$\{\infty_{1},\dots,\infty_{M}\}$.  Feller's classification of lateral
+conditions at a regular boundary of a generalized second-order operator
+[Feller, Illinois J.\ Math.\ 1 (1957) 459--504] provides, for a single
+interval, the general boundary datum including a jump-in measure on the
+interior; the multi-interval (graph) case, with boundary points allowed
+to communicate, is the Freidlin--Wentzell gluing theory [Freidlin and
+Wentzell, Ann.\ Probab.\ 21 (1993) 2215--2245], which parametrizes all
+Feller processes agreeing with the minimal one in the interior by
+Wentzell data at the vertices; jump-in to interior points is supplied by
+the It\^o excursion construction of instantaneous-return processes
+[It\^o, Proc.\ Sixth Berkeley Symp.\ (1972) 225--239; Blumenthal,
+\emph{Excursions of Markov Processes}, Birkh\"auser 1992]: at a regular
+end with finite scale and speed mass the minimal process killed at the
+end has an exit system, and any sub-probability kernel
+$(\nu_{n})_{n\le M}$ together with nonnegative sticky/killing weights
+determines a unique right process extending it.  Countable $M$: the
+same excursion construction applies end by end; what must be checked is
+that the concatenation over countably many ends does not accumulate
+infinitely many boundary visits in finite time, for which a uniform
+lower bound on mean return times (automatic when
+$\inf_{n} T_{n}>0$, and in general a summability condition on the
+entrance laws) suffices.  We have not written this in full generality;
+the parametrization is asserted as complete only for finite $M$.
+\end{proof}
+
+\begin{remark}[the mirror is structural, not a bijection; honest]
+The quantum completions form the unitary group
+$U(\mathcal K_{+},\mathcal K_{-})$, $\dim\mathcal K_{\pm}=\infty$; the
+conservative stochastic completions form the convex set of Markov
+gluing data $(\nu_{n})$.  As already in 1D ($U(1)$ versus Feller's
+convex family), these are \emph{parallel infinite-dimensional families
+attached to the same boundary objects}, in canonical correspondence at
+the level of ``which channels communicate with which through
+infinity'', not isomorphic as spaces.  In particular the paper's
+statement that conservative completions ``scramble the transverse
+state with data injected at infinity'' has an exact stochastic
+counterpart: the returned channel mixture is the jump-in kernel, and it
+is extension data, not data of $\mathcal L$.
+\end{remark}
+
+\begin{remark}[conservative / transient / explosive trichotomy]
+The paper's Sec.~5 hierarchy is reproduced by the clock picture: in
+channel $n$ the drifted model is Brownian motion with unit drift on
+$[0,T_{n})$; $T_{n}=\infty$ with $\beta=1$ is \emph{conservative and
+transient} (the quadratic-ghost cascade regime, paper
+Thm.~\texttt{thm:quadratic}), $T_{n}<\infty$ is \emph{explosive}, and a
+confining channel (no escape interval) is \emph{recurrent}.  All three
+currencies appear channelwise.
+\end{remark}
+
+\begin{remark}[two-ended channels]
+If $h_{1}$ is limit circle at both ends (the paper's
+\texttt{thm:channels} hypothesis), each channel contributes two regular
+ends and the finite-$M$ boundary set has $2M$ points---the exact mirror
+of the $(2M,2M)$ indices in the paper's finite-channel stability
+theorem (\texttt{thm:stability}).  All statements above apply verbatim
+with the reflecting base replaced by the second end's data.
+\end{remark}
+
+%======================================================================
+\section{Central potentials: the sphere at infinity, resolved into
+channels}
+
+\begin{corollary}[central case; proved]\label{cor:central}
+Let $H=-\tfrac12\Delta-c|x|^{\alpha}$ on $\R^{d}$, $d\ge2$, $c>0$,
+$\alpha>2$ (the paper's Corollary~8.3).  In the angular decomposition
+the radial channel $\ell$ carries the escape diffusion with
+$v_{\ell}(r)^{2}=2\bigl(E+cr^{\alpha}-L^{2}/(2r^{2})\bigr)$,
+$L^{2}=(\ell+\tfrac{d-2}{2})^{2}-\tfrac14$, on $r\ge r_{\ell}$ beyond
+the outer turning point.  Then every channel end is regular, with
+\[
+T_{\ell}\;\asymp\;C_{\alpha}\,c^{-\frac{2}{\alpha+2}}\,
+L^{\frac{2-\alpha}{2+\alpha}}\;\xrightarrow[\ell\to\infty]{}\;0,
+\qquad
+C_{\alpha}=\int_{\rho_{0}}^{\infty}
+\bigl(2(\rho^{\alpha}-\tfrac12\rho^{-2})\bigr)^{-1/2}\dd\rho<\infty,
+\]
+so $T^{*}=\sup_{\ell}T_{\ell}<\infty$: the classification is uniform
+across the entire sphere of directions.  All conclusions of
+Theorem~\ref{thm:A} hold with $n$ replaced by $\ell$ (finite
+multiplicities absorbed into the channel count); in particular the
+conservative completions of the central malicious ghost are
+angular-momentum-mixing return laws at $r=\infty$.
+\end{corollary}
+
+\begin{proof}
+Substituting $r=\lambda\rho$ with $\lambda=(L^{2}/c)^{1/(\alpha+2)}$
+equalizes the potential and centrifugal scales,
+$cr^{\alpha}=c\lambda^{\alpha}\rho^{\alpha}$,
+$L^{2}/(2r^{2})=c\lambda^{\alpha}\rho^{-2}/2$, giving
+$T_{\ell}=\lambda(2c\lambda^{\alpha})^{-1/2}
+\bigl(C_{\alpha}+o(1)\bigr)
+=(2c)^{-1/2}\lambda^{1-\alpha/2}(C_{\alpha}+o(1))$ and
+$\lambda^{1-\alpha/2}=(L^{2}/c)^{\frac{2-\alpha}{2(\alpha+2)}}$.
+(Numerical check, $\alpha=4$, $c=1$: $T_{\ell}$ at
+$L^{2}=10^{2},10^{4},10^{6}$ is $1.194,\,0.554,\,0.257$, successive
+ratios $2.155$ against the predicted $10^{1/3}=2.154$.)  The
+$\rho$-integral converges at infinity because $\alpha>2$ and at the
+turning point because the turning point of
+$\rho^{\alpha}-\tfrac12\rho^{-2}$ is simple.  The rest is
+Theorem~\ref{thm:A}.
+\end{proof}
+
+Thus for central potentials the anticipated ``per-direction
+$T(E,\omega)$'' collapses, correctly, to the channel family
+$T_{\ell}$: the boundary at infinity is not the geometric sphere
+$S^{d-1}$ but its harmonic resolution, and the uniformity
+$T^{*}<\infty$ is automatic.  This is the multidimensional situation in
+which the generalization is \emph{complete}.
+
+%======================================================================
+\section{Bounded channel mixing: the stochastic Kato theorem}
+\label{sec:bounded}
+
+The paper's non-separable theorem (\texttt{thm:kato}) says a bounded
+mixing $B=\mu f(x_{1})g(x_{2})$ preserves the deficiency indices.  The
+stochastic counterpart replaces the frozen channel label by a jump
+process with \emph{bounded intensity}.
+
+\paragraph{The switched escape process.}  Fix measurable rates
+$\lambda(x;n\to m)\ge0$ with
+$\sup_{x,n}\sum_{m}\lambda(x;n\to m)\le\kappa<\infty$, supported on
+\emph{open} channels ($\lambda(x;n\to m)=0$ unless $x\ge x_{m}$).
+Realize the pair $(X_{t},n_{t})$ on a probability space carrying the
+driving Brownian motion $W$ and an independent Poisson process of
+intensity $\kappa$ with i.i.d.\ uniform marks: between candidate times
+the path solves the frozen channel SDE
+$\dd X=v_{n}(X)\circ(\beta\,\dd t+\varepsilon\,\dd W)$ (reflected at
+$x_{n}$); at a candidate time a switch $n\to m$ is accepted with
+probability $\lambda(X;n\to m)/\kappa$ (thinning).  $X$ is continuous
+across switches.
+
+\begin{theorem}[stability under bounded mixing; proved]\label{thm:B}
+For the switched escape process:
+\begin{itemize}
+\item[(a)] \textbf{(conservative side, no extra hypothesis)}  If
+$T_{n}=\infty$ for one (hence every) channel, the switched process is
+conservative: $\Prob(\zeta<\infty)=0$ for every initial condition and
+\emph{every} admissible bounded-rate switching law.
+\item[(b)] \textbf{(explosive side, uniform time of flight)}  If
+\[
+(\mathrm U):\qquad T^{*}\;:=\;\sup_{n}T_{n}\;<\;\infty ,
+\]
+then the switched process explodes a.s.\ for every admissible
+bounded-rate law, with exponential tail: for $\beta=1$,
+\[
+\Prob(\zeta>kh)\le(1-p_{0})^{k},\qquad
+h=T^{*}+1,\quad
+p_{0}=e^{-\kappa h}\,
+\Prob\Bigl(\varepsilon\sup_{s\le h}|W_{s}|\le\tfrac12\Bigr)>0,
+\]
+so $\E[\zeta]\le h/p_{0}<\infty$; the same holds for $\beta=0$ with
+$p_{0}=e^{-\kappa h}\Prob(\sup_{s\le h}W_{s}\ge T^{*})$.
+\end{itemize}
+Hence under (U) the dictionary survives bounded mixing verbatim:
+$T<\infty$ class $\Leftrightarrow$ explosive, $T=\infty$ class
+$\Leftrightarrow$ conservative---the stochastic mirror of Kato
+stability of the deficiency indices.
+\end{theorem}
+
+\begin{proof}
+(a)  The candidate switch times form a Poisson($\kappa$) process
+independent of everything else, so a.s.\ only finitely many candidates
+(hence switches) occur in $[0,t]$.  If $\zeta\le t$, the explosion
+instant lies in some inter-candidate interval $[\sigma_{k},
+\sigma_{k+1})$; on that interval the path is the frozen channel-$n_k$
+diffusion started at the finite point $X_{\sigma_{k}}$, whose end
+$\infty_{n_{k}}$ is natural (1D Lemma with $T_{n_{k}}=\infty$), hence
+inaccessible in finite time---a null event.  A countable union over $k$
+of null events is null.
+
+(b)  Work on windows $[kh,(k+1)h)$.  Let $A_{k}$ be the event
+that no Poisson candidate falls in the window and
+$\varepsilon\sup_{s\le h}|W_{kh+s}-W_{kh}|\le\tfrac12$;
+by independence of the Poisson clock and the Brownian increments from
+$\mathcal F_{kh}$, $\Prob(A_{k}\mid\mathcal F_{kh})\ge p_{0}$.  On
+$A_{k}$, if $\zeta>kh$, the process sits in some channel $n$ at clock
+position $u=\tau_{n}(X_{kh})\in[0,T_{n})$ and, with no switch in the
+window, follows the frozen dynamics; in the clock coordinate
+(1D Lemma proof) the Skorokhod decomposition gives
+$Z_{s}\ge u+s-\tfrac12\ge s-\tfrac12$, and
+$s=T_{n}+\tfrac12\le T^{*}+\tfrac12<h$ already forces $Z$ to reach
+$T_{n}$: explosion occurs inside the window.  Hence
+$\Prob(\zeta>(k+1)h\mid\zeta>kh)\le1-p_{0}$ and the geometric bound
+follows; positivity of $p_{0}$ is elementary.  For $\beta=0$ the frozen
+clock process is reflected Brownian motion, and
+$\sup_{s\le h}W_{s}\ge T^{*}$ forces the hit; the reflection only
+helps.  Note the argument never needs to know \emph{which} channels are
+visited---only (U) and the open-channel support of the rates (which
+guarantees the frozen dynamics is defined after every switch).
+\end{proof}
+
+\begin{lemma}[when (U) is automatic; proved]\label{lem:U}
+Suppose, for $x\ge R$: $-V_{1}(x)\ge c_{1}x^{2+\epsilon}$ and
+$-V_{1}'(x)\ge c_{3}x^{1+\epsilon}$ with $\epsilon>0$, $V_{1}\in C^{1}$
+strictly decreasing there, and $T(E)<\infty$.  Then
+$\sup_{E'\le E}T(E')<\infty$; in particular (U) holds for every choice
+of transverse spectrum $(E_{n})$ bounded below or not.  This covers all
+power-law potentials $-V_{1}\sim cx^{2+\epsilon}$, hence the paper's
+representative models.
+\end{lemma}
+
+\begin{proof}
+Write $\mu=-E'\ (\to\infty)$, turning point $x'(E')$, and
+$x_{g}=(\mu/c_{1})^{1/(2+\epsilon)}\ge x'(E')$ (since
+$E'+c_{1}x'^{2+\epsilon}\le E'-V_{1}(x')=0$).  Beyond $x_{g}$,
+$E'-V_{1}\ge c_{1}x^{2+\epsilon}-\mu$ and the scaling
+$x=x_{g}u$ gives
+$\int_{x_{g}}^{\infty}\le C\,\mu^{-\epsilon/(2(2+\epsilon))}\to0$
+exactly as in the central computation.  Between $x'$ and $x_{g}$, the
+derivative bound gives
+$E'-V_{1}(x)=\int_{x'}^{x}(-V_{1}')\ge c_{3}x'^{1+\epsilon}(x-x')$,
+so
+$\int_{x'}^{x_{g}}\le
+\sqrt{2(x_{g}-x')/(c_{3}x'^{1+\epsilon})}
+\le C'\,x_{g}^{-\epsilon/2}\to0$
+(using $x'\asymp x_{g}$).  So $T(E')\to0$ as $E'\to-\infty$, and on any
+compact range of $E'$, $T$ is finite and continuous (simple turning
+points by strict monotonicity, dominated convergence with the local
+$(x-x')^{-1/2}$ bound).  Hence the sup is finite.
+\end{proof}
+
+%======================================================================
+\section{The obstruction: unbounded channel transfer
+(``channel riding'')}
+\label{sec:obstruction}
+
+Everything so far generalizes.  What follows is the exact point of
+failure, and it is proved by construction, not merely feared.
+
+\begin{lemma}[channel-riding reduction; proved]\label{lem:riding}
+Let $n(\cdot):\bigl[x_{*},\infty\bigr)\to\N$ be measurable and locally
+constant off a discrete set, with channel $n(x)$ open at $x$ for every
+$x$.  The \emph{position-locked} switched process (switch to channel
+$n(x)$ upon reaching $x$; a limit of bounded-rate laws with rates
+$\to\infty$, so \emph{outside} Theorem~\ref{thm:B}'s hypothesis) is the
+one-dimensional generalized diffusion on $[x_{*},\infty)$ with
+effective speed
+\[
+v_{\rm eff}(x)\;=\;\sqrt{2\bigl(E-E_{n(x)}-V_{1}(x)\bigr)},
+\]
+defined by scale $s_{\rm eff}(x)=\int^{x}\dd y/v_{\rm eff}$ (for
+$\beta=0$; the drifted variant analogously) and speed measure
+$m_{\rm eff}=2\,\dd x/v_{\rm eff}$.  Its end at $+\infty$ is classified
+by the 1D Lemma with the \emph{effective time of flight}
+\[
+T_{\rm eff}\;=\;\int_{x_{*}}^{\infty}
+\frac{\dd x}{\sqrt{2\,(E-E_{n(x)}-V_{1}(x))}}\,.
+\]
+\end{lemma}
+
+\begin{proof}
+Scale-and-speed constructions require only a strictly increasing
+continuous scale and a Radon speed measure (It\^o--McKean \S4);
+$v_{\rm eff}$ is measurable, locally bounded and locally bounded away
+from $0$ on the open region, so $s_{\rm eff}$ and $m_{\rm eff}$
+qualify, and the resulting regular diffusion coincides with the
+switched process between switch points by locality of the generator.
+The classification integrals are computed exactly as in the 1D Lemma
+($\Sigma=N=T_{\rm eff}^{2}$ for $\beta=0$).
+\end{proof}
+
+$T_{\rm eff}$ is a \emph{path functional of the coupled mechanism}, not
+a function of the per-channel family $\{T_{n}\}$.  The next two
+propositions make the underdetermination rigorous, in both directions.
+
+\begin{proposition}[Counterexample I: all channels explosive, coupled
+process conservative; proved]\label{prop:ce1}
+There exist $V_{1}$ (continuous, strictly decreasing to $-\infty$,
+satisfying the paper's Theorem~6.1 regularity, including
+$|V_{1}'||V_{1}|^{-3/2}\to0$) and a transverse spectrum
+$(E_{n})$, such that
+\[
+\sup_{n}T_{n}\;\le\;\tfrac32
+\qquad(\text{every frozen channel explosive, uniformly---(U) holds}),
+\]
+yet the position-locked riding law $n(x)$ below gives
+$T_{\rm eff}=\infty$: the coupled process is \emph{conservative}.
+Consequently the per-channel dictionary
+(``$T_{n}<\infty\ \forall n\Rightarrow$ explosive'') is \emph{false}
+for unbounded-rate channel transfer, even under (U); the bounded-rate
+hypothesis of Theorem~\ref{thm:B} cannot be dropped.
+\end{proposition}
+
+\begin{proof}
+Take $E=0$, $E_{n}=16^{n}$, and the shelf potential
+\[
+V_{1}(x)=-E_{n}-\tfrac12 \ \ \text{on } [2n,\,2n+1],\qquad
+V_{1} \text{ linear on } [2n+1,\,2n+2],\qquad n\ge1,
+\]
+(extended arbitrarily and boundedly to the left; tilt the shelves by an
+immaterial slope if strict monotonicity is wanted).  Regularity:
+$|V_{1}'|\asymp16^{n}$ on the $n$-th drop while
+$|V_{1}|^{3/2}\asymp16^{3n/2}$, so
+$|V_{1}'||V_{1}|^{-3/2}\to0$.  Channel $m$ is open exactly from its own
+shelf onward ($E-E_{m}-V_{1}=E_{n}+\tfrac12-E_{m}>0$ iff $n\ge m$),
+so $x_{m}=2m$, and
+\[
+T_{m}\;\le\;
+\underbrace{\frac{1}{\sqrt{2\cdot\tfrac12}}}_{\text{own shelf}}
++\underbrace{1}_{\text{own drop, speed}^{2}\ge1}
++\sum_{n>m}\Bigl(\underbrace{\tfrac{1}{\sqrt{2(E_{n}-E_{m})}}}_{\text{shelf }n}
++\underbrace{\tfrac{2}{\sqrt{E_{n}}}}_{\text{drop }n}\Bigr)
+\;\le\;\tfrac32
+\]
+for $m$ large (numerically $T_{1}=1.17$, $T_{3}=1.01$,
+$T_{8}=1.00004$; all $\le1.18$).  Now ride: $n(x)=n$ on
+$[2n,2n+2)$ (always open).  On shelf $n$ the effective speed is
+$\sqrt{2(E_{n}+\tfrac12-E_{n})}=1$ over unit length, so each shelf
+contributes exactly $1$ to $T_{\rm eff}$:
+$T_{\rm eff}\ge\sum_{n}1=\infty$.  Lemma~\ref{lem:riding} and the 1D
+Lemma ($T_{\rm eff}=\infty$ $\Rightarrow$ natural, conservative)
+finish.
+\end{proof}
+
+\begin{proposition}[Counterexample II: all channels conservative,
+coupled process explosive---ghost-specific; proved]\label{prop:ce2}
+Let $V_{1}\equiv0$ on $[1,\infty)$ (or $V_{1}=-x^{2}$, the marginal
+case), $E=1$, and let $h_{\perp}$ be a \emph{ghost} oscillator,
+$E_{n}=-(n+\tfrac12)$, unbounded below.  Every frozen channel has
+constant (or at-most-linearly-growing) speed, hence
+$T_{n}=\infty$ for all $n$: every frozen channel is conservative.  The
+riding law $n(x)=\lceil x^{2+\epsilon}\rceil$ gives
+$v_{\rm eff}(x)^{2}=2(E+n(x)+\tfrac12)\ge2x^{2+\epsilon}$, so
+$T_{\rm eff}\le\int^{\infty}x^{-1-\epsilon/2}\dd x/\sqrt2<\infty$:
+the coupled process is \emph{explosive}.  The mechanism extracts
+unbounded energy from the transverse ghost---the stochastic realization
+of the paper's ``channel-tail escape'' ($\lambda<0$ PU climbing a
+rising potential through arbitrarily high mode-2 channels) and of its
+remark that transverse observables are not $H_{0}$-bounded for
+indefinite $h_{\perp}$.
+\end{proposition}
+
+\begin{proof}
+Immediate from Lemma~\ref{lem:riding} and the 1D Lemma.
+\end{proof}
+
+\begin{theorem}[ghosts are necessary for Counterexample II; proved
+under (D)]\label{thm:F}
+Suppose $h_{\perp}$ is bounded below, $E_{n}\ge E_{0}$, let
+$\bar v(x)^{2}=2(E-E_{0}-V_{1}(x))$ dominate every channel speed, and
+assume
+\[
+(\mathrm D):\qquad \int^{\infty}\frac{\dd x}{\bar v}=\infty
+\quad\text{and}\quad
+\limsup_{x\to\infty}\bar v'(x)<\infty
+\ \ \bigl(\text{i.e.\ }-V_{1}'\le C\,\bar v \text{ eventually};
+\text{ holds for }V_{1}\ge-Kx^{2}\bigr).
+\]
+Then \emph{every} switched escape process---arbitrary adapted switching
+with countably many switches, including position-locked riding and any
+unbounded rates---is conservative.  In particular, below-quadratic
+(marginal or slower) escape ends with non-ghost transverse dynamics are
+\emph{absolutely} stable under channel coupling: the conservative leg
+of the dictionary is robust, the explosive leg is not.
+\end{theorem}
+
+\begin{proof}
+Khasminskii test with the dominating clock.  Let
+$\bar\tau(x)=\int_{x_{*}}^{x}\dd y/\bar v$ and let $\varphi$ equal
+$\bar\tau$ for $x\ge x_{*}+1$, be smoothed to constant near the base so
+that $\varphi'\ge0$ vanishes at every reflection point;
+$\varphi\uparrow\infty$ by (D).  For any channel $n$ open at $x$
+(so $v_{n}(x)\le\bar v(x)$), on $x\ge x_{*}+1$:
+$v_{n}\varphi'=v_{n}/\bar v\le1$, and, using
+$v_{n}v_{n}'=-V_{1}'=\bar v\,\bar v'$ (all channels share
+$-V_{1}'$),
+\[
+v_{n}\,( v_{n}\varphi')'
+= \frac{v_{n}v_{n}'}{\bar v}-\frac{v_{n}^{2}\,\bar v'}{\bar v^{2}}
+= \bar v'\Bigl(1-\frac{v_{n}^{2}}{\bar v^{2}}\Bigr)
+\;\in\;\bigl[\min(0,\bar v'),\ \max(0,\bar v')\bigr]
+\;\le\;C .
+\]
+Hence $L_{n}\varphi\le\beta+\tfrac{\varepsilon^{2}}{2}C=:C'$ uniformly
+in $n$ and $x$ (on the compact modification region all terms are
+bounded since $v_{n}\le\bar v$ there too).  $X$ is continuous across
+switches and $\varphi'$ vanishes at reflection points, so
+$\varphi(X_{t\wedge\zeta_{k}})-C't$ is a supermartingale for the
+switched process up to the exit time $\zeta_{k}$ of $[x_{*},k]$;
+$\E\varphi(X_{t\wedge\zeta_{k}})\le\varphi(x_{0})+C't$ while
+$\varphi(k)\to\infty$ gives
+$\Prob(\zeta_{k}\le t)\le(\varphi(x_{0})+C't)/\varphi(k)\to0$: no
+explosion.
+\end{proof}
+
+\begin{remark}[exactly where separability is and is not needed;
+summary of Secs.~2--5]
+\emph{Not needed}: separability is not needed for the per-channel
+statements to survive bounded mixing (Theorem~\ref{thm:B}), nor for
+the conservative side at all when $h_{\perp}$ is bounded below and the
+end is at most quadratic (Theorem~\ref{thm:F}: no hypothesis on the
+coupling whatsoever).  \emph{Needed}: some control of channel transfer
+(bounded rate, or transverse boundedness below) is needed for the
+explosive side; Proposition~\ref{prop:ce1} shows the per-channel family
+$\{T_{n}\}$---even uniformly bounded---does not determine the coupled
+classification once transfer is unbounded, and
+Proposition~\ref{prop:ce2} shows the conservative side also fails, but
+\emph{only} by extracting unbounded transverse energy, i.e.\ only for
+ghosts (Theorem~\ref{thm:F}).  The deciding object in the coupled
+setting is the time-of-flight functional $T_{\rm eff}$ \emph{along the
+actual coupled escape mechanism}---one integral per escape
+\emph{path family}, no longer one integral per channel.
+\end{remark}
+
+%======================================================================
+\section{The second boundary: the channel tail, and the exact open
+point}
+\label{sec:tail}
+
+The riding constructions show that in $d>1$ the state space
+$\{(x,n)\}$ has, besides the countable set of channel ends at
+$x=\infty$, a second end: $n\to\infty$ (at co-moving $x$).  It is
+itself a Feller boundary with a one-sum criterion.
+
+\begin{proposition}[tail end of the channel chain; proved
+(classical)]\label{prop:tail}
+Model the transverse transfer alone as a minimal birth chain on $\N$
+with upward rates $q_{n}>0$.  The tail $n=\infty$ is reached in finite
+time a.s.\ iff $\sum_{n}1/q_{n}<\infty$, and the mean climbing time is
+exactly $\sum_{n}1/q_{n}$ (Feller's classical explosion criterion for
+birth processes).  Thus the tail end carries its own ``time of
+flight'' $T_{\rm tail}=\sum_{n}1/q_{n}$, in exact formal analogy with
+$T=\int\dd x/v$ at a spatial end---\emph{the dictionary acquires a
+second leg of the same shape}, but its datum $q_{n}$ comes from the
+coupling matrix elements, not from any integral of the potential.
+\end{proposition}
+
+\begin{conjecture}[coupled dictionary; clean statement of what remains]
+\label{conj:coupled}
+For the switched escape process with adapted rates
+$\lambda(x;n\to m)$ derived from a (possibly unbounded) coupling, the
+process explodes iff the combined time-of-flight functional is finite
+along some accessible escape route:
+\[
+\Prob(\zeta<\infty)>0
+\iff
+\inf_{\text{admissible routes }(x(t),n(t))}
+\Bigl[\,T_{\rm eff}\bigl(x(\cdot),n(\cdot)\bigr)\Bigr]<\infty ,
+\]
+where routes carry both spatial ends (classified by $T_{\rm eff}$,
+Lemma~\ref{lem:riding}) and the tail end (classified by
+$T_{\rm tail}$-type sums, Proposition~\ref{prop:tail}).  All results
+above are the proved instances: separable (routes are single channels),
+bounded rate (routes cannot ride), riding (routes computed
+explicitly).  The general statement is a conjecture because
+accessibility of a route for the \emph{given} rates is a
+large-deviations question we have not settled.
+\end{conjecture}
+
+\begin{remark}[what this says about the paper's open problem; honest]
+The paper's remaining gap---deficiency of the full quartic PU, i.e.\
+whether the finite-channel indices $(2M,2M)$ ($\lambda>0$) resp.\
+$(0,0)$ ($\lambda<0$) survive $M\to\infty$
+(\texttt{thm:stability}, \texttt{cor:dichotomy},
+\texttt{prop:directintegral})---is the exact quantum image of the
+dichotomy proved here:
+\begin{itemize}
+\item $\lambda>0$ PU: classical escape locks onto a definite kinetic
+direction (paper: form ratio $\to0.9997$), i.e.\ bounded channel
+occupation along the escape; that is the regime of
+Theorem~\ref{thm:B}(b)/(U), where explosivity (deficiency) is stable.
+The stochastic analysis therefore \emph{supports} deficiency
+$(\infty,\infty)$ for $\lambda>0$, but does not prove it: the
+interchannel couplings are polynomial in $k$, not bounded, so
+Theorem~\ref{thm:B} does not apply literally---the needed strengthening
+(subordinate-but-unbounded transfer with bounded occupation along
+escape) is exactly the open tail control.
+\item $\lambda<0$ PU: the classical escape is channel-tail riding
+(paper: climbs through arbitrarily high mode-2 channels), the regime of
+Proposition~\ref{prop:ce2}/Theorem~\ref{thm:F}; there the classical and
+quantum legs \emph{can} and apparently \emph{do} split (classical
+blowup, quantum essential self-adjointness at every finite $M$, drift
+evidence for the full operator): zero-point transverse energy
+renormalizes the effective rates $q_{n}$, closing the tail.  Our
+framework locates the split precisely at the tail end and explains its
+mechanism (the tail leg's datum is coupling-derived and
+quantization-sensitive, unlike the potential-derived $T_{n}$); it does
+not decide the full-operator question, which remains open, as in the
+paper.
+\end{itemize}
+Note the direction of robustness proved here (conservative side stable
+under arbitrary coupling for non-ghost transverse dynamics,
+Theorem~\ref{thm:F}; explosive side fragile, Proposition~\ref{prop:ce1})
+matches the asymmetry of the paper's numerical verdicts: the
+completion candidates are both on the ``classically explosive but
+quantum-safe'' side, never the reverse.
+\end{remark}
+
+\begin{remark}[continuous transverse spectrum / sphere at infinity;
+conjecture]
+If $h_{\perp}$ has continuous spectrum (the direct-integral situation
+of the paper's \texttt{prop:directintegral}), the channel ends form a
+measure space of fibers.  Per-fiber classification holds a.e.\
+(Lemma~\ref{lem:classeq} and the 1D Lemma fiberwise, proved), and
+measurable fields of lateral conditions mirror measurable fields of
+deficiency solutions; but individual fiber ends have zero capacity for
+the coupled process, so lateral data must be specified as kernels up to
+null sets, and the transverse operator in the fiber frame is unbounded
+(the paper's proposition)---the coupled classification is again
+governed by tail control, and we do not claim it.  This, not the
+geometry of $S^{d-1}$, is the honest form of the ``sphere at
+infinity'': a direct integral of clocks, with the same open tail.
+\end{remark}
+
+%======================================================================
+\section*{Verdict}
+
+\textbf{PER-CHANNEL-ONLY} (with sharp boundaries in both directions):
+
+\begin{itemize}
+\item \textbf{Proved, full generalization where the paper is
+separable/central/boundedly mixed.}  The escape-diffusion dictionary
+extends verbatim channel by channel: the escaping end becomes the
+countable set of channel ends, $T(E)$ becomes $T_{n}=T(E-E_{n})$, each
+end is regular iff $T_{n}<\infty$ (all in the same class), per-channel
+mean explosion time $T_{n}^{2}$ resp.\ $T_{n}+O(\varepsilon^{2})$,
+per-channel speed measure $=$ the WKB density of the paper's deficiency
+vector $u_{n}\otimes\varphi_{n}$, and deficiency $(\infty,\infty)$
+corresponds to the infinite family of Feller--Wentzell lateral
+conditions with channel-mixing jump-in kernels---the stochastic
+$S$-matrix at infinity (Theorem~\ref{thm:A}; Corollary~\ref{cor:central}
+with uniformity $T_{\ell}\propto\ell^{(2-\alpha)/(2+\alpha)}$;
+Theorem~\ref{thm:B} $=$ the stochastic Kato theorem, under the uniform
+time-of-flight condition (U), automatic for power-law ends,
+Lemma~\ref{lem:U}).
+\item \textbf{Proved obstruction.}  ``One integral per channel'' is the
+\emph{most} that survives: the family $\{T_{n}\}$ does not determine
+the coupled classification under unbounded channel transfer.
+Counterexample I (shelf potential, $\sup_n T_n\le\frac32$, riding gives
+$T_{\rm eff}=\infty$): all channels explosive, coupled process
+conservative.  Counterexample II (ghost transverse spectrum): all
+channels conservative, coupled process explosive---and this direction
+is provably \emph{ghost-specific} (Theorem~\ref{thm:F}: impossible when
+$h_{\perp}$ is bounded below and the end is at most quadratic).  The
+deciding object in genuine multi-D is the time-of-flight functional
+along the coupled escape route, plus a second, tail boundary at
+$n=\infty$ with its own one-sum criterion
+(Proposition~\ref{prop:tail}).
+\item \textbf{Open / conjectural, matching the paper's open problem.}
+The route-infimum dictionary (Conjecture~\ref{conj:coupled}); the
+countable-boundary completeness of the lateral-condition
+parametrization; and the quantum tail (full PU at $M\to\infty$), where
+the classical and quantum legs provably can split and the stochastic
+leg must be run with quantization-corrected transfer rates.
+\end{itemize}
+
+\begin{thebibliography}{9}
+\bibitem{Feller1957} W.~Feller, \emph{Generalized second order
+differential operators and their lateral conditions}, Illinois J.\
+Math.\ \textbf{1}, 459--504 (1957).
+\bibitem{ItoMcKean} K.~It\^o and H.~P.~McKean, Jr., \emph{Diffusion
+Processes and their Sample Paths}, Springer (1974), \S\S3.7--3.8,
+4.1--4.6.
+\bibitem{FW1993} M.~I.~Freidlin and A.~D.~Wentzell, \emph{Diffusion
+processes on graphs and the averaging principle}, Ann.\ Probab.\
+\textbf{21}, 2215--2245 (1993).
+\bibitem{Ito1972} K.~It\^o, \emph{Poisson point processes attached to
+Markov processes}, Proc.\ Sixth Berkeley Symp.\ Math.\ Statist.\
+Prob.\ III, 225--239 (1972); R.~M.~Blumenthal, \emph{Excursions of
+Markov Processes}, Birkh\"auser (1992).
+\bibitem{KarlinTaylor} S.~Karlin and H.~M.~Taylor, \emph{A Second
+Course in Stochastic Processes}, Academic Press (1981), Ch.~15
+(boundary classification; explosion criteria; birth-process explosion,
+\S4).
+\bibitem{Khas} R.~Z.~Khasminskii, \emph{Stochastic Stability of
+Differential Equations}, 2nd ed., Springer (2012), Thm.~3.5
+(non-explosion Lyapunov test).
+\bibitem{ReedSimon2} M.~Reed and B.~Simon, \emph{Methods of Modern
+Mathematical Physics II}, Academic Press (1975), Thms.~X.7--X.10.
+\bibitem{KatoBook} T.~Kato, \emph{Perturbation Theory for Linear
+Operators}, Springer (1980), Thm.~V.4.3 (stability of deficiency
+indices).
+\end{thebibliography}
+
+\end{document}

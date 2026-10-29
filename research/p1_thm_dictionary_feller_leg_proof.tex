@@ -1,0 +1,433 @@
+% ---------------------------------------------------------------------
+% Companion note to Theorem \ref{thm:dictionary} (Thm 6.1, "explosion
+% dictionary, 1D mechanism model") of paper1/main.tex:
+% a rigorous construction of the stochastic leg (2)(c)-(d).
+%
+% Self-contained; compile standalone or lift the Lemma + proof into the
+% paper.  Verdict at the end of the file.
+% ---------------------------------------------------------------------
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.1in]{geometry}
+
+\newtheorem{lemma}{Lemma}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+
+\title{The Feller leg of the explosion dictionary:\\
+an escape diffusion with scale and speed read off the classical flow}
+\author{Companion note to Theorem~6.1 (\texttt{thm:dictionary})}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{The gap, and why $H$ itself cannot carry the stochastic leg}
+
+Theorem~6.1(2)(c)--(d) of the paper asserts that when the classical time
+of flight
+\[
+T(E)\;=\;\int^{\infty}\frac{\dd x}{\sqrt{2\,(E-V(x))}}
+\]
+is finite, ``the regulator-independent object is the minimal (Feller)
+semigroup: a sub-stochastic, \emph{explosive} process,'' and that one
+integral decides classical completeness, quantum essential
+self-adjointness, and ``stochastic conservativity (Feller exit
+boundary).''  The classical and quantum legs are rigorous; the
+stochastic leg is asserted without a construction.  It cannot be carried
+by $H=\tfrac12p^{2}+V$ itself, for two independent reasons.
+
+\emph{(a) Spectral.}  In the malicious case every self-adjoint extension
+of $H$ has spectrum unbounded below (discrete, accumulating at
+$-\infty$), so $e^{-tH}$ is not even a bounded semigroup, let alone
+sub-Markovian; a potential $V\to-\infty$ is neither a drift nor a
+nonnegative killing rate.
+
+\emph{(b) Probabilistic.}  The standard bridge from a Schr\"odinger
+operator to a diffusion is the ground-state (Doob $h$-) transform
+$h^{-1}(H-E)h$, which requires a solution $h>0$ of $(H-E)h=0$ near
+$+\infty$.  On the escaping end $E-V(x)\ge c>0$, so $u''=-2(E-V)u$ is
+oscillatory there (Sturm comparison: zeros spaced $\le\pi/\sqrt{2c}$);
+\emph{no} eventually-positive solution exists and no $h$-transform is
+available.  The stochastic leg must therefore be carried by a different
+generator, and the classical mechanism dictates which one.
+
+\section*{The escape diffusion}
+
+Fix $E$ and $x_{0}$ with $\sup_{x\ge x_{0}}V(x)<E$ (possible since
+$V\to-\infty$), and on $I=[x_{0},\infty)$ define the classical speed and
+clock
+\[
+v(x)=\sqrt{2\,(E-V(x))}\;\ge\;\sqrt{2(E-\textstyle\sup_{I}V)}>0,
+\qquad
+\tau(x)=\int_{x_{0}}^{x}\frac{\dd y}{v(y)},
+\qquad
+T\equiv T(E)=\lim_{x\to\infty}\tau(x)\in(0,\infty].
+\]
+$\tau:I\to[0,T)$ is a $C^{1}$ increasing bijection, and along the
+classical escape orbit $\dot x=v(x)$ one has $\dot\tau=1$: $\tau$ is
+the coordinate in which the classical flow is translation at unit
+speed.  The natural stochastic realization of the escape mechanism is
+the classical flow run with a Brownian-perturbed clock,
+\begin{equation}
+\dd X_{t}\;=\;v(X_{t})\circ\bigl(\dd t+\varepsilon\,\dd W_{t}\bigr)
+\qquad(\text{Stratonovich};\ \varepsilon>0),
+\label{eq:sde}
+\end{equation}
+whose zero-noise skeleton is exactly $\dot x=v(x)$, together with its
+driftless variant $\dd X_{t}=v(X_{t})\circ \dd W_{t}$ (Brownian motion
+in the classical clock).  In the $\tau$ coordinate, \eqref{eq:sde} is
+literally Brownian motion with unit drift and variance
+$\varepsilon^{2}$ on $[0,T)$, and the driftless variant is Brownian
+motion on $[0,T)$; explosion of $X$ (arrival at $x=+\infty$) is the
+$\tau$-process hitting the finite or infinite level $T$.  In
+scale-and-speed form (which requires only $V$ continuous, not $C^{1}$),
+the two variants are the regular diffusions on $I$ with, respectively,
+\begin{align}
+\text{drifted } (\beta=1):\quad
+&s'(x)=\frac{e^{-2\tau(x)/\varepsilon^{2}}}{v(x)},
+&&m(\dd x)=\frac{2}{\varepsilon^{2}}\,
+   \frac{e^{2\tau(x)/\varepsilon^{2}}}{v(x)}\,\dd x,
+\label{eq:smdrift}\\
+\text{driftless } (\beta=0,\ \varepsilon=1):\quad
+&s(x)=\tau(x),
+&&m(\dd x)=\frac{2\,\dd x}{v(x)}
+   \;=\;2\bigl[2(E-V(x))\bigr]^{-1/2}\dd x,
+\label{eq:smzero}
+\end{align}
+with killing measure zero, reflection at the (regular) left endpoint
+$x_{0}$, and the minimal (absorbing) convention at $+\infty$.  One
+checks $D_{m}D_{s}=\tfrac{\varepsilon^{2}}{2}(v\,\partial_{x})^{2}
++\beta\,v\,\partial_{x}$, i.e.\ the generator of \eqref{eq:sde}.
+
+Two identifications make this the \emph{canonical} choice rather than a
+convenient one.  First, the driftless speed measure \eqref{eq:smzero}
+is exactly (twice) the WKB deficiency density of the paper's one-line
+identity (its Eq.~\texttt{eq:onelineidentity},
+$|\psi_{\pm}|^{2}\approx[2(E-V)]^{-1/2}$):
+$m(\dd x)=2\,|\psi_{\pm}^{\rm WKB}(x)|^{2}\,\dd x$, so the
+speed-measure mass near $+\infty$ \emph{is} the deficiency-solution
+norm, $m((x_{1},\infty))=2\int_{x_{1}}^{\infty}\dd x/v\approx
+2\int_{x_{1}}^{\infty}|\psi_{\pm}|^{2}\,\dd x$.  Second, the scale mass
+near $+\infty$ in \eqref{eq:smzero} is $T(E)$ itself.  Both Feller data
+are the one classical integral.
+
+\section*{The lemma}
+
+Boundary-classification notation (Feller \cite{Feller1952,Feller1957};
+It\^o--McKean \cite{ItoMcKean}; Karlin--Taylor \cite{KarlinTaylor},
+Ch.~15.6; Borodin--Salminen \cite{BorodinSalminen}, Ch.~II.1):
+with $S(x_{0},\xi]=s(\xi)-s(x_{0})$, $M(x_{0},\xi]=m((x_{0},\xi])$,
+\[
+\Sigma=\int^{\infty}_{x_{0}} M(x_{0},\xi]\,\dd S(\xi),
+\qquad
+N=\int^{\infty}_{x_{0}} S(x_{0},\xi]\,\dd M(\xi);
+\]
+$+\infty$ is \emph{regular} iff $\Sigma<\infty$ and $N<\infty$
+(equivalently $S,M$ both finite), \emph{exit} iff $\Sigma<\infty$,
+$N=\infty$, \emph{entrance} iff $\Sigma=\infty$, $N<\infty$,
+\emph{natural} iff both diverge; it is \emph{accessible} (attainable in
+finite time with positive probability) iff $\Sigma<\infty$, i.e.\ iff
+regular or exit.
+
+\begin{lemma}[Feller leg of the explosion dictionary]
+\label{lem:feller}
+Let $V$ satisfy the hypotheses of Theorem~6.1 ($C^{1}$, $V\to-\infty$
+eventually monotonically, $|V'||V|^{-3/2}$ bounded); in fact only
+$V$ continuous with $V(x)\to-\infty$ is used below.  Fix $E$, $x_{0}$,
+$v$, $\tau$, $T=T(E)$ as above, and let $X$ be either escape diffusion
+\eqref{eq:smdrift} ($\beta=1$, any $\varepsilon>0$) or
+\eqref{eq:smzero} ($\beta=0$), reflected at $x_{0}$, minimal at
+$+\infty$; let $\zeta=\inf\{t:X_{t-}=+\infty\}$ be its explosion time
+and $(P^{\min}_{t})$ the associated minimal semigroup on
+$C_{0}(I)$/$L^{\infty}(I)$.  Then:
+\begin{itemize}
+\item[(i)] \textbf{(classification)} $+\infty$ is a \emph{regular}
+boundary if $T(E)<\infty$ and a \emph{natural} boundary if
+$T(E)=\infty$; it is never exit and never entrance.  Explicitly, for
+$\beta=0$ the two Feller test integrals coincide and equal the square
+of the classical time of flight,
+\[
+\Sigma\;=\;N\;=\;T(E)^{2},
+\]
+while for $\beta=1$,
+$\Sigma=T-\tfrac{\varepsilon^{2}}{2}\bigl(1-e^{-2T/\varepsilon^{2}}\bigr)$
+and $N=\tfrac{\varepsilon^{2}}{2}\bigl(e^{2T/\varepsilon^{2}}-1\bigr)-T$,
+both finite iff $T<\infty$.  The classification is independent of
+$E$, of $\beta\in\{0,1\}$, and of $\varepsilon>0$.
+\item[(ii)] \textbf{(explosion $\Leftrightarrow$ $T<\infty$)}  If
+$T(E)<\infty$ then $\Prob_{x}(\zeta<\infty)=1$ for every $x\in I$:
+the minimal semigroup is strictly sub-stochastic
+($P^{\min}_{t}\mathbf 1<1$ for all $t>0$), and probability reaches
+$+\infty$ in finite time.  The mean explosion time from $x_{0}$ is the
+accessibility integral itself,
+\[
+\E_{x_{0}}[\zeta]\;=\;\Sigma\;=\;
+\begin{cases}
+T(E)^{2}, & \beta=0,\\[2pt]
+T(E)-\tfrac{\varepsilon^{2}}{2}
+\bigl(1-e^{-2T(E)/\varepsilon^{2}}\bigr)\;\in\;
+\bigl(T-\tfrac{\varepsilon^{2}}{2},\,T\bigr], & \beta=1,
+\end{cases}
+\]
+and in the small-noise limit of the drifted model,
+$\zeta\to T(E)$ almost surely as $\varepsilon\downarrow0$: the minimal
+process loses its mass at the classical escape time.  If $T(E)=\infty$
+then $\Prob_{x}(\zeta<\infty)=0$: the semigroup is conservative
+($P^{\min}_{t}\mathbf 1=\mathbf 1$) and, $+\infty$ being natural, it is
+the \emph{unique} Feller semigroup generated by
+$\tfrac{\varepsilon^{2}}{2}(v\partial_{x})^{2}+\beta v\partial_{x}$
+with reflection at $x_{0}$: no lateral condition can be imposed at
+infinity \cite{Feller1952,Feller1957}.
+\item[(iii)] \textbf{(dictionary)}  Consequently one integral decides
+all three legs: $T(E)<\infty$ $\Leftrightarrow$ classical escape in
+finite time $\Leftrightarrow$ (under the theorem's regularity, by its
+legs (1)--(2)) limit circle at $+\infty$ $\Leftrightarrow$ $+\infty$
+regular and $X$ explosive; $T(E)=\infty$ $\Leftrightarrow$ limit point
+$\Leftrightarrow$ $+\infty$ natural and $X$ conservative and unique.
+Moreover the correspondence is structural, not merely numerical: for
+$\beta=0$ the diffusion's own Weyl classification agrees ($u=1$ and
+$u=s$ solve $D_{m}D_{s}u=0$, and $\int\dd m=2T$,
+$\int s^{2}\dd m=\tfrac{2}{3}T^{3}$, so $D_{m}D_{s}$ is limit circle at
+$+\infty$ iff $T<\infty$), the speed measure is the WKB deficiency
+density (the paper's Eq.~\texttt{eq:onelineidentity}), and at a regular
+boundary Feller's lateral conditions at $+\infty$ (absorbing,
+reflecting, elastic, sticky, jump-in \cite{Feller1957,ItoMcKean})
+parametrize the sub-Markov extensions of the minimal semigroup---the
+stochastic mirror of the quantum $U(1)$ family of Theorem~6.1(2)(a),
+with the conservative lateral conditions mirroring the completions
+that return probability from infinity (Theorem~6.1(2)(b)).
+\item[(iv)] \textbf{(exit is impossible)}  For \emph{any} regular
+diffusion on $(x_{1},\infty)$ whose speed measure has finite mass near
+$+\infty$---in particular any diffusion honoring the WKB identity
+$m(\dd x)\propto|\psi_{\pm}|^{2}\dd x$ with $T<\infty$---the boundary
+$+\infty$ cannot be exit in Feller's strict sense: accessibility forces
+$S<\infty$, and then $N\le S\cdot M<\infty$, so an accessible boundary
+with finite speed mass is regular.  ``Exit'' in Theorem~6.1(2)(d) must
+therefore be read as \emph{accessible} (regular), not as Feller's
+exit class.
+\end{itemize}
+\end{lemma}
+
+\begin{proof}
+Throughout, transport everything to the clock coordinate: the map
+$\tau:I\to[0,T)$ is a $C^{1}$ increasing homeomorphism ($v$ is
+continuous and bounded below by
+$v_{\min}=\sqrt{2(E-\sup_{I}V)}>0$), scale functions and speed measures
+are intrinsic under such maps (It\^o--McKean \cite{ItoMcKean},
+\S4.1--4.6; Rogers--Williams \cite{RogersWilliams}, V.46--47), and the
+image data of \eqref{eq:smdrift}--\eqref{eq:smzero} under $\tau$ are
+exactly the scale and speed of Brownian motion on $[0,T)$ with drift
+$\beta$ and variance $\varepsilon^{2}$:
+$\dd \tilde s(u)=e^{-\varrho u}\dd u$,
+$\tilde m(\dd u)=\tfrac{2}{\varepsilon^{2}}e^{\varrho u}\dd u$ with
+$\varrho=2\beta/\varepsilon^{2}$ (substitute $u=\tau(x)$,
+$\dd x=v\,\dd u$).  Hence $X_{t}=\tau^{-1}(Z_{t})$ in law, where $Z$ is
+that linear diffusion on $[0,T)$, reflected at $0$, absorbed at $T$,
+with the same time parameter and $\zeta=\inf\{t:Z_{t}=T\}$.  All four
+classification integrals may therefore be computed for $Z$; the
+Lebesgue--Stieltjes substitution $u=\tau(\xi)$ shows they equal the
+corresponding integrals in $x$.
+
+\emph{(i).}  Case $T<\infty$: on the bounded interval $(0,T)$ both
+$\tilde S(0,T)=\int_{0}^{T}e^{-\varrho u}\dd u$ and
+$\tilde M(0,T)=\tfrac{2}{\varepsilon^{2}}\int_{0}^{T}e^{\varrho u}\dd u$
+are finite, hence $\Sigma\le \tilde S\,\tilde M<\infty$ and
+$N\le \tilde S\,\tilde M<\infty$: $+\infty$ is regular.  For $\beta=0$,
+$\varepsilon=1$: $\tilde S(0,\xi]=\xi$, $\tilde M(0,\xi]=2\xi$, so
+$\Sigma=\int_{0}^{T}2\xi\,\dd\xi=T^{2}=N$.  For $\beta=1$:
+$\tilde M(0,\xi]=e^{\varrho\xi}-1$ ($\varrho=2/\varepsilon^{2}$;
+the prefactors cancel, $\tfrac{2}{\varepsilon^{2}}\cdot
+\tfrac{1}{\varrho}=1$), $\dd\tilde S=e^{-\varrho\xi}\dd\xi$, whence
+$\Sigma=\int_{0}^{T}(1-e^{-\varrho\xi})\dd\xi
+=T-\tfrac{\varepsilon^{2}}{2}(1-e^{-2T/\varepsilon^{2}})$ and
+$N=\int_{0}^{T}\tfrac{1-e^{-\varrho\xi}}{\varrho}\cdot
+\tfrac{2}{\varepsilon^{2}}e^{\varrho\xi}\dd\xi
+=\int_{0}^{T}(e^{\varrho\xi}-1)\dd\xi
+=\tfrac{\varepsilon^{2}}{2}(e^{2T/\varepsilon^{2}}-1)-T$.
+Case $T=\infty$: for $\beta=0$, $\Sigma=N=\lim_{T'\to\infty}T'^{2}
+=\infty$; for $\beta=1$,
+$\Sigma=\int_{0}^{\infty}(1-e^{-\varrho\xi})\dd\xi=\infty$ and
+$N=\int_{0}^{\infty}(e^{\varrho\xi}-1)\dd\xi=\infty$: natural.  Since
+$\Sigma<\infty\Leftrightarrow T<\infty\Leftrightarrow N<\infty$ in all
+cases, the exit and entrance classes never occur.
+$E$-independence: if $V\to-\infty$ then for $E\ne E'$,
+$(E-V(x))/(E'-V(x))\to1$ as $x\to\infty$, so
+$T(E)<\infty\Leftrightarrow T(E')<\infty$ and (i) applied at $E'$
+gives the same class.
+
+\emph{(ii).}  Let $T<\infty$.  For $\beta=1$ the Skorokhod
+decomposition of the reflected process gives
+$Z_{t}=z+t+\varepsilon W_{t}+L_{t}\ge z+t+\varepsilon W_{t}\to\infty$
+a.s., so $Z$ hits $T$ a.s.; for $\beta=0$, $Z$ is reflecting Brownian
+motion, which is recurrent on $[0,\infty)$ and hits $T$ a.s.  Hence
+$\Prob_{x}(\zeta<\infty)=1$, and since $Z$ has everywhere-positive
+transition density on $(0,T)$ before absorption and $T$ is accessible,
+$\Prob_{x}(\zeta\le t)>0$ for every $t>0$, i.e.\
+$P^{\min}_{t}\mathbf 1(x)=\Prob_{x}(\zeta>t)<1$ for all $t>0$.  For the
+mean, solve $D_{\tilde m}D_{\tilde s}u=-1$ on $(0,T)$ with
+$D_{\tilde s}u(0)=0$ (reflection) and $u(T)=0$:
+$D_{\tilde s}u(\xi)=-\tilde M(0,\xi]$, so
+$u(z)=\int_{z}^{T}\tilde M(0,\xi]\,\dd\tilde S(\xi)$
+(Karlin--Taylor \cite{KarlinTaylor}, \S15.3), and at $z=0$ this is
+exactly the integral $\Sigma$ evaluated in (i); Dynkin's formula
+applies since $\zeta$ has finite mean by the explicit bound.  This
+yields $\E_{x_{0}}[\zeta]=T^{2}$ ($\beta=0$) and
+$\E_{x_{0}}[\zeta]=T-\tfrac{\varepsilon^{2}}{2}
+(1-e^{-2T/\varepsilon^{2}})$ ($\beta=1$).  Small noise:
+with $Z_{0}=0$, Skorokhod gives the sandwich
+$t+\varepsilon W_{t}\le Z_{t}\le t+\varepsilon W_{t}
++\sup_{r\le t}\bigl(-(r+\varepsilon W_{r})\bigr)^{+}$, and
+$\sup_{t\le T+1}\varepsilon|W_{t}|\to0$ a.s., so
+$\zeta\to T$ a.s.
+
+Let $T=\infty$.  By (i), $+\infty$ is natural, hence inaccessible:
+$\Sigma=\infty$ implies $\Prob_{x}(\zeta<\infty)=0$ (Feller's test for
+explosions; \cite{KarlinTaylor}, Lemma~15.6.2, or
+\cite{ItoMcKean}, \S4.2).  With reflection at the regular endpoint
+$x_{0}$ and no killing, the lifetime is a.s.\ infinite and
+$P^{\min}_{t}\mathbf 1=\mathbf 1$.  Uniqueness at a natural boundary
+is Feller's theorem: the generator's domain requires no lateral
+condition at a natural endpoint and admits none, so the sub-Markov
+semigroup with the given (reflecting) condition at $x_{0}$ is unique
+\cite{Feller1952,Feller1957}.
+
+\emph{(iii).}  The chain of equivalences is the conjunction of (i),
+(ii) with the classical statement ($\dot x=v$ reaches $+\infty$ at
+time exactly $T(E)$, the $\varepsilon\to0$ limit above) and with legs
+(1)--(2) of Theorem~6.1 (Weyl alternative and limit-point/limit-circle
+criteria, Reed--Simon \cite{ReedSimon2}, Thms.~X.7--X.10, under the
+theorem's regularity hypothesis).  The Weyl computation for
+$D_{m}D_{s}$ at $\beta=0$ is elementary: the solutions of
+$D_{m}D_{s}u=0$ are $u=1$ and $u=s=\tau$, and near $+\infty$
+$\int\mathbf 1^{2}\,\dd m=2T$,
+$\int s^{2}\,\dd m=2\int_{0}^{T}u^{2}\dd u=\tfrac23T^{3}$, both finite
+iff $T<\infty$ (limit-point/limit-circle for $D_{m}D_{s}$ is
+$\lambda$-independent as usual).  The identification
+$m(\dd x)=2|\psi^{\rm WKB}_{\pm}|^{2}\dd x$ is
+Eq.~\eqref{eq:smzero} against the paper's
+Eq.~\texttt{eq:onelineidentity}.  The lateral-condition statement at a
+regular boundary is Feller's classification of boundary conditions
+\cite{Feller1957} (see also \cite{ItoMcKean}, \S3.7--3.8,
+\cite{BorodinSalminen}, II.1.7).
+
+\emph{(iv).}  Suppose $+\infty$ is accessible, i.e.\ $\Sigma<\infty$.
+If $S(x_{1},\infty)=\infty$ then for any interior $\xi_{0}$,
+$\Sigma\ge M(x_{1},\xi_{0}]\int_{\xi_{0}}^{\infty}\dd S=\infty$,
+a contradiction; so $S<\infty$.  Then
+$N=\int S(x_{1},\xi]\,\dd M(\xi)\le S(x_{1},\infty)\,M(x_{1},\infty)$,
+which is finite whenever the speed mass $M(x_{1},\infty)$ is finite.
+Hence $N<\infty$, and the boundary is regular, not exit.
+\end{proof}
+
+\begin{remark}[hypotheses audit]
+The lemma uses strictly less regularity than Theorem~6.1: only $V$
+continuous and eventually $<E$ (plus $V\to-\infty$ for the
+$E$-independence claim).  The eventual monotonicity and the bound
+$|V'||V|^{-3/2}$ are needed only for the \emph{quantum} leg (the
+limit-point/limit-circle criteria cited in the theorem); the
+Stratonovich form \eqref{eq:sde} uses $V\in C^{1}$, which the theorem
+already assumes, and the scale--speed construction
+\eqref{eq:smdrift}--\eqref{eq:smzero} does not need even that.  No
+hypothesis had to be added.
+\end{remark}
+
+\begin{remark}[regular, not exit, is the physically correct class]
+The strict Feller exit class would \emph{forbid} re-entry from the
+boundary, contradicting the paper's own Theorem~6.1(2)(b) and the
+revival numerics of its explosion figure (\texttt{fig:explosion};
+completions returning
+$\approx95\%$ of the probability from infinity).  The regular class is
+exactly right: the minimal (absorbing) lateral condition gives the
+sub-stochastic explosive semigroup of (2)(c)---regulator-independent,
+as in the left panel of the figure---while the conservative lateral
+conditions (reflecting, sticky, jump-in) are the stochastic
+counterparts of the $U(1)$ family of self-adjoint extensions in
+(2)(a)--(b), including a jump-in condition
+$+\infty\to$ interior mirroring the ``wormhole'' completion.  So the
+correction strengthens the dictionary rather than weakening it.
+\end{remark}
+
+\begin{remark}[proposed rewording in the paper]
+Minimal edits that make leg (3) a theorem:
+in (2)(c), after ``the minimal (Feller) semigroup \cite{Feller1952}'',
+specify the process, e.g.:
+``\emph{of the escape diffusion
+$\dd X=\sqrt{2(E-V(X))}\circ(\dd t+\varepsilon\,\dd W)$---the classical
+flow run with a Brownian-perturbed clock, whose speed measure is the
+WKB density of Eq.~\emph{\texttt{eq:onelineidentity}}---}a sub-stochastic,
+explosive process losing mass at the classical escape time
+(mean explosion time $=T(E)+O(\varepsilon^{2})$, and $\to T(E)$ a.s.\ as
+$\varepsilon\to0$)''; and in (2)(d), replace ``(Feller exit boundary)''
+by ``(Feller boundary classification: $+\infty$ is
+regular---accessible---iff $T<\infty$, natural iff $T=\infty$)''.
+The abstract's item (vii) needs no change beyond reading
+``stochastic conservativity'' through this lemma.
+\end{remark}
+
+\bigskip
+\noindent\textbf{VERDICT: PROVABLE-WITH-RESTATEMENT.}
+Leg (3) of Theorem~6.1 is rigorously provable once (a) the stochastic
+object is named---the escape diffusion
+\eqref{eq:sde}/\eqref{eq:smdrift}--\eqref{eq:smzero}, not any semigroup
+of $H$---and (b) ``Feller exit boundary'' is corrected to ``accessible
+(regular) boundary'': for this diffusion, $+\infty$ is regular iff
+$T(E)<\infty$ (minimal semigroup sub-stochastic and explosive, mean
+lifetime the classical time of flight up to $O(\varepsilon^{2})$) and
+natural iff $T(E)=\infty$ (conservative and unique).  Strict ``exit''
+is provably impossible for any diffusion consistent with the paper's
+own WKB identity, and would contradict the paper's return-from-infinity
+completions; ``regular'' is both correct and a better fit to the
+theorem's (2)(a)--(b).
+
+\begin{thebibliography}{9}
+
+\bibitem{Feller1952}
+W.~Feller,
+\emph{The parabolic differential equations and the associated
+semi-groups of transformations},
+Ann.\ Math.\ \textbf{55}, 468--519 (1952).
+
+\bibitem{Feller1957}
+W.~Feller,
+\emph{Generalized second order differential operators and their
+lateral conditions},
+Illinois J.\ Math.\ \textbf{1}, 459--504 (1957).
+
+\bibitem{ItoMcKean}
+K.~It\^o and H.~P.~McKean, Jr.,
+\emph{Diffusion Processes and their Sample Paths},
+2nd printing (Springer, Berlin, 1974), \S\S3.7--3.8, 4.1--4.6.
+
+\bibitem{KarlinTaylor}
+S.~Karlin and H.~M.~Taylor,
+\emph{A Second Course in Stochastic Processes}
+(Academic Press, New York, 1981), Ch.~15, \S\S3, 6
+(boundary classification, Table~15.6.2; explosion criterion,
+Lemma~15.6.2).
+
+\bibitem{BorodinSalminen}
+A.~N.~Borodin and P.~Salminen,
+\emph{Handbook of Brownian Motion---Facts and Formulae},
+2nd ed.\ (Birkh\"auser, Basel, 2002), Ch.~II.1
+(scale, speed, boundary classification).
+
+\bibitem{RogersWilliams}
+L.~C.~G.~Rogers and D.~Williams,
+\emph{Diffusions, Markov Processes and Martingales, Vol.~2:
+It\^o Calculus},
+2nd ed.\ (Cambridge University Press, Cambridge, 2000), \S\S V.46--47.
+
+\bibitem{ReedSimon2}
+M.~Reed and B.~Simon,
+\emph{Methods of Modern Mathematical Physics II: Fourier Analysis,
+Self-Adjointness}
+(Academic Press, New York, 1975), Thms.~X.7--X.10.
+
+\end{thebibliography}
+
+\end{document}

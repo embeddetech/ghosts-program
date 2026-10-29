@@ -1,0 +1,1277 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1.05in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!60!black,citecolor=blue!60!black,urlcolor=blue!60!black]{hyperref}
+
+\newcommand{\PT}{\mathcal{PT}}
+\newcommand{\ee}{\mathrm{e}}
+\newcommand{\ii}{\mathrm{i}}
+
+\newtheorem{proposition}{Proposition}
+\newtheorem{claim}{Claim}
+\newtheorem{conjecture}{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\title{Ghosts as an interpretation experiment:\\
+what indivisible processes say to Everett}
+\author{Jonathan Torkelson\\[2pt]
+\small Embeddetech, Inc., Tulsa, Oklahoma, USA \quad
+\texttt{jtorkelson@embeddetech.com}}
+\date{July 19, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent\textbf{Draft --- not for circulation.}
+The quantum interpretation debate is usually left to philosophy because
+the leading readings are believed empirically equivalent. This paper
+argues that the equivalence is conditional on the matter content of the
+world, and makes three claims of decreasing modesty about what the
+indivisible-stochastic-process reconstruction of quantum theory, and
+the ghost sectors studied in its companion papers, say to the Everett
+interpretation. \emph{First}, Barandes' reconstruction (the wave
+function as nomic, law-like bookkeeping for an indivisible stochastic
+process on configurations) removes the \emph{no-alternative} argument
+for $\psi$-ontology without refuting it, and the Bender--Mannheim
+program (the
+Hilbert-space inner product derived from the operator algebra rather
+than postulated) sharpens the resulting underdetermination by
+dissolving a second postulated primitive; the Pusey--Barrett--Rudolph
+theorem does not apply, by the theorem's own scope---an exit we take
+from Barandes and cite rather than establish, so this first claim is
+conditional on its soundness; the exit's real load is the nomic
+reclassification of $\psi$. \emph{Second}, the
+ghost trilemma of the companion papers---coupled ghosts, empirical
+Lorentz invariance, definite configurations: any two, never all three,
+at tree level---\emph{locates} Everett as the
+drop-definite-configurations horn; this is a location, not a
+criticism, since manifest covariance is exactly what dropping
+configurations buys. \emph{Third}---the paper's own claim, and it is
+conjectural---a coupled ghost sector would separate the two ontological classes
+\emph{observationally with the Born rule intact}: a beables ontology
+is foliation-anchored, the foliation's determinacy is a measurable
+property of the state that is generically nonzero on
+ordinary matter
+but whose observable manifestation is shielded there, and a ghost
+sector would (conditionally) unshield it through a frame-locked
+kinematic dipole and spectral edge, while no-preferred-slicing
+ontologies do not entail such a signal, remaining compatible with either
+outcome. The claim rides on the converse of a
+no-signaling shield proven only for a finite core, and it
+discriminates a class (foliation-anchored single-world versus
+no-slicing), not a single interpretation. It separates the classes
+cleanly only when the ghost Lagrangian is held fixed and
+Lorentz-invariant and the individuating frame arises solely as a
+state-functional foliation: a fundamentally Lorentz-violating
+completion, or a birth-surface (cosmological initial-condition)
+structure, is available to a no-slicing interpreter too and would
+reproduce the same signal---the birth surface at no cost, the
+Lorentz-violating completion at the price of manifest covariance---so
+a positive detection is
+merely \emph{consistent with} the foliation-anchored class---being
+confounded by such completions or initial conditions---while the null
+direction is the cleaner discriminator,
+because the beables class \emph{entails} the signal (of the computed
+template amplitude, for an established sector, under the assumed
+comoving-frame identification---a realization off that frame, below
+the template's signal fraction, or individuated by a completion other
+than the template's frame cutoff, survives the pointed null) whereas a
+no-slicing ontology merely \emph{permits} it. In fact no purely state-functional rescue of
+a ghost vacuum has yet been exhibited, so on current knowledge every
+concrete realization of the positive signal lies in the confounded
+branch and the clean case is conjectural over and above the
+shield-converse conjecture; this only strengthens the null direction,
+since then every viable beables completion predicts a signal---at the
+template's sensitivity, for a template-saturating realization. The
+closest ancestor of the escape,
+Valentini's quantum non-equilibrium, requires Born-rule violations;
+here the discriminator is a sector, not a rule failure. (One other
+equilibrium route to foliation observability, via contested
+arrival-time observables, is disjoint from ours.) Along the way
+we state the bookkeeping objection an Everettian should raise against
+the stochastic reconstruction---to our knowledge for the first time in
+print---and give a partly conditional answer.
+\end{abstract}
+
+\newpage
+\begin{quote}
+\small\noindent\textbf{Note on provenance.} This manuscript is an
+experiment in AI-conducted research as much as a physics paper. The
+project began when the author asked the large language model Claude
+Fable~5 (Anthropic): \emph{``Is it not possible that the antilinear
+PT/time-reversal symmetry element could maybe predict indivisible
+non-Markovian processes?''} Everything that followed was performed by
+the model: the research program, the theorems and proofs, the numerical
+experiments, the literature search, and this text. The model was
+repeatedly prompted to attack its own results adversarially and to
+search for prior work. The author, a professional engineer rather than
+a physicist, directed and reviewed the sessions but makes no claim to
+comprehension of the findings, and is circulating the manuscript for
+independent review by professional physicists. Accordingly, nothing
+here should be taken on trust: every claim is argued in full, and the
+originating conversation, project briefing, and full research notebook
+are preserved in the program's repositories \cite{indivisible}. This
+paper is a philosophy-of-physics synthesis: it proves no new theorem,
+and its central claim is explicitly conditional.
+\end{quote}
+
+%=====================================================================
+\section{Introduction}
+\label{sec:intro}
+
+The interpretation debate in quantum mechanics is usually adjudicated
+by philosophy, because the contenders are believed to be empirically
+equivalent: Everettians, Bohmians, and their relatives agree on every
+Born-rule expectation value, so the argument proceeds by theoretical
+virtue---parsimony, covariance, explanatory depth---rather than by
+measurement. Where the data are silent, taste decides. This paper
+argues that the silence is not unconditional. It is conditional on the
+matter content of the world, and there is a specific, physically
+motivated sector---a ghost sector, in the sense of higher-derivative
+and negative-norm quantum field theory---whose presence would break
+the equivalence between two broad classes of interpretation
+\emph{while leaving the Born rule intact everywhere}. Interpretations
+that anchor definite configurations to a spacelike slicing would
+predict a frame-locked observational signature; interpretations with
+no preferred slicing would not entail it, remaining compatible with
+either outcome. The experiment may
+never become available: nature may simply contain no coupled ghost
+sector, and one of the two supporting results below is a conjecture
+rather than a theorem. But the conditional itself, we will argue, is
+enough to change what the standing philosophical arguments can
+establish.
+
+The paper makes three claims, in decreasing order of modesty---each
+weaker than a reader might fear.
+
+\begin{enumerate}
+\item \textbf{Underdetermine.} Barandes' stochastic--quantum
+correspondence, in which the wave function is nomic, law-like
+bookkeeping for an indivisible stochastic process on configurations
+\cite{BarandesPoP,BarandesTheorem}, removes the \emph{no-alternative}
+argument for $\psi$-ontology; the Bender--Mannheim antilinearity
+program, in which the Hilbert-space inner product is derived from the
+operator algebra rather than postulated
+\cite{BenderMannheim2008,Mannheim2020}, reinforces this by dissolving a
+second postulated primitive and thereby sharpening the
+underdetermination. They do not refute the Everett interpretation; they
+restore an underdetermination that the no-alternative argument claimed
+to have closed. This claim is
+conditional on the soundness of Barandes' exit from the PBR theorem,
+which we cite but do not here establish
+(Sections~\ref{sec:landscape} and~\ref{sec:underdet}).
+\item \textbf{Locate.} The ghost trilemma established in the
+program's companion papers \cite{instantaneous,choosing}---coupled
+ghosts, empirical Lorentz invariance, definite configurations: any
+two, never all three, at tree level---\emph{locates} Everett as the
+horn that drops definite configurations. This is a placement on a
+map, not an objection: manifest covariance, the Everettian's prized
+possession, is exactly what dropping configurations buys
+(Section~\ref{sec:trilemma}).
+\item \textbf{Separate.} A coupled ghost sector would separate
+foliation-anchored single-world ontologies from no-preferred-slicing
+ontologies \emph{observationally, with the Born rule intact}: the
+beable kinematics of such a sector is frame-locked, and the frame
+would be visible as a kinematic dipole and a direction-modulated
+spectral edge in the sector's decay products
+\cite{instantaneous}. This third claim is \emph{conjectural}: it is
+the converse of a no-signaling shield that is proven only for a
+finite-configuration core and conjectured at field-theory strength,
+and we state it conditionally throughout
+(Section~\ref{sec:separation}). It carries a further restriction: the
+separation is clean only when the ghost Lagrangian is held fixed and
+\emph{Lorentz-invariant} and the individuating frame arises as a
+state-functional foliation. If the frame instead enters through a
+fundamentally Lorentz-violating completion or a birth-surface
+(cosmological initial-condition) structure, a no-slicing interpreter
+can adopt the same structure and reproduce the same signal---at no cost
+in the birth-surface case, at the price of manifest covariance in the
+Lorentz-violating one---so the positive direction is confounded and the
+null direction is the
+cleaner discriminator (Section~\ref{sec:separation}). No purely state-functional
+rescue has in fact been exhibited, so on current knowledge the clean
+case is conjectural over and above the shield-converse conjecture, and
+every concrete realization of the positive signal lies in the
+confounded branch---which only strengthens the null direction
+(Section~\ref{sec:separation}).
+\end{enumerate}
+
+One paragraph of orientation about tone. The Everett interpretation's
+central virtue is real and this paper trades on it rather than
+disputing it: Everett takes the formalism literally, adds nothing to
+it, and in return gets manifest relativistic covariance and a clean
+story about why no experiment has ever needed a preferred frame
+\cite{Wallace2012}. Nothing below argues that Everett is wrong.
+The paper's business is pricing, not sneering: every horn of the
+trilemma has a price, Everett's included, and our contribution is to
+say what the prices are and---the new part---to identify the register
+in which nature could be induced to express an opinion.
+
+A structural guard, stated up front because the argument depends on
+it. Barandes asserts in print that his formulation has \emph{no
+fundamentally preferred foliation} \cite{BarandesPoP} and is causally
+local \cite{BarandesCausal,BHK2025}. The foliation-anchoring on which our
+third claim rests must therefore be---and is---a \emph{conditional
+extension} of his framework, not a contradiction of it. His claims,
+on the reading we defend in Section~\ref{sec:separation}, concern the
+causal and signaling structure of ordinary matter sectors,
+where we agree the foliation is hidden; our claim is that a
+\emph{ghost} sector would promote the beable-kinematics foliation from
+convention to observable. We extend his framework into a regime it
+does not treat; we do not disagree with it about the regime it does.
+On ordinary matter the two positions are indistinguishable, which is
+precisely the point (Section~\ref{sec:separation}).
+
+Section~\ref{sec:landscape} reviews the two reconstructions and the
+Pusey--Barrett--Rudolph question. Section~\ref{sec:underdet} states
+what the resulting underdetermination shows and what it does not, and
+formulates and answers the bookkeeping objection.
+Section~\ref{sec:trilemma} restates the trilemma and places Everett on
+it. Section~\ref{sec:separation} develops the separation claim and its
+conditional status. Section~\ref{sec:limits} lists what does not
+follow, and Section~\ref{sec:discussion} concludes.
+
+%=====================================================================
+\section{The reconstruction landscape}
+\label{sec:landscape}
+
+\subsection{Barandes: $\psi$ as nomic bookkeeping}
+\label{sec:barandes}
+
+The stochastic--quantum correspondence
+\cite{BarandesPoP,BarandesTheorem} represents any unitary quantum
+system as a stochastic process on a configuration space $\mathcal{C}$:
+the system determinately occupies one configuration at each time, and
+the theory supplies time-dependent transition probabilities
+$\Gamma_{ij}(t)$, obtained from the unitary $U(t)$ as
+$\Gamma_{ij}(t)=|U_{ij}(t)|^{2}$ in the configuration basis. The
+resulting matrices are \emph{unistochastic}, and---this is the
+load-bearing structural feature---generically \emph{indivisible}: the
+process specifies transition probabilities from the initial time to
+each later time, but these do not factor through intermediate times as
+a Markov chain would,
+$\Gamma(t)\neq\Gamma(t\mid t')\,\Gamma(t')$ for stochastic
+intermediaries, except at isolated \emph{division events}.
+Indivisibility replaces Markovianity; the process has memory, but the
+memory is carried by the law, not stored in any additional beable.
+
+On this reading the wave function is demoted from object to
+instrument. Configurations are the ontology; $\psi$ is the compendium
+of conditional information the law needs in order to issue transition
+probabilities---in Barandes' published formulation, the wave function
+``has a law-like or nomic character'' \cite{BarandesPoP}. We note a
+terminological drift in the primary sources that we track but do not
+paper over: the published account of 2025 speaks of the nomic wave
+function \cite{BarandesPoP}, while the 2026 development recasts the
+same structural point in latent-variable and hidden-Markov-model
+language \cite{BarandesHMM}. The gloss we will use in this paper---%
+$\psi$ as \emph{derived bookkeeping}, the memory record of an
+indivisible process---is our own, and we flag it as such; nothing
+below depends on more than the shared structural content of the two
+framings, namely that $\psi$ is not a beable.
+
+\paragraph{PBR does not apply---by the theorem's own scope.}
+The standard reflex against any $\psi$-nonontic reading is the
+Pusey--Barrett--Rudolph theorem \cite{PBR}. But PBR is a theorem
+\emph{inside} the ontological-models framework of Harrigan and
+Spekkens \cite{HS2010}, and that framework builds in a presupposition
+the indivisible reconstruction denies. Harrigan and Spekkens assume
+that every system has an underlying \emph{ontic state} $\lambda$ and
+that each preparation fixes a probability distribution over $\lambda$;
+PBR is then a single-time statement about such distributions, with
+measurement responses depending on the $\lambda$ sampled at
+preparation. (We are careful here: Harrigan and Spekkens draw no
+nomic or law-like carve-out of their own---their classification
+situates every $\psi$ within the ontic-state framework (as ontic, or as
+epistemic about $\lambda$), and they classify
+de Broglie--Bohm's $\psi$ as ontic. Their Section~6 does note, following
+a suggestion of Wiseman, that a wave function ``deemed to be nomic, that
+is, law-like'' would sit outside the ontic/epistemic dichotomy---but they
+raise it only as a possibility ``deserving of further scrutiny,'' not as
+a licensed exit they endorse.) An indivisible, non-Markovian process is not \emph{naturally} of the
+framework's form: its response at a later time is not fixed by any
+single-time ontic state carried forward from preparation, because the
+dynamics has memory that is not stored in a time-local $\lambda$. We
+say ``memory'' rather than repeating the earlier gloss of a
+``Markovian assumption about the ontology'': PBR does not itself
+assume a Markov chain, but its ontic states are single-time objects,
+and memory across time is what an indivisible process has and such a
+$\lambda$ does not encode. This last step invites a rejoinder we should
+name: Harrigan and Spekkens place no formal restriction on what
+$\lambda$ may be, so a modeler could take $\lambda$ to be a whole
+trajectory segment, or to include $\psi$ outright, whereupon PBR applies
+and returns the onticity of \emph{that} enriched $\lambda$. Against such
+embeddings the exit does not rest on single-time-ness at all; its real
+load is the \emph{nomic reclassification}---that $\psi$ belongs to the
+law rather than to the ontic state---which is a classification claim,
+not a single-time no-go. Placing indivisible dynamics outside the
+framework on these grounds is Barandes' claim, not ours; he states it
+explicitly in the published version of the correspondence paper---%
+indivisible quantum theory is based on non-Markovian stochastic
+dynamics and so lies outside the ontological-models framework, the
+wave function being ``neither ontic nor entirely epistemic'' but
+nomic, and consequently the PBR theorem ``does not apply''
+\cite{BarandesPoP}. We cite and rely on this exit; we do not
+independently establish it, and claim (i) is conditional on its
+soundness. We have not found a published challenge to the adequacy of
+the exit; stress-testing it is work this paper flags as open but does
+not undertake.
+
+Two remarks keep the exit honest. First, it is not a loophole of
+convenience---though this establishes less than it may seem. The
+non-Markovianity is not a modeling choice adopted to dodge a theorem:
+it is a structural, computed property of the dynamics. The program's
+foundational companion \cite{indivisible} develops the operative
+test---negativity of the unique divisor when the earlier transition
+matrix is invertible---and proves closed-form results about it,
+including a terminal-indivisibility theorem with an exact generator
+floor in the broken-$\PT$ phase. Indivisibility is a
+convention-independent sign condition one calculates, not a knob one
+turns. But we must keep two claims apart. Structural-ness shows only
+that the exit is \emph{non-arbitrary}---the non-Markovianity is a
+genuine feature of the dynamics, not an ad hoc device introduced to
+evade PBR. It does \emph{not} by itself establish that non-Markovianity
+places the theory outside PBR's scope; that further step is exactly the
+(cited, not here established) scope claim of the previous paragraph,
+and it should not be smuggled in on the back of the non-arbitrariness
+point. Second, the exit runs through the nomic, non-Markovian route,
+\emph{not} through denying preparation independence. Gao's variant,
+which recovers single-system $\psi$-onticity after removing the
+preparation-independence assumption \cite{PBRnoPI}, therefore tightens
+that framework's internal assumptions without moving the framework's
+boundary; it is important for the taxonomy of $\psi$-epistemic models
+inside the framework, and irrelevant to a reading that was never inside
+it. We make this point about Gao's preparation-independence-removing
+route specifically, not about PBR strengthenings in general.
+
+\subsection{Mannheim: the inner product as output}
+\label{sec:mannheim}
+
+The second reconstruction attacks a different primitive. In standard
+quantum mechanics the Hilbert-space inner product---the object that
+turns amplitudes into probabilities---is postulated. In the
+$\PT$-symmetric and antilinear quantization program of Bender and
+Mannheim, Hermiticity of the Hamiltonian is replaced by invariance
+under an antilinear symmetry, and the inner product is
+\emph{constructed} from the dynamics: one solves for the metric
+operator that renders the evolution unitary, and the probability
+interpretation is an output of the operator algebra rather than an
+input to it. The flagship result is the no-ghost theorem for the
+fourth-order Pais--Uhlenbeck oscillator \cite{BenderMannheim2008}:
+a theory whose naive inner product exhibits negative norms is, in the
+correct dynamically determined inner product, a unitary theory with a
+positive spectrum. The program extends from quantum mechanics through
+Pauli--Villars regularization to fourth-order quantum gravity
+\cite{Mannheim2020}.
+
+For the interpretation debate the lesson is orthogonal to ghost
+physics: the inner product is not sacred. Combined with the
+stochastic--quantum correspondence, the two pieces of the quantum
+formalism most often taken as ontological primitives---the state
+vector and the probability-bearing inner product---are \emph{each}
+reconstructible from something else: the state from a stochastic
+process on configurations, the inner product from the demand of
+probability conservation on the operator algebra. The program's
+foundational paper \cite{indivisible} shows further that the two
+reconstructions are compatible and interlocking: unbroken antilinear
+symmetry is exactly the condition for a probability-conserving
+process to exist without enlarging the configuration space, and the
+metric-corrected process is the ordinary (generically indivisible)
+process of the isospectral Hermitian partner. The underdetermination
+argued in the next section is therefore sharpened twice over: not one
+alternative reading but a pair of independent reconstructions, each
+dissolving a different primitive.
+
+%=====================================================================
+\section{What underdetermination shows, and what it does not}
+\label{sec:underdet}
+
+The Everett interpretation's strongest argument has always been an
+inference to the only explanation. In the form given by Deutsch
+\cite{Deutsch1996}, sharpened by Brown and Wallace
+\cite{BrownWallace}, and developed systematically by Wallace
+\cite{Wallace2012}, it runs: take the bare quantum formalism
+literally---a quantum state evolving unitarily---and you get a
+multiverse; every alternative either adds structure the formalism
+does not need (corpuscles, a pilot wave) or mutilates the dynamics
+(collapse); therefore realism about quantum mechanics \emph{is}
+Everettianism. The argument's force lives entirely in its premise:
+that nothing else works without ad hoc additions.
+
+The reconstructions of Section~\ref{sec:landscape} break the premise,
+not the conclusion. An ontology of definite configurations governed by
+a law issuing indivisible transition probabilities reproduces every
+Born-rule prediction; no \emph{beable} is added to the formalism---%
+rather, two things usually postulated are derived. This is not quite
+``nothing is added,'' and we should not claim it is: the stochastic
+reading does carry a commitment the bare formalism leaves open, namely
+a preferred configuration basis, since Barandes' process is defined in
+the configuration basis. We take this commitment to be benign---a
+preferred basis has to be selected on any reading that recovers
+definite outcomes, and Everett's own recovery leans on a
+decoherence-selected basis whose emergence is not obviously cheaper,
+resting as it does on a system--environment split it does not
+derive---but we flag it rather than bury it. The wave function is not an extra beable riding
+alongside the configurations (the disanalogy with pilot-wave theory is
+developed below); it is the law's bookkeeping. And the inner product
+that makes the probabilities is itself an output. If the
+reconstructions are coherent---and they have both defenders and
+critics, the no-ghost/benign-ghost resolution of the Pais--Uhlenbeck
+sector in particular being contested in the published literature, so we
+take only the weaker premise that they are coherent \emph{enough} to
+constitute a live alternative---then ``take the formalism literally''
+no longer picks out a unique ontology, because the formalism admits
+more than one literal reading. Everett remains exactly as consistent as
+before; what it loses is the claim to be the \emph{only} non-mutilating
+realism. Here a distinction matters: Deutsch's version of the argument
+is \emph{absolute}---there is no alternative---while Wallace's is
+\emph{comparative}, that Everett is the best-costed realism
+\cite{Deutsch1996,Wallace2012}. The reconstructions defeat the
+absolute premise outright; against the comparative version they reopen
+a cost comparison rather than win it. Underdetermination is restored,
+not resolved.
+
+\paragraph{The bookkeeping objection, stated.}
+There is an obvious and, we think, obligatory Everettian reply, which
+to our knowledge has not been put in print against the stochastic
+reconstruction; we state it in its strongest form because our answer
+to it organizes the rest of the paper. A word up front on the
+structure of that answer, since it bears on how much weight the answer
+can carry. Of the three replies below, the first two---parity and the
+disanalogy with pilot-wave theory---are defensive and available
+unconditionally; the third, which is the only one that would
+positively convert the dispute into a factual disagreement, is the
+paper's conjectural claim (iii), conditional on both a coupled ghost
+sector existing and the shield-converse conjecture holding. In the
+ghost-free regime, therefore, the objection is met only by parity and
+the disanalogy---contestable, defensive replies---and is not decisively
+refuted. The objection runs: \emph{the
+indivisible process is bookkeeping on the universal wave function, not
+an alternative to it}. The transition matrices are manufactured from
+the unitary, $\Gamma_{ij}=|U_{ij}|^{2}$; the process's celebrated
+memory is $\psi$'s memory; the division events are $\psi$'s
+interference nodes. Calling the configurations ``beables'' renames the
+multiverse rather than removing it---one has merely elected to track a
+single thread through a structure whose full contents the law still
+carries. This is Deutsch's charge against pilot-wave theory---%
+``parallel-universes theories in a state of chronic denial''
+\cite{Deutsch1996}---transposed to the stochastic key, with the
+Brown--Wallace development \cite{BrownWallace} supplying the general
+form: if the branching structure is present in the theory's dynamical
+core, dressing one branch with ontological significance is an
+addition of words, not of physics.
+
+\paragraph{The answer.} Three points, in increasing order of weight.
+
+\emph{(i) Parity.} Bookkeeping arguments cut both ways between
+mathematically interconvertible formulations. The Everettian says the
+process is bookkeeping on $\psi$; the stochastic theorist says
+$\psi$ is bookkeeping on the process---and the correspondence
+theorems license both directions of translation
+\cite{BarandesTheorem}. When two formulations are interconvertible,
+the assertion ``yours is merely a re-description of mine'' is
+symmetric under exchange of the disputants, and therefore cannot by
+itself settle whose structure is ontological. It is worth adding that
+even the empirical-equivalence proofs underlying such translation
+arguments are less watertight than folklore holds: Manero, Muci\~no,
+and Okon have recently shown that the standard equivalence claims for
+pilot-wave theory rest on a disputable auxiliary assumption
+\cite{MMO2025}. Equivalence is a theorem about specified regimes, not
+a metaphysical axiom.
+
+\emph{(ii) The disanalogy with pilot-wave theory.} Deutsch's charge
+had bite against Bohmian mechanics for a specific structural reason:
+that theory posits an \emph{ontic} wave function \emph{and}
+corpuscles. The ontic $\psi$-field contains the full branching
+structure as physical content; the corpuscles merely index one
+branch; the ``empty'' branches persist as real, structured, inhabited
+by functionalism's lights, and the denial charge is the observation
+that they are still there. Valentini's rebuttal \cite{Valentini0811}
+and Brown's counter-rebuttal \cite{Brown0901} contest whether the
+empty branches deserve the name ``worlds''; the debate is live
+precisely because the pilot wave is ontic. The stochastic
+reconstruction has no analogous structure to be in denial about.
+There is no ontic $\psi$ riding alongside the configurations: the
+wave function is nomic---an aspect of the law---and a law is not a
+container of uninhabited worlds any more than a Hamiltonian is. To
+insist that the branching structure ``is still there because it is in
+the law'' is to assume that whatever appears in the law's bookkeeping
+is thereby physically real---which is exactly the $\psi$-ontology in
+dispute, now premised rather than argued. The objection, pressed to
+this point, threatens to beg the question. We concede, however, that
+this disanalogy is contestable rather than decisive. A Wallace-style
+real-patterns functionalist \cite{Wallace2012} can resist the move
+from ``nomic'' to ``no worlds'': if branch structure is a real
+pattern, it may supervene on whatever carries that pattern---including
+a law---so that locating the branching in $\psi$'s nomic role need not
+by itself drain it of worlds. Our reply is not that this reading is
+incoherent but that it must \emph{argue} for law-hosted inhabited
+worlds rather than read them off the analogy with an ontic field: ``a
+law is not a container of worlds'' is a prima facie disanalogy that
+shifts the burden, not a proof that discharges it. We rest the
+defensive case on that shift, not on closing the question.
+
+\emph{(iii) The point that could be decisive is empirical---but only
+conditionally.} Parity and disanalogy
+are defensive; the third point would not be, \emph{if} it obtains. If
+two readings of a formalism can be brought to disagree about the
+expectation value of an observable in \emph{some} physically
+specifiable sector, then neither is bookkeeping for the other---%
+bookkeeping cannot contradict what it keeps books on. They would then
+be different theories that coincide on the sectors so far observed.
+Section~\ref{sec:separation} argues, conditionally, that the
+foliation-anchored and no-slicing readings are of this kind: a coupled
+ghost sector would elicit different predictions from them with the Born
+rule intact on both sides. But this reply is only as strong as its
+conditions: it requires (1)~a coupled ghost sector to exist, (2)~%
+Conjecture~\ref{conj:converse} to hold, and (3)---for a \emph{positive} outcome to
+be a point of disagreement rather than one both predict---the clean
+(state-functional) case of Section~\ref{sec:separation} to be realized,
+which on current knowledge is itself conjectural; where any of these
+fail (in particular, where a no-slicing interpreter invokes a birth
+surface---available at no cost---or borrows the Lorentz-violating
+completion) a \emph{positive}
+detection no longer discriminates. The null direction still does,
+however: by the asymmetry of Section~\ref{sec:separation} the beables
+class \emph{entails} the ghost-sector signal (Conjecture~\ref{conj:converse})
+while the no-slicing class merely permits it and retains a
+covariance-preserving escape, so a null---at the template's sensitivity,
+and for a sector the template's assumptions fit---would falsify the one
+and not
+the other---an experiment the two readings answer differently, which
+already defeats the bookkeeping charge under the exposure conditions
+(1)--(2). The clean state-functional case (3) is needed only for a
+positive result to symmetrically \emph{select} the beables reading, not
+to make the two readings empirically distinct. A bookkeeping dispute
+with an empirical arbiter is not a bookkeeping dispute---and that
+arbiter (a null at template sensitivity) exists wherever a
+\emph{template-saturating} ghost sector does and
+Conjecture~\ref{conj:converse} holds.
+
+%=====================================================================
+\section{The trilemma locates Everett}
+\label{sec:trilemma}
+
+The program's field-theory companions \cite{instantaneous,choosing}
+assemble their results into a trilemma, which we restate in the form
+argued there and will not strengthen here:
+
+\begin{claim}[the ghost trilemma; tree level]
+\label{claim:trilemma}
+Coupled ghosts; \emph{empirical} Lorentz invariance (no
+\emph{in-principle} observationally accessible preferred
+foliation---``accessible'' meaning that some observable depends on the
+foliation with nonzero effect, realized detectability being a separate,
+flux-dependent question); definite
+configurations (beables): any two, never all three, at tree level.
+\end{claim}
+
+The engine of the claim is the instantaneity result of
+\cite{instantaneous}: at tree level, the Lorentz-invariant eternal
+vacuum of a ghost coupled to ordinary matter is, in the stochastic
+currency, an \emph{instantaneous state}---the boost-orbit volume
+renders the decay multiplicity divergent, the minimal semigroup
+degenerates, and a non-degenerate configuration-space process exists
+only relative to a structure that individuates the decay channels: in
+every known rescue, a frame or a birth surface. Every
+configuration-preserving rescue in the literature (momentum cutoffs,
+ghost condensation, a born vacuum) supplies such a structure, and
+thereby---this is the other half---exposes it observationally through
+the frame-locking of the decay products. Meanwhile the
+definition-level rescues that keep Lorentz invariance, the
+$\PT$/no-ghost quantizations, exit the sample space: the companion
+\cite{choosing} proves a no-representation lemma---a real-eigenvalue
+Jordan-block Hamiltonian admits no closed stochastic-process
+representation under any similarity, a result that lifts to the full
+Fock tower of a conformal mode---so those quantizations retain no
+definite-configurations seat to sit in. Two honesty flags from the
+source papers carry over unchanged in substance: the claim is \emph{tree level}
+(a resummed suppression rendering the boost-orbit sum convergent
+would relax the first horn), and it is \emph{argued against every
+example the program could find, not proven exhaustive}.
+
+Table~\ref{tab:horns} lays out the horns with the price each pays,
+as computed inside the program.
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{@{}p{0.24\linewidth}p{0.33\linewidth}p{0.34\linewidth}@{}}
+\toprule
+\textbf{Horn (what is dropped)} & \textbf{What is kept} & \textbf{The price, as priced in this program}\\
+\midrule
+Empirical Lorentz invariance & coupled ghosts $+$ definite
+configurations & an observable preferred frame; on the
+conformal-gravity instance the price forks on the gravitational
+coupling $\alpha_g$, both branches costly \cite{choosing}\\[4pt]
+Coupled ghosts & empirical Lorentz invariance $+$ definite
+configurations & every ghost must be exorcised, and every exorcism is
+a survival-conditioning with a computable cost \cite{exorcised}\\[4pt]
+Definite configurations & coupled ghosts $+$ empirical Lorentz
+invariance & no sample space: no closed stochastic process on
+configurations exists to be had \cite{choosing}\\
+\bottomrule
+\end{tabular}
+\caption{The three horns of the trilemma of
+\cite{instantaneous,choosing}, with prices. Everett occupies the
+third row.}
+\label{tab:horns}
+\end{table}
+
+A word on each price. On the first horn, the frame is not merely
+philosophical furniture: it is (conditionally, at tree level)
+observable in the sector's decay
+products (Section~\ref{sec:separation}), and on the flagship
+conformal-gravity instance the companion paper's pricing forks on the
+value of the dimensionless gravitational coupling---the face-value
+rotation-curve branch is closed by solar-system constraints on the
+published (and disputed) analyses, while the alternative branch
+forces the regulating cutoff to macroscopic wavelengths
+\cite{choosing}. On the second horn, keeping the world ghost-free is
+itself a policy with a price schedule: the companion
+\cite{exorcised} shows that each ghost-removal prescription on
+record---a boundary condition, a contour, a norm---acts as a
+survival-conditioning of the underlying process, with a closed-form
+cost that in the flagship case collapses exactly at the point where
+the exorcism is most needed. On the third horn the price is the
+absence of a sample space: there is no stochastic process on definite
+configurations at all, and hence no single actual history.
+
+\paragraph{The placement.} Everett sits on the third horn---and, and
+this is the point of this section, sits there \emph{comfortably}.
+Dropping definite configurations is not something the trilemma does
+\emph{to} Everett; it is what Everett walked in the door already
+having done. The Everettian never wanted a sample space: probability
+in the Emergent Multiverse enters through decision theory and
+self-location, not through a stochastic process on configurations
+\cite{Wallace2012}. And the reward for paying that price is exactly
+the good the other horns forfeit: with no beables there is no beable
+kinematics, no foliation for it to be anchored to, no frame for a
+ghost sector to expose---manifest covariance survives coupled ghosts
+unscathed. The trilemma therefore \emph{locates} Everett rather than
+criticizing it: Everett is the pick-two solution
+$\{$ghosts, Lorentz$\}$, and its famous virtue and its famous
+vertigo are revealed as the two faces of a single purchase. The
+trilemma does not embarrass any horn; it prices each.
+
+An honesty paragraph, to keep the location claim from quietly
+inflating into an argument. The instantaneity theorem of
+\cite{instantaneous} is \emph{beables-relative}: it says a
+configuration-space process for a coupled ghost vacuum degenerates
+unless individuating structure is supplied. Everett has no
+configuration-space process, so the theorem does not bite Everett at
+all---which is just the location claim restated from the other side.
+It is worth being explicit that the trilemma locates Everett by
+\emph{negation}: nothing in the trilemma's mechanism, which operates on
+configuration-space processes, reaches Everett at all, and it is
+Everett's \emph{own} commitment to having no beables that seats it on
+the drop-configurations horn. The placement is done by Everett's
+premise, not by any argument of ours. A further dependency we state
+once and plainly: claims (ii) and (iii) inherit their content from the
+program's companion papers \cite{instantaneous,choosing,exorcised}---%
+the trilemma, the instantaneity theorem, the exposure template, and the
+exorcism costs are established there, not here---so claim~(ii)'s
+soundness is exactly the soundness of those companions, while
+claim~(iii) rests on them \emph{and}, over and above, on
+Conjecture~\ref{conj:converse} (with the comoving-frame and clean-case
+conditions of Section~\ref{sec:separation}), this paper's own and
+admittedly conjectural; this paper assembles and prices their results,
+it does not reprove them. Nothing in this section
+is evidence against the Everett interpretation, and we do not intend a
+cumulative-case reading in which a trilemma horn is a demerit. Horns
+are addresses, not verdicts.
+
+%=====================================================================
+\section{The separation: a ghost sector makes it empirical}
+\label{sec:separation}
+
+This is the paper's central section and its one novel claim. The
+claim is conditional and one of its two supports is a conjecture; we
+build it in three steps and flag the status of each.
+
+\paragraph{Step 1 (companion results: theorem at the core, argument
+at field strength).} A beables-first field theory is
+foliation-anchored by construction: defining a configuration space
+for field beables requires a choice of spacelike slicing, exactly as
+in Bohmian field theory \cite{DGNSZ}. The companion paper
+\cite{instantaneous} sharpens this ancient observation in two ways
+that matter here. First, the foliation's \emph{determinacy} is a
+well-defined (quantifiable) functional of the quantum state: the paper
+exhibits a measurable property of the state quantifying
+how sharply the state selects a frame, and shows---by exact algebra at
+the vacuum, and a measured determinacy curve approaching it---that it
+\emph{vanishes continuously at the vacuum}. A perfect-fluid state with
+$\rho+p\neq 0$ determines a frame; the vacuum determines none; the
+boundary $\rho+p=0$ is the phantom divide. Second---the shield---in
+ordinary (ghost-free) sectors in quantum equilibrium the anchoring
+foliation is empirically hidden: no Born-rule observable depends on
+it. Within the indivisible framework this hiddenness is proven as a
+no-signaling theorem for the finite-configuration core, and
+\emph{conjectured}, with a defined proof target, at full field-theory
+strength \cite{instantaneous}.
+
+It is this shield that makes our position an extension of Barandes'
+rather than a heresy within his framework. Barandes' published claims
+that the formulation is causally local \cite{BarandesCausal,BHK2025}
+and has no fundamentally preferred foliation \cite{BarandesPoP} concern
+the causal
+and signaling structure of quantum theory as instantiated in ordinary
+matter---and there we agree, on the strength of the same shield: on
+every sector so far observed, the anchoring foliation is
+gauge, exactly as unobservable as his theorems require. What follows
+concerns a sector nobody has observed. We should flag, though, that
+this reconciliation is our reading and not Barandes'. Restricting ``no
+fundamentally preferred foliation'' to ordinary matter, and treating a
+ghost sector as the regime where the foliation is promoted to
+observable, is a substantive interpretive move on which Barandes may
+well disagree: his stated position is that the formulation has no
+fundamentally preferred foliation, without a matter-content proviso. We
+claim compatibility with the letter of his theorems, which concern
+observed sectors, not his endorsement of the extension.
+
+\paragraph{Step 2 (this paper's step, and it is conjectural).} A
+coupled ghost sector would break the hiding. The mechanism is the
+first horn's exposure result run in reverse: a coupled ghost's decay
+products are isotropic in the individuating frame and in no other,
+so a detector moving with velocity $\beta$ relative to that frame
+sees a Compton--Getting kinematic dipole aligned with (on the
+natural identification of the individuating frame with the comoving
+frame) the CMB dipole, together with a direction-modulated spectral
+edge $\Lambda(\theta)\simeq\Lambda(1+\beta\cos\theta)$ at the
+sector's cutoff. The companion paper computed the template
+quantitatively for the phantom instance \cite{instantaneous}:
+count-rate dipole amplitudes of a few$\,\times10^{-3}$ at
+$\beta=1.23\times10^{-3}$, roughly $4.0$--$5.5\times10^{6}$ signal
+photons for a $5\sigma$ dipole detection with the apex fixed by the
+CMB dipole, and an edge modulation at the $10^{-3}$ level recoverable
+through realistic instrument resolution. The discriminant against
+mundane comoving backgrounds, which share the Compton--Getting
+dipole, is the edge modulation together with the absence of source
+correlation. One load-bearing step here is an assumption, not a
+derivation, and we flag it as such: the identification of the
+individuating frame with the comoving (CMB) frame. The instantaneity
+result of \cite{instantaneous} fixes only that \emph{some} frame
+individuates the decay channels; that this is the frame in which the
+cosmic matter distribution is at rest is an assumption we make---%
+plausible for a cosmologically prepared sector---but do not derive.
+It is worth being explicit about which rescue underlies this
+quantitative template: it is computed for a \emph{frame-cutoff}
+instance---a momentum cutoff imposed in the individuating frame, which
+we identify above with the comoving (CMB) frame---rather than for a
+purely state-functional foliation. The Compton--Getting dipole is
+generic to any individuating frame, but the spectral edge, and the
+saturation bound $\Lambda\lesssim19\,$MeV that makes the photon counts
+feasible, both presuppose that cutoff. By the analysis of Step~3 below,
+the template therefore already sits in the \emph{confounded} branch;
+and because a momentum cutoff is a law-level Lorentz-violating
+completion, it sits in the branch a no-slicing interpreter may adopt
+only at the price of manifest covariance, not in the birth-surface
+branch available for free. It should not be read as a signature of the
+clean case. If
+the individuating frame were some other frame, the dipole apex would
+move with it and the CMB-locked template would need re-pointing; a
+frame-locked signal would still exist, but its specific direction would
+not be predicted. We emphasize that these numbers live \emph{inside}
+the conditional built in this section: they quantify the template that
+becomes operative only if a coupled ghost sector exists and the
+conjecture below holds.
+
+We state the logical status of this step with maximal bluntness,
+because it is the paper's load-bearing conditional. The observability
+claim is the \emph{converse} of the shield: the shield says ordinary
+sectors hide the foliation; the converse says a ghost sector exposes
+it. In \cite{instantaneous} the shield itself is a theorem only for
+the finite-configuration core, and the ghost-induced observability is
+argued at tree level, not proven. If the full-strength shield were to
+fail, the separation below would be confounded (foliation effects
+might leak elsewhere); if the tree-level exposure argument were to
+fail under resummation, the signal might be absent even on the
+foliation-anchored reading. We therefore record the step as a
+conjecture, whose resolution is the natural next proof target for the
+program:
+
+\begin{conjecture}[shield converse; conditional]
+\label{conj:converse}
+In a beables-first indivisible field theory whose matter content
+includes a ghost sector coupled to ordinary matter, some Born-rule
+observable of the ghost sector's decay products depends on the
+anchoring foliation with nonzero effect (generically---away from the
+phantom divide $\rho+p=0$, where the foliation-determinacy functional
+vanishes)---the kinematic dipole and
+spectral edge of \cite{instantaneous} being the template---while all
+observables of ghost-free sectors remain foliation-independent.
+\end{conjecture}
+
+Two conjuncts are bundled here for economy, but only the first is
+load-bearing for the falsification below. The null test uses the
+\emph{exposure} conjunct alone---beables $\Rightarrow$ a ghost-sector
+signal, so a null $\Rightarrow$ not beables, as the template realizes
+it (Conjecture~\ref{conj:converse} delivers a \emph{nonzero} effect;
+reaching a null's full force needs the template's saturating-cutoff and
+comoving-frame auxiliaries, Step~2 above); the second conjunct (the
+\emph{shield} for ghost-free sectors, already a theorem for the finite
+core) governs only whether foliation effects might leak into ordinary
+sectors and confound the test, not whether the null falsifies. Keying
+the falsification to exposure alone keeps it from being hostage to the
+field-strength shield.
+
+\paragraph{Step 3 (the separation, and where its positive direction is
+confounded).} A no-preferred-slicing ontology predicts no such signal
+\emph{when the ghost Lagrangian is held fixed and Lorentz-invariant and
+no individuating completion or birth-surface initial condition is
+invoked}, because then it has nothing for the signal to reveal. On the Everettian
+reading of the same Lorentz-invariant field content there is no beable
+kinematics, hence no anchoring foliation, hence no frame for the decay
+products to lock to; the natural Everettian completions of such a ghost
+sector are precisely the definition-level, covariance-preserving
+quantizations that the trilemma's third horn comprises---and those have
+no frame-locked decay signal to give.
+
+The positive direction, however, carries a confound we must state
+plainly, because the trilemma's own exposure mechanism supplies it. In
+Section~\ref{sec:trilemma} the individuating structure that rescues a
+coupled ghost vacuum is furnished, in every rescue the program could
+find, by one of two kinds of structure, and it is worth keeping them
+apart. The first is a physically \emph{Lorentz-violating} completion at
+the level of the law---a momentum cutoff or ghost condensation. The
+second is a \emph{birth-surface} (initial-condition) structure such as
+a born vacuum, which is not a law-level Lorentz violation at all but a
+cosmological initial datum; though sometimes grouped with the
+Lorentz-violating rescues, it is more accurately classed as an
+initial condition. Both routes are available to a no-slicing
+(Everettian) interpreter. The Lorentz-violating completion can simply
+be adopted; and the birth surface is available \emph{for free} to any
+Everettian who accepts big-bang cosmology, so if a bare cosmological
+initial condition suffices to individuate the decay channels, the
+confound is \emph{generic}---essentially every realistic Everettian
+can then reproduce the same signal at no cost, and the positive
+direction is weaker still. Either way such an interpreter can adopt the identical structure
+and predict the \emph{same} frame-locked dipole and edge: in that case
+the signal tracks the completion or the initial condition, not the
+ontology. A positive detection therefore does \emph{not} entail a
+foliation-anchored ontology. The
+separation is clean only in the restricted case where the individuating
+frame arises \emph{solely} as a state-functional foliation---the
+covariant-foliation-from-the-wave-function picture of \cite{DGNSZ},
+extracted from the state with the Lagrangian held fixed and
+Lorentz-invariant---rather than from a fundamentally Lorentz-violating
+completion or a birth surface. Wherever such a completion or initial
+condition is in play, a positive signal is confounded between the two
+classes. This clean case should therefore be named as a \emph{third,
+separate condition} on the separation, alongside the existence of a
+coupled ghost sector and Conjecture~\ref{conj:converse}: that a
+state-functional foliation \emph{suffices} to individuate the decay
+channels. And we must concede that this condition has never been met on
+paper. No purely state-functional rescue of a ghost vacuum has ever
+been exhibited: by this program's own survey
+(Section~\ref{sec:trilemma}), every known rescue supplies a frame or a
+birth surface---a momentum cutoff, ghost condensation, a born
+vacuum---and the \cite{DGNSZ} construction is a picture for ordinary
+Bohmian matter, not a demonstrated rescue of the \emph{ghost} vacuum.
+Conjecture~\ref{conj:converse}, whose antecedent presupposes only a
+beables-first ghost field theory, does not cover this gap. On current
+knowledge, therefore, every concrete realization of the positive signal
+lies in the confounded branch, and the clean case is conjectural
+\emph{over and above} Conjecture~\ref{conj:converse}. Moreover the
+birth-surface route is not a gap that further modeling might simply
+close: an FRW birth surface is generic to any big-bang cosmology, so
+\emph{if} a bare cosmological initial condition suffices to individuate
+the decay channels, the confound on the positive direction is not
+merely a present lacuna but arguably \emph{structural}---unobservable in
+principle on a realistic cosmological background, not just
+so-far-unrealized. This strengthens,
+rather than weakens, the null as the discriminator: if every
+\emph{viable} beables completion must carry an individuating structure,
+then every viable beables completion predicts a signal, so the absence
+of one \emph{at the template's sensitivity} presses hard against every
+template-saturating realization of the class. The
+discriminating power is thus asymmetric, and the asymmetry is what
+keeps claim~(iii) non-vacuous. Given Conjecture~\ref{conj:converse} and
+the program's survey, the beables class \emph{entails} a nonzero signal,
+so for an established sector whose computed template puts that signal at
+the null's sensitivity a null result \emph{falsifies} that class \emph{as
+the template realizes it}---a nonzero but sub-threshold effect (a sector
+the template does not cover, \emph{or} a covered sector realized off the
+comoving frame or below the template's signal fraction) would survive it. The Everettian, by contrast,
+merely \emph{permits} the signal: the quantization is a free choice---%
+covariance-preserving with a Lorentz-invariant Lagrangian and no
+completion, or signal-matching by borrowing a completion or birth
+surface---so Everett entails nothing and remains compatible with
+\emph{both} outcomes. A positive detection therefore refutes nothing on
+the no-slicing side, whereas a null---at the template sensitivity, for an
+established sector---falsifies the beables class (under
+Conjecture~\ref{conj:converse}); only the beables direction carries an
+entailment for an experiment to break.
+
+Even a confounded positive, moreover, is not always without force for
+the no-slicing side---but here we must scope the point carefully,
+because the two confounding routes are not on a par. A no-slicing
+interpreter who adopts a fundamentally \emph{Lorentz-violating}
+completion at the level of the law in order to match the signal thereby
+forfeits \emph{manifest covariance}---which
+Sections~\ref{sec:intro} and~\ref{sec:trilemma} identify as exactly the
+good that dropping configurations was supposed to buy. In that branch a
+confounded positive fails to select the ontology, yet it still exacts a
+real and nontrivial price from the horn whose entire purchase was
+covariance. The birth-surface branch is different, and we concede it:
+a Lorentz-invariant law with a non-invariant cosmological initial state
+(an FRW birth surface) forfeits no manifest covariance at the level of
+the law, so there the individuating structure is available \emph{for
+free}---as noted above---and a confounded positive costs the Everettian
+nothing. This law-level covariance does not, however, put a born-vacuum
+beables theory in the trilemma's forbidden ``all three'' corner: the
+trilemma's second element is \emph{empirical} Lorentz invariance---no
+observationally accessible preferred foliation
+(Claim~\ref{claim:trilemma})---and a born vacuum (conditionally, at tree
+level) exposes the frame observationally, so a beables theory with a
+Lorentz-invariant law but a frame-exposing birth surface still drops the
+empirical-Lorentz-invariance horn. The law-level covariance it retains
+is not the currency the trilemma trades in. The one branch so far
+realized as a concrete signal template is, however, the
+\emph{frame-cutoff} branch, which \emph{is} a law-level
+Lorentz-violating completion; so the covariance price is one the
+exhibited realization actually charges. It is the birth-surface
+branch---the branch that would exact no such price, and whose
+availability for free is what makes the confound generic---that has
+not so far been realized as a concrete template. Putting the
+steps together, conditionally, and with the confound flagged:
+
+\begin{quote}
+\emph{If} nature contains a coupled ghost sector, \emph{and if}
+Conjecture~\ref{conj:converse} holds, \emph{then}: a frame-locked
+dipole-plus-edge signal in that sector's decay products is
+\emph{consistent with}---but does not select---the foliation-anchored
+single-world class, being \emph{confounded} by any fundamentally
+Lorentz-violating completion or
+birth-surface initial condition of the sector, either of which
+reproduces the same signal on a no-slicing ontology---the birth surface
+at no cost, the Lorentz-violating completion at the price of manifest
+covariance; the
+signal indicates foliation-anchoring cleanly only under the further,
+so-far-unrealized condition that the individuating frame arises purely
+as a state-functional foliation with the Lagrangian held
+Lorentz-invariant. A null result, with the ghost sector independently
+established, is the cleaner discriminator, precisely because the
+entailment runs one way: the beables class \emph{entails} a signal (of
+the computed template amplitude, for an established sector, under the
+assumed comoving-frame identification---a realization off that frame,
+below the template's signal fraction, or individuated by a completion
+other than the template's frame cutoff, survives the pointed null),
+so its absence is evidence against definite configurations and presses
+toward the no-slicing class, whereas a no-slicing ontology merely
+\emph{permits} the signal, so a positive leaves it untouched.
+\end{quote}
+
+Neither outcome selects an interpretation. The positive outcome does
+not distinguish Bohmian from stochastic beables
+(Section~\ref{sec:limits}); the null outcome does not distinguish
+Everett from any other foliation-free reading. What the experiment
+discriminates is a \emph{class boundary}---slicing-anchored versus
+not---which is, we believe, precisely the boundary the interpretation
+debate has always treated as empirically inaccessible. And the Born
+rule is intact on both sides throughout: the two classes differ not
+about any probability rule but about what the world contains for the
+rule to apply to, and the disagreement becomes observable only
+because a ghost sector's kinematics is (conditionally) sensitive to
+the difference.
+
+\paragraph{The ancestry, and the contrast that defines the claim.}
+The idea that a hidden-variable ontology might escape the
+``Everett in denial'' charge by empirical divergence is Valentini's:
+in quantum non-equilibrium, pilot-wave theory diverges observably
+from quantum mechanics, so the corpuscles are not idle wheels
+\cite{Valentini0811,Valentini1991a,Valentini2002}. But Valentini's
+escape requires the Born rule to \emph{fail}---non-equilibrium is by
+definition a violation of Born statistics, and his signal-locality
+theorem ties the divergence to that violation. Ours is the
+ghost-sector generalization of the same escape with the requirement
+inverted: the discriminator is a sector, not a rule failure. One other
+equilibrium route to foliation observability has been proposed---%
+Bohmian arrival-time statistics in EPRB configurations
+\cite{AmblardDrezet}, a laboratory-scale mechanism resting on the
+contested measurability of arrival times, and disjoint from the
+sector-based discriminator here. Beyond it we know of no prior proposal
+that separates interpretation classes observationally while holding the
+Born rule fixed. The nearest
+relatives sharpen the contrast. D\"urr, Goldstein, Norsen, Struyve,
+and Zangh\`i showed that a Bohmian theory can extract a covariant
+foliation from the wave function itself, adding that such a foliation
+is undetectable in quantum equilibrium \cite{DGNSZ}---our scenario is
+precisely the loophole in that equilibrium hiding: it is a fact about
+ordinary sectors, and a ghost sector
+(conditionally) breaks it while equilibrium holds. Sahin's recent
+program of quantum-field-theoretic phenomenology for
+$\psi$-epistemic models \cite{Sahin2026} needs deviations from
+quantum-mechanical predictions to generate signals; we need none.
+And the fragility results of \cite{MMO2025} are companions in spirit:
+empirical equivalence between interpretations is a regime-bound
+theorem, not a decree, and our claim is that the regime has a
+physically meaningful boundary.
+
+\paragraph{The conditional, stated plainly.} The trigger may never
+fire. If nature contains no coupled ghost sector, the separation
+never becomes operative and the equivalence between the classes
+stands unbroken---this paper's claim is a conditional falsifiability
+statement, the same logical DNA as the rest of the corpus. What would
+count: on the input side, an established phantom sector (a
+$w<-1$ equation of state confirmed jointly with structure-growth data
+discriminating a genuine field from a gravitational mimic) is the
+scenario in which the template of \cite{instantaneous} applies as
+computed; current cosmological data contain disputed hints and
+nothing more, and we take no position on them here, deferring to the
+companion's discussion. On the output side, the null is well-defined:
+ghost sector established, exposure and systematics sufficient for
+the $10^{-3}$ dipole and edge, and no frame-locked signal. We
+emphasize once more that the detection numbers quoted above sit on a
+knife-edge of signal fraction detailed in \cite{instantaneous}; the
+separation is an experiment nature may offer, not one we can
+schedule. Absent the sector, the statement is vacuously safe and
+empirically idle---and we say so.
+
+%=====================================================================
+\section{What does not follow}
+\label{sec:limits}
+
+Four disclaimers, each of which we regard as part of the paper's
+content rather than throat-clearing.
+
+\emph{(i) The instantaneity theorem is not an argument against
+Everett.} It is beables-relative (Section~\ref{sec:trilemma}): it
+constrains configuration-space processes, and Everett has none. We
+have used it only to price the horn Everett declines, never to argue
+against the horn Everett occupies; any reading of this corpus as a
+cumulative case against the Everett interpretation is a misreading.
+
+\emph{(ii) Division events are not branch events---so far as anyone
+has shown.} There is a tempting translation: division events, the
+isolated times at which an indivisible process factorizes, resemble
+the decoherence times at which Everettian branch structure
+stabilizes; and the terminal-indivisibility class of
+\cite{indivisible}---no division events beyond a finite time---would
+translate to ``no stable branch structure available in ghost
+regimes.'' We flag this correspondence as \emph{suggestive
+translation only}. The program's theorems concern
+configuration-level divisors; Everettian branching is defined through
+decoherence functionals on coarse-grained histories; no theorem
+connecting the two exists, in this corpus or elsewhere to our
+knowledge. It is a conjecture-shaped hole, not a claim.
+
+\emph{(iii) Nothing here selects among single-world readings.} The
+separation of Section~\ref{sec:separation} discriminates
+slicing-anchored from non-slicing ontologies. A positive signal would
+not distinguish Bohmian beables from stochastic beables, nor either
+from any other foliation-anchored ontology; a null would not
+distinguish Everett from foliation-free alternatives. The experiment,
+if nature grants it, adjudicates a class boundary and nothing finer.
+
+\emph{(iv) The separation claim is conjectural several times over.} It
+conditions on the existence of a coupled ghost sector (an empirical
+question, open), and on Conjecture~\ref{conj:converse} (a theoretical
+question, open: the shield is proven only for the finite core, and
+the exposure argument is tree-level); and its \emph{clean} (class-%
+selecting) direction conditions further on a state-functional foliation
+sufficing to individuate the decay channels---a condition that, on
+current knowledge, no exhibited rescue meets, so the confounded branch
+is the only one so far realized. We have tried to write every
+sentence of Section~\ref{sec:separation} so that it survives the
+worst case on all three conditions; where a sentence seems to outrun
+them, the conditions govern.
+
+%=====================================================================
+\section{Discussion}
+\label{sec:discussion}
+
+Interpretations of quantum mechanics that differ in a register
+physics can reach are rare; that has always been the debate's
+melancholy. The argument of this paper is that the register exists
+and has a name: ghosts. A coupled ghost sector is the one place the program has found in
+field theory where, at tree level, the existence of a sample space
+stops being free---where definite configurations demand an
+individuating structure and (conditionally) advertise it, and where
+declining to have configurations converts the signal from an entailment
+into a mere permission. If the reconstructions of
+Section~\ref{sec:landscape} restore the underdetermination that the
+no-alternative argument had claimed to close, the trilemma and the
+separation say where the underdetermination could end: not in the
+seminar room, but in the direction-dependence of a diffuse
+background.
+
+We do not expect the question settled soon, and the paper's
+architecture is built for that: claim (i) stands as a piece of
+underdetermination independent of any ghost physics---with two
+qualifications this paper has been at pains to make, that it is
+conditional on Barandes' (cited, not here established) exit from the
+PBR theorem, and that its \emph{defense} against the strongest
+Everettian reply, the bookkeeping objection, is not fully
+ghost-independent, since the decisive answer to that reply is the
+ghost-dependent claim (iii); unconditionally, claim (i) meets the
+objection only with the defensive parity and disanalogy replies.
+Claim (ii) stands at tree level whatever the observations do; claim
+(iii) waits on a sector, a conjecture, and---for its positive
+direction---an unexhibited clean case. What the trilemma does
+unconditionally is raise the stakes of the ghost question itself. Whether nature contains coupled ghosts has been, to
+date, a question about instability and regularization; on the
+argument here it is also, conditionally, the question of whether the
+interpretation debate has an empirical future.
+
+We end with the two vertigos, because the corpus should take no side
+the data cannot take. The Everettian asks us to accept worlds beyond
+counting, splitting without cease, and offers in exchange a formalism
+taken perfectly literally. The stochastic reading asks us to accept
+memory without storage---a world whose single history obeys a law
+that remembers what no beable records---and offers in exchange a
+single world. Both offers are coherent; both prices are real; and
+the argument of this paper is that, if nature is unkind enough to
+contain a ghost sector, she may also be kind enough to tell us which
+price she has already paid.
+
+\paragraph{Author contributions and use of AI.} This manuscript was
+researched and written by the large language model Claude Fable~5
+(Anthropic), working under the direction of Jonathan Torkelson, who
+conceived the program's originating question, directed the sessions,
+and reviewed the outputs. The author is a professional engineer, not
+a physicist, and makes no claim to independent verification of the
+technical content; the manuscript is circulated precisely to obtain
+such verification from professional physicists. All errors are owned
+by the process that produced them.
+
+\paragraph{Code availability.} This is a synthesis paper and proves
+no new theorem and runs no new numerics. Every numerical claim quoted
+here---the divisor computations and terminal-indivisibility
+constants, the dipole and spectral-edge template and its photon
+counts, the foliation-determinacy functional---is inherited from the
+companion papers and reproducible from their public scripts; entry
+points and the program-wide index are collected at the hub repository
+\url{https://github.com/embeddetech/ghosts-program}.
+
+%=====================================================================
+\begin{thebibliography}{99}\small
+
+\bibitem{indivisible} J.~Torkelson,
+\emph{Indivisible stochastic processes for non-Hermitian and
+higher-derivative quantum systems: detailed balance, broken $\PT$
+symmetry, and the explosion of ghosts} (2026),
+\url{https://github.com/embeddetech/p01-indivisible-ghosts}.
+
+\bibitem{instantaneous} J.~Torkelson,
+\emph{Ghost vacuum decay as a stochastic process: instantaneous
+states, the boost-orbit measure, and the foliation that ghosts make
+visible} (2026),
+\url{https://github.com/embeddetech/p03-instantaneous-ghosts}.
+
+\bibitem{choosing} J.~Torkelson,
+\emph{Conformal gravity must choose: exceptional-point kinematics,
+vacuum decay, and the sample space of Weyl gravity} (2026),
+\url{https://github.com/embeddetech/p05-choosing-ghosts}.
+
+\bibitem{exorcised} J.~Torkelson,
+\emph{Every exorcism has a price: ghost removal as
+survival-conditioning, from Maldacena's boundary condition to the
+pole-sheet divisor} (2026),
+\url{https://github.com/embeddetech/p08-exorcised-ghosts}.
+
+\bibitem{BarandesPoP} J.~A.~Barandes,
+\emph{The Stochastic-Quantum Correspondence},
+Philosophy of Physics \textbf{3}(1), 8 (2025),
+doi:10.31389/pop.186, arXiv:2302.10778.
+
+\bibitem{BarandesTheorem} J.~A.~Barandes,
+\emph{The Stochastic-Quantum Theorem}, arXiv:2309.03085 (2023).
+
+\bibitem{BarandesCausal} J.~A.~Barandes,
+\emph{New Prospects for a Causally Local Formulation of Quantum
+Theory}, arXiv:2402.16935 (2024).
+
+\bibitem{BHK2025} J.~A.~Barandes, M.~Hasan, and D.~Kagan,
+\emph{The CHSH Game, Tsirelson's Bound, and Causal Locality},
+arXiv:2512.18105 (2025).
+
+\bibitem{BarandesHMM} J.~A.~Barandes,
+\emph{Pilot-Wave Theories as Hidden Markov Models},
+arXiv:2602.10569 (2026).
+
+\bibitem{HS2010} N.~Harrigan and R.~W.~Spekkens,
+\emph{Einstein, incompleteness, and the epistemic view of quantum
+states}, Found.\ Phys.\ \textbf{40}, 125 (2010), arXiv:0706.2661.
+
+\bibitem{PBR} M.~F.~Pusey, J.~Barrett, and T.~Rudolph,
+\emph{On the reality of the quantum state},
+Nature Phys.\ \textbf{8}, 475 (2012), arXiv:1111.3328.
+
+\bibitem{PBRnoPI} S.~Gao,
+\emph{From joint to single-system psi-onticity without preparation
+independence}, Found.\ Phys.\ \textbf{56}, 7 (2026),
+arXiv:2601.17662.
+
+\bibitem{Deutsch1996} D.~Deutsch,
+\emph{Comment on Lockwood},
+Brit.\ J.\ Phil.\ Sci.\ \textbf{47}, 222--228 (1996);
+the quoted sentence is at p.~225.
+
+\bibitem{BrownWallace} H.~R.~Brown and D.~Wallace,
+\emph{Solving the measurement problem: de Broglie--Bohm loses out to
+Everett}, Found.\ Phys.\ \textbf{35}, 517 (2005),
+arXiv:quant-ph/0403094.
+
+\bibitem{Valentini0811} A.~Valentini,
+\emph{De Broglie--Bohm pilot-wave theory: many worlds in denial?},
+in \emph{Many Worlds? Everett, Quantum Theory, and Reality},
+Oxford University Press (2010), arXiv:0811.0810.
+
+\bibitem{Brown0901} H.~R.~Brown,
+\emph{Reply to Valentini, ``De Broglie--Bohm pilot-wave theory: many
+worlds in denial?''}, in \emph{Many Worlds? Everett, Quantum Theory,
+and Reality}, Oxford University Press (2010), pp.~510--518,
+arXiv:0901.1278.
+
+\bibitem{Wallace2012} D.~Wallace,
+\emph{The Emergent Multiverse: Quantum Theory according to the
+Everett Interpretation}, Oxford University Press (2012).
+
+\bibitem{Valentini1991a} A.~Valentini,
+\emph{Signal-locality, uncertainty, and the subquantum H-theorem.~I},
+Phys.\ Lett.\ A \textbf{156}, 5 (1991).
+
+\bibitem{Valentini2002} A.~Valentini,
+\emph{Subquantum information and computation},
+Pramana \textbf{59}, 269 (2002), arXiv:quant-ph/0203049.
+
+\bibitem{DGNSZ} D.~D\"urr, S.~Goldstein, T.~Norsen, W.~Struyve, and
+N.~Zangh\`i,
+\emph{Can Bohmian mechanics be made relativistic?},
+Proc.\ R.\ Soc.\ A \textbf{470}, 20130699 (2014), arXiv:1307.1714.
+
+\bibitem{AmblardDrezet}
+A.~Amblard and A.~Drezet,
+\emph{Arrival-time distributions as a probe of the preferred
+foliation in relativistic Bohmian mechanics},
+arXiv:2604.17507.
+
+\bibitem{MMO2025} J.~Manero, R.~Muci\~no, and E.~Okon,
+\emph{A disputable assumption behind the empirical equivalence
+between pilot-wave theory and standard quantum mechanics},
+arXiv:2508.06667 (2025).
+
+\bibitem{Sahin2026} I.~Sahin,
+\emph{Quantum field-theoretic predictions of $\Psi$-epistemic models
+of quantum mechanics}, arXiv:2605.12546 (2026).
+
+\bibitem{BenderMannheim2008} C.~M.~Bender and P.~D.~Mannheim,
+\emph{No-ghost theorem for the fourth-order derivative
+Pais--Uhlenbeck oscillator model},
+Phys.\ Rev.\ Lett.\ \textbf{100}, 110402 (2008), arXiv:0706.0207.
+
+\bibitem{Mannheim2020} P.~D.~Mannheim,
+\emph{Ghost problems from Pauli--Villars to fourth-order quantum
+gravity and their resolution},
+Int.\ J.\ Mod.\ Phys.\ D \textbf{29}, 2043009 (2020).
+
+\end{thebibliography}
+
+\end{document}

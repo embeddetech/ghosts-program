@@ -1,0 +1,1433 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1.1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!60!black,citecolor=blue!60!black,urlcolor=blue!60!black]{hyperref}
+\usepackage{xurl}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{claim}[theorem]{Claim}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\PT}{\mathcal{PT}}
+\newcommand{\ii}{\mathrm{i}}
+\newcommand{\ee}{\mathrm{e}}
+\newcommand{\Tr}{\mathrm{Tr}}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\ag}{\alpha_g}
+
+\title{Conformal gravity must choose:\\
+exceptional-point kinematics, vacuum decay,\\
+and the sample space of Weyl gravity}
+
+\author{Jonathan Torkelson\\[2pt]
+\small Embeddetech, Inc., Tulsa, Oklahoma, USA\\
+\small\texttt{jtorkelson@embeddetech.com}}
+\date{July 12, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Mannheim's conformal (Weyl) gravity is the flagship application of
+the $\PT$/antilinearity program, and its quantum-mechanical prototype
+is the Pais--Uhlenbeck oscillator at \emph{equal frequencies}: the
+$1/k^{4}$ propagator is, mode by mode, the degenerate limit of two
+opposite-residue poles---a Jordan block. We analyze the theory in the
+stochastic currency of the preceding papers of this series, with four
+results. (i)~\emph{Kinematics}: every linearized spin-2 field mode ($k>0$) of
+conformal
+gravity
+sits exactly at an exceptional point of the similarity dictionary,
+whose per-mode cost we lower-bound for every normal-target (mode-built) dictionary (up to an $O(1)$ factor, the EP-driven $\mathrm{cond}\to2/|\delta|$ at $\omega=1$, following the relative
+detuning $\delta/\omega$ along a dispersion; massive quadratic gravity approaches the exceptional line
+in the ultraviolet with EP-driven cost growing as $k^{2}$), while the
+Hermitian ghost realization passes through the point exactly
+unitarily. (ii)~\emph{A no-representation lemma}: a real-eigenvalue
+Jordan-block
+Hamiltonian (finitely many configurations) admits \emph{no} closed stochastic-process representation
+under any similarity whatsoever---the obstruction at the conformal
+point is structural, not a diverging cost---and the lemma lifts to
+the free field level: the $M$-quantum sector of a conformal mode carries a
+single Jordan block of size $M{+}1$ (secular growth $t^{M}$, the
+constructive form of Smilga's infinite-order exceptional point), and
+no metric that is bounded with bounded inverse in the
+occupation-number Fock norm yields a stochastic
+representation on a conformal mode's Fock
+tower. This, we argue, recasts the
+published Bender--Mannheim/Smilga dispute: ``unitarity is broken''
+is the closed-currency statement, while unitary evolution via
+nonstationary states we read, in this currency, as the survival-conditioned
+bookkeeping of the dilation---an open-system reading. The dipole
+ghost's open process is a one-way cascade whose indivisibility enters, at the
+mechanical cell, through conditional mass creation---a mechanism new to the
+taxonomy (the higher Fock sectors add ordinary divisor negativity---a
+convention-independent sign; the mass-creation reading is stated
+relative to the minimal survival-conditioning convention,
+whose definition and justification the text makes explicit).
+(iii)~\emph{Vacuum decay}: at the scale-invariant ($\delta=0$) point the ghost sector's golden-rule rate sits
+on the contact (s-flat) rung of the dimension ladder,
+$\Gamma/V\sim\Lambda^{4}/\ag^{2}$---a maximally generous lower bound, since
+consistently regulating the split poles ($\delta>0$) only raises it (for modes of relative detuning $\ll1$)---with a dimensionless coupling in
+place of the Planck suppression; pricing the Lorentz-violating-cutoff
+rescue then forks on $\ag$---the face-value rotation-curve matching
+($|\ag|\sim3\times10^{109}$) makes the bound vacuous but that branch fails
+solar-system tests on published (Mannheim-disputed) analyses, while
+an unfixed $\ag$ within eight decades
+of unity (a conservative figure) forces the cutoff to macroscopic wavelengths; the larger-coupling
+ray is closed on the face-value branch by point-collapse---every leading-order
+gravitational (one-exchange) tree observable scales as $1/\ag$, so the fit pins $\ag$ to a single,
+solar-system-dead value---and on Mannheim's branch by an explicit naturalness
+prior, stated as such.
+(iv)~\emph{The trilemma closes}: coupled ghosts, empirical Lorentz
+invariance, definite configurations---pick two (at tree level). Conformal gravity's
+no-ghost quantization has already picked: at the exceptional point
+its Jordan dynamics admits no \emph{closed}
+definite-configurations seat within the stated dictionary classes---a
+free/linearized-level statement---so that program is born on
+the exit-the-sample-space horn, while the Hermitian ghost
+realization keeps configurations at precisely horn 1's price; we
+price both seats. The \emph{adjudicated}
+escape routes map onto the horns (one horn-adjacent, one premise-disputing; the recent 2024--2026 entries, the older alternative quantizations, and the Bohmian route remain pending).
+\end{abstract}
+
+\newpage
+\begin{quote}
+\small\noindent\textbf{Note on provenance.} This manuscript is an
+experiment in AI-conducted research as much as a physics paper. The
+project began when the author asked the large language model Claude
+Fable~5 (Anthropic): \emph{``Is it not possible that the antilinear
+PT/time-reversal symmetry element could maybe predict indivisible
+non-Markovian processes?''} Everything that followed was performed by
+the model: the research program, the theorems and proofs, the numerical
+experiments, the literature search, and this text. The model was
+repeatedly prompted to attack its own results adversarially and to
+search for prior work. The author, a professional engineer rather than
+a physicist, directed and reviewed the sessions but makes no claim to
+comprehension of the findings, and is circulating the manuscript for
+independent review by professional physicists. Accordingly, nothing
+here should be taken on trust: every theorem is stated with a full
+proof, and every numerical claim is reproducible from the public
+scripts or, where stated, from the in-text analytic computations
+(see Code availability); the originating conversation,
+project briefing, and full research notebook are preserved in the
+program's hub repository,
+\url{https://github.com/embeddetech/ghosts-program}.
+\end{quote}
+
+\newpage
+\tableofcontents
+
+%=====================================================================
+\section{Introduction}
+\label{sec:intro}
+
+Fourth-order gravity buys renormalizability with a ghost
+\cite{Salvio2018}, and every school of quadratic gravity has a
+prescription for living with it: Mannheim's conformal program
+quantizes the ghost away with $\PT$ methods and zero-norm states
+\cite{BenderMannheim2008,BenderMannheim2008PRD,Mannheim2020}; Donoghue and
+Menezes keep it and pay in microcausality \cite{DonoghueMenezes};
+Anselmi's fakeons remove it by fiat at the level of the propagator
+prescription \cite{Anselmi2018}; Salvio and Strumia keep positive
+energies at the price of a negative-norm configuration space
+\cite{SalvioStrumia2016}; and the agravity analysis of
+Gross--Strumia--Teresi--Zirilli, asking whether negative kinetic
+energy is even metastable, answers that for gravitationally coupled
+ghosts the runaway is ``cosmologically slow''---a Planck-suppression
+statement---while conceding that the field-theoretic rate is
+``naively infinite'' and that they ``do not know the true rate''
+\cite{GSTZ2021}.
+
+The preceding papers of this series developed a currency in which
+such prescriptions can be compared \cite{indivisible,instantaneous,conditioned}: quantum theory as indivisible stochastic processes on a
+configuration space (Barandes \cite{Barandes2023,Barandes2025}), in
+which ghosts are a recurrence-classification problem (conservative
+$\to$ transient $\to$ explosive) \cite{indivisible}, the divergent
+ghost-vacuum rate of field theory is an instantaneous-state
+pathology whose resolution is the choice of sample space
+\cite{instantaneous}, and the whole subject obeys a trilemma:
+\emph{coupled ghosts, empirical Lorentz invariance, definite
+configurations---any two, never all three} (at tree level) \cite{instantaneous}.
+
+This paper aims that currency at the sharpest target: pure conformal
+(Weyl) gravity, whose ghost is not a separate massive pole but a
+\emph{degeneracy}---the $1/k^{4}$ propagator is, in Mannheim's own
+presentation, the limit of two poles of opposite residue as their
+masses merge \cite{Mannheim2011}, and the corresponding mechanical
+prototype, the equal-frequency Pais--Uhlenbeck (PU) oscillator, is a
+Jordan-block Hamiltonian: nondiagonalizable, and---by
+Bender and Mannheim's own theorem---possessing \emph{no Hermitian
+counterpart} \cite{BenderMannheim2008PRD}. Whether that theory is
+unitary is disputed in print: Bender and Mannheim construct unitary
+evolution on nonstationary states \cite{BenderMannheim2008PRD};
+Smilga concludes that for this nonstandard realization ``unitarity
+is broken in the equal frequencies limit'' \cite{Smilga2008}, later
+recasting the point as an exceptional point of infinite order
+\cite{Smilga2014}; alternative quantizations trade the difficulty
+for other costs \cite{Mostafazadeh2011,IlhanKovner2014}; and the
+quantization remains contested into this year
+\cite{FMT2026,FringTairaTurner2025,FelskiFringTurner2025,DeyFring2026}. Two of the
+newest entries sit closest to this paper's machinery and deserve
+their coordinates on our map: the ghost-free quantization via
+non-unitary similarity transformations~\cite{FringTairaTurner2025}
+is a similarity dictionary in precisely the sense of
+Sec.~\ref{sec:kinematics}, so at the equal-frequency point it
+meets Lemma~\ref{lem:jordan} sector-wise (any sector-preserving Dyson
+map), or Theorem~\ref{thm:tower} if its Dyson map is bounded with bounded
+inverse in the occupation-number Fock norm (an unbounded, sector-mixing
+Dyson map falls outside both, into the open class of
+Claim~\ref{claim:choose}); and the Bohmian
+analysis of the degenerate cell~\cite{DeyFring2026} equips the
+same kinematics with \emph{deterministic} configuration
+trajectories---a different beable ontology, whose inequivalence
+findings concern trajectory dynamics and are complementary to,
+not in tension with, the stochastic-representation lemma proved
+here. Beyond the PU quantization dispute, Holdom argues (in $0{+}1$d
+models aimed at quadratic gravity) that ghost theories are
+intrinsically unitary and perturbatively stable once an appropriate inner product
+defines the Born rule~\cite{Holdom2024}---an inner-product
+construction this paper's currency would price as a sample-space
+exit---the $\PT$ route has been carried to
+the full quadratic theory~\cite{Kuntz2024}, a Krein-space
+quantization of a four-derivative QFT with a generalized Born rule
+has appeared as this manuscript was completed
+\cite{BatemanTurok2026}, a direct-sum quantization recasting
+the massive tensor ghost as an inverted-harmonic-oscillator
+instability held off the asymptotic spectrum has been carried to
+the full 4d theory \cite{KumarMarto2026}, the massive ghost
+has been argued---conditionally on a ghost--Faddeev--Popov bound
+state---to confine into zero-norm BRST-quartet bound
+states \cite{Oda2026}, complex-mass ghost pairs have been
+argued to bind into states satisfying reflection positivity
+\cite{AsoreyKPS2026}, an LSZ scattering construction has been
+built atop negative-norm-projecting quantizations of the
+quadratic theory \cite{Santillan2025}, and ghost fields have
+been argued never to appear as isolated asymptotic particles at
+all \cite{Buoninfante2026}; all of these enter the
+trilemma registry as pending classifications rather than
+adjudicated rows.
+
+Our results, in brief. Section~\ref{sec:kinematics}: the exceptional
+point is not a corner of parameter space but the entirety of
+conformal gravity's spin-2 kinematics---every mode ($k>0$) of that sector
+sits at it, and we
+measure what that costs any similarity dictionary with a normal target built on the mode decomposition.
+Section~\ref{sec:lemma}: a short lemma shows a real-eigenvalue
+Jordan-block
+Hamiltonian (finitely many configurations) admits no closed stochastic-process representation under
+any similarity; the open (dilated) representation exists and is a
+one-way conditioned cascade with a new indivisibility mechanism. The
+Bender--Mannheim/Smilga dispute dissolves into two currencies.
+Section~\ref{sec:rate}: the vacuum-decay rate of the conformal ghost
+sector sits on the contact rung of the series' dimension ladder,
+$\Lambda^{4}/\ag^{2}$ (a maximally generous lower bound---regulating the
+split poles only raises it for modes of relative detuning $\ll1$), and pricing the Lorentz-violating-cutoff
+rescue forks on the value of $\ag$---with neither branch tenable (each on a stated closure---observational death or a naturalness prior).
+Section~\ref{sec:trilemma}: the trilemma closes, with every
+adjudicated escape route priced against a horn---one route (Merlin)
+horn-adjacent, one (metastability) disputing the rate premise rather
+than picking a horn---and several recent entries logged as pending.
+
+%=====================================================================
+\section{The currency, in one page}
+\label{sec:currency}
+
+We use the stochastic--quantum correspondence in the form of
+\cite{Barandes2023,Barandes2025,indivisible}: configurations carry the
+ontology; dynamics is a family of (generally indivisible) stochastic
+maps $\Gamma(t)$. A \emph{closed representation} in a fixed beable
+basis is a family $\Gamma(t)=|V(t)|^{2}$ entrywise with
+$V(t)=S\ee^{-\ii Ht}S^{-1}$ for a fixed invertible $S$ (the beable
+basis is chosen once, so $S$ carries no time dependence), with
+$\Gamma(t)$ column-stochastic for all $t$; $\Gamma$ is
+\emph{unistochastic} when $V(t)$ is unitary---the case a positive
+metric realizes, which is sufficient though not necessary for
+stochasticity of $|V|^{2}$. Unbounded or lossy
+systems get the \emph{minimal}, generally sub-stochastic
+(probability-losing) process, with unitary dilations as the
+conservative completions \cite{indivisible}. Three prior results are
+load-bearing here. (a)~For diagonalizable $H$ with real spectrum,
+the closed representation exists exactly when a positive metric
+intertwines $H$ with a Hermitian partner (the converse---that a closed
+representation forces such a metric---is \cite{indivisible}'s); its cost is the beable
+rotation and metric conditioning \cite{indivisible}. (b)~At an
+exceptional point of a $\PT$ dimer the metric collapses with
+Petermann scaling while the \emph{open} description passes through
+smoothly: the EP is a coordinate singularity of the dictionary, not
+of the process \cite{indivisible}. (c)~The trilemma of
+\cite{instantaneous}: a coupled ghost sector, empirical Lorentz
+invariance, and definite configurations cannot coexist (at tree level); each pair
+names a known physics program.
+
+%=====================================================================
+\section{Kinematics: conformal gravity's spin-2 sector lives at
+the exceptional point}
+\label{sec:kinematics}
+
+The quadratic (TT-sector) action of conformal gravity,
+$I_{W}=-\ag\int d^{4}x\sqrt{-g}\,C_{\lambda\mu\nu\kappa}
+C^{\lambda\mu\nu\kappa}$ with $\ag$ dimensionless, linearizes to
+$I_{W}^{(2)}=-\tfrac{\ag}{2}\int(\Box K_{\mu\nu})^{2}$
+($K_{\mu\nu}$ the traceless part of the metric perturbation),
+giving a
+propagator $\propto P_{2}/(\ag k^{4})$ ($P_{2}$ the
+transverse-traceless spin-2 projector; the explicit tensor
+normalization is our convention, and the overall constant is fixed
+below, where the flat-space exchange is written $1/(2\ag k^{4})$;
+\cite{Mannheim2011} states the $1/k^{4}$ form). Mannheim presents the $1/k^{4}$ explicitly as
+the degenerate limit of two opposite-residue $1/k^{2}$ poles, and
+the equal-mass limit as a nondiagonalizable Jordan-block
+Hamiltonian \cite{Mannheim2011,Mannheim2020}, whose characteristic
+zero-norm states Bender and Mannheim exhibit
+explicitly \cite{BenderMannheim2008PRD}.
+The linearized particle content---massless spin-2, spin-1, and the
+ghost partner---was catalogued by Riegert \cite{Riegert1984}; the
+exceptional-point statements of this paper concern the spin-2
+sector, where the degeneracy lives.
+Mechanically: each spatial mode $k$ is a PU oscillator
+\cite{PaisUhlenbeck1950} with frequencies $\omega_{1}(k)=
+\omega_{2}(k)=k$---the equal-frequency point, identically in $k$
+($k>0$).
+
+What does the degeneracy cost? The first-order mode matrix
+$A(\omega_1,\omega_2)$ of the PU oscillator (variables
+$q_1=x,\,q_2=\dot x,\,p_1,\,p_2$) has eigenvalues
+$\pm\ii\omega_1,\pm\ii\omega_2$ merging at
+$\delta=\omega_1-\omega_2=0$ into two $2\times2$ Jordan blocks.
+Numerically (\texttt{scripts/t4\_ep\_dictionary.py}): the eigenvector-matrix
+condition number---whose divergence is set by the scaling-invariant
+angle between the merging eigenvectors, which no column rescaling can
+repair, so that up to an $O(1)$ factor it lower-bounds the conditioning of
+\emph{any} similarity dictionary with a normal target built on the mode
+decomposition (normal modes, isospectral partner, quadratic-level
+Bender--Mannheim map---each has conditioning at least the merging pair's
+spectral-projector norm, itself $\sim1/\text{angle}$; a normal target
+is unitarily diagonalizable and the unitary factor leaves the condition
+number unchanged, reducing the bound to this diagonal case; this applies
+for $\delta\neq0$, where a normal target exists---at $\delta=0$ there is
+none, and Lemma~\ref{lem:jordan} supersedes)---diverges as
+\begin{equation}
+\mathrm{cond}(V)\;=\;\frac{2.00}{|\delta|}
+\qquad(\text{fitted power }{-0.993}\text{ over five decades}),
+\label{eq:condscaling}
+\end{equation}
+(here $V$ denotes the eigenvector matrix of the mode matrix $A$,
+distinct from the dictionary evolution $V(t)=S\ee^{-\ii Ht}S^{-1}$ of
+Sec.~\ref{sec:currency})
+with the far-from-EP control at $\mathrm{cond}=6.8$ and
+numerical defectiveness (rank loss to $\sqrt{\text{machine precision}}$,
+as expected for a defective pair) at $\delta=0$. The $-1$ power is derived,
+not merely fitted: the frequencies are exact eigenvalues of the
+family, so the detuning is a \emph{non-generic} unfolding
+direction of the exceptional point---the eigenvalue splitting is
+linear in $\delta$ and the eigenvector angle within each merging
+pair is $\propto\delta$, rather than the generic $\sqrt\delta$ of
+a random perturbation. The angle's coefficient is derived, not
+only measured: the mode matrix's eigenvector for eigenvalue
+$\lambda$ is the chain vector
+$(1,\lambda,\beta\omega_1^2\omega_2^2/\lambda,\beta\lambda^2)$
+($\beta$ a fixed kinetic normalization),
+and linearizing the merging pair of the detuned matrix at
+$\beta=\omega=1$ gives eigenvector difference
+$\delta\,(0,\ii,\ii,-2)$ against $v=(1,\ii,-\ii,-1)$, hence pair
+angle $|\delta|\sqrt{6-1}/2=(\sqrt5/2)\,|\delta|$ (here $6=\|(0,\ii,\ii,-2)\|^2$ and the subtracted $1$ is the squared component along $v$, leaving the perpendicular part; script-emitted:
+$\mathrm{angle}/|\delta|=1.11802$ at $\delta=10^{-4}$). The two coefficients are one law at this $\beta=\omega=1$ normalization
+(the convention-independent content is the $1/|\delta|$ divergence),
+linked by the script-emitted identity
+$\mathrm{cond}(V)\times\mathrm{angle}\to\sqrt5$ (computed $2.2363$
+against $\sqrt5=2.2361$):
+$\mathrm{cond}(V)=\sqrt5/\mathrm{angle}=2/|\delta|$ (the law is
+even in the signed detuning). The per-mode
+law \eqref{eq:condscaling} is stated at fixed $\omega=1$, where
+absolute and relative detuning coincide; along a dispersion the
+EP-driven part of the cost follows the dimensionless
+\emph{relative} detuning $\delta/\omega$, which is what the
+units-only control below isolates. Along the Stelle-type
+dispersion of \emph{massive} quadratic gravity
+($\omega_1=k$, $\omega_2=\sqrt{k^{2}+m_2^{2}}$), the detuning
+magnitude $|\delta(k)|\simeq m_2^{2}/2k$ vanishes in the ultraviolet and the
+measured cost grows as $k^{5.0}$, which a units-only control
+($\omega_1=2k$: $k^{3.0}$) decomposes into a variable-normalization
+factor $k^{3}$ times an \emph{EP-driven excess}
+$k^{2.0}$---exactly the inverse relative detuning
+$(|\delta|/k)^{-1}\sim(k/m_2)^{2}$. Massive quadratic gravity thus
+approaches the exceptional line mode-by-mode in the UV; conformal
+gravity, $m_2=0$, sits on it at every $k$.
+
+A one-loop check sharpens the scope of this statement. The ghost
+pole acquires a width---$\mu^{2}=m_r^{2}+\ii\gamma$ with
+$\gamma=\xi^{2}m_r^{2}N_{\text{eff}}/(320\pi)$ ($m_r$ the real pole
+mass, $\xi$ the ghost--matter coupling, $N_{\text{eff}}$ the
+effective loop multiplicity)~\cite{DonoghueMenezes}---and one might
+expect the width to detune
+the theory off the exceptional line. It does not: the shift is
+Lorentz-invariant in $q^{2}$, so at spatial momentum $k$ the
+frequency-space width $\gamma/2E_k$ time-dilates away at exactly
+the $1/k$ rate of the real detuning magnitude $m_2^{2}/2k$; both
+components of the complex detuning, of magnitude
+$|m_2^{2}+\ii\gamma|/2k$, vanish together,
+and the cost still diverges, suppressed only by the $k$-independent
+factor $[1+(\gamma/m_2^{2})^{2}]^{-1/2}$
+($\approx1-2\times10^{-4}$ at $\xi=1$,
+$N_{\text{eff}}\approx20$, with $m_r\simeq m_2$ near the exceptional line). What the loop does change is the
+approach: the detuning ray is tilted into the complex plane by the
+fixed angle $\arctan(\gamma/m_2^{2})$, and the coalescing pair is
+(real, complex) at every finite $k$---a resonance-type exceptional
+point with unequal linewidths, not a real-axis $\PT$-symmetric one.
+We flag explicitly that the saturation a fixed-linewidth
+(cavity-photonics) intuition would predict,
+$\mathrm{cond}_{\max}\sim2\omega/\Gamma_\mu=640\pi/(\xi^{2}
+N_{\text{eff}})$ (with $\Gamma_\mu\equiv\gamma/m_r$ the frozen pole
+width as a frequency), is an artifact of freezing the width in
+frequency; the relativistic dispersion removes it. Scope: this is
+the one-loop, weak-coupling ($m_2\ll M_{\rm Pl}$) pole statement; off-shell
+mode matrices at $|q^{2}|\gg m_2^{2}$ remain tree-level claims.
+
+Meanwhile the Hermitian ghost realization---the
+ghost-spectrum theory on real configurations $(x,\dot x)$, a
+\emph{different} operator not similar to the confluent Jordan
+one---passes
+through the exceptional point exactly: on a grid at
+$\omega_1=\omega_2$, $\norm{H-H^{\dagger}}=8\times10^{-15}$ and
+$\Gamma=|U|^{2}$ is doubly stochastic to $1.1\times10^{-14}$
+(re-verifying \cite{indivisible} at the field-kinematics framing).
+The singularity is the dictionary's alone. The dictionary, however,
+is what the no-ghost program \emph{is}; the next section shows the
+failure at $\delta=0$ is not a divergence but a nonexistence.
+
+%=====================================================================
+\section{No closed sample space at the conformal point}
+\label{sec:lemma}
+
+\begin{lemma}[no closed process at a Jordan point]
+\label{lem:jordan}
+Let $H$ be a matrix on finitely many
+configurations with a Jordan block of size $m\ge2$ at a
+real eigenvalue (hence nondiagonalizable). Then there is no invertible $S$ for which
+$\Gamma(t)=|S\ee^{-\ii Ht}S^{-1}|^{2}$ is column-stochastic---in
+particular, unistochastic or doubly stochastic---for all $t$: no
+metric, no partner, no beable rotation yields a closed stochastic
+representation of any kind.
+\end{lemma}
+
+\begin{proof}
+If $\Gamma(t)=|V(t)|^{2}$ is column-stochastic on $n$
+configurations, then
+\[
+\sum_{ij}|V_{ij}(t)|^{2}
+=\sum_{j}\bigl(\text{$j$th column sum of }\Gamma\bigr)
+=\sum_{j}1=n,
+\]
+so $\norm{V(t)}_{2}\le\norm{V(t)}_{F}=\sqrt n$ is bounded in $t$. But
+$\norm{\ee^{-\ii Ht}}\gtrsim t^{\,m-1}$ is unbounded (real eigenvalue
+$\Rightarrow|\ee^{-\ii\lambda t}|=1$, so the Jordan
+nilpotent part is undamped), and
+$\norm{V(t)}\ge\norm{\ee^{-\ii Ht}}/\mathrm{cond}(S)$ is unbounded
+for every invertible $S$.
+\end{proof}
+
+\begin{remark}
+The correspondence itself requires only per-time unistochasticity
+\cite{indivisible}---a weaker property than $V(t)$ being unitary,
+since unistochasticity fixes only the moduli of some unitary, not
+of $V$. The lemma is therefore stated for the weakest relevant
+condition (column-stochasticity of $|V|^{2}$) and excludes the
+unistochastic representations a fortiori. The core mechanism---column-stochasticity
+pinning $\norm{V(t)}_{F}=\sqrt n$ against the unbounded Jordan growth
+of $\norm{\ee^{-\ii Ht}}$ under any fixed similarity---appears for the
+size-2 boundary case ($s=s_*$) in \cite{indivisible}; the lemma extends
+that exclusion to arbitrary block size $m$, to any real eigenvalue,
+and, below (Theorem~\ref{thm:tower}), to the Fock tower.
+\end{remark}
+
+Numerically (\texttt{scripts/t4\_jordan\_process.py}): growth exponents
+$1.000,\,1.999,\,2.997$ for $m=2,3,4$ (with prefactors converging
+to $1/(m{-}1)!$); the similarity inequality
+verified with margin; the detuned control saturates at
+$\norm{U}\sim2/\delta$ as diagonalizability requires. (A numerical
+remark worth recording: machine-epsilon perturbations split a
+Jordan block by $\sim\epsilon^{1/m}$ and convert polynomial to
+exponential growth for $t\gtrsim\epsilon^{-1/m}$; the fragility is
+itself the exceptional-point physics.)
+
+Lemma~\ref{lem:jordan} upgrades the kinematics of
+Sec.~\ref{sec:kinematics}: away from the conformal point the
+dictionary exists at diverging cost \eqref{eq:condscaling}; at it,
+the dictionary does not exist. Since Bender and Mannheim themselves
+established that the equal-frequency Hamiltonian ``has no Hermitian
+counterpart'' \cite{BenderMannheim2008PRD}---their diagnosis of
+exactly the nondiagonalizability on which the lemma bites---the
+lemma's content in
+context is the missing corollary: \emph{for the Jordan dynamics,
+whose lack of a Hermitian counterpart is its nondiagonalizability,
+there is no closed probability representation on any beables}---under
+any similarity at the (finite-dimensional) quadratic level, sector by
+sector on the tower, and, by the tower theorem below, under any
+bounded dictionary with bounded inverse on
+the Fock space. The sector-level exclusion carries no boundedness
+hypothesis---each $M$-quantum sector, like the mechanical mode matrix
+itself, is finite-dimensional---so it already covers the
+quadratic-level avatars of the realized dictionaries and every
+sector-preserving field dictionary; the
+bounded-inverse hypothesis of Theorem~\ref{thm:tower} buys the
+further generality of bounded field dictionaries that mix sectors. For the
+no-ghost quantization, the option the
+trilemma calls ``definite
+configurations'' is thus, within the stated dictionary classes,
+structurally absent at the conformal point, not merely
+expensive---while the Hermitian ghost realization of
+Sec.~\ref{sec:kinematics}, a \emph{different} operator not similar
+to the Jordan one, keeps definite configurations together with the
+ghost spectrum, which is exactly the seat
+Sec.~\ref{sec:rate} prices.
+
+\subsection{From the mechanical prototype to the Fock tower}
+\label{sec:tower}
+
+The lemma so far concerns one mode. Second quantization makes it a
+field statement, constructively.
+
+\begin{proposition}[sector tower]
+\label{prop:tower}
+Let the one-particle matrix of a mode be a size-2 Jordan pair,
+$A=\omega\mathbf 1+N$ with $\omega\in\mathbb R$, $Nv=u$, $Nu=0$
+(the equal-frequency PU
+cell). Then $H=d\Gamma(A)$ preserves each $M$-quantum sector
+(dimension $M{+}1$), and on it carries a \emph{single} Jordan block
+of size $M{+}1$ at eigenvalue $M\omega$: secular growth $t^{M}$,
+with degree unbounded up the tower.
+\end{proposition}
+
+\begin{proof}
+$d\Gamma(N)$ acts on the occupation basis
+$\mathrm{sym}(u^{\nu}v^{M-\nu})$ as a weighted shift $\nu\to \nu+1$ with
+nonzero weights, so $\bigl(d\Gamma(N)\bigr)^{M}$ maps
+$\mathrm{sym}(v^{M})$ to a nonzero multiple of
+$\mathrm{sym}(u^{M})$ while $\bigl(d\Gamma(N)\bigr)^{M+1}=0$; the
+kernel of $d\Gamma(N)$ in the sector is one-dimensional (geometric
+multiplicity 1).
+\end{proof}
+Verified numerically for $M\le8$: nilpotent ranks,
+geometric multiplicities, and fitted growth exponents
+$1.000,2.000,3.999,5.999,7.999$ at $M=1,2,4,6,8$
+(\texttt{scripts/t4\_sector\_tower.py}).
+
+\begin{remark}[the sector similarity is positive-diagonal]
+\label{rem:posdiag}
+The shift of Proposition~\ref{prop:tower} is not merely nonzero- but
+\emph{positively}-weighted: on the occupation basis $\mathrm{sym}(u^{\nu}v^{M-\nu})$
+(taking $\{u,v\}$ orthonormal---the convention defining the occupation beables),
+$d\Gamma(N)=a_{u}^{\dagger}a_{v}$ sends
+$|\nu\rangle\mapsto\sqrt{(\nu{+}1)(M{-}\nu)}\,|\nu{+}1\rangle$, with strictly positive
+weights for $\nu=0,\dots,M{-}1$. Hence $d\Gamma(N)=D\,J_{M}\,D^{-1}$ with $J_{M}$
+the standard size-$(M{+}1)$ nilpotent block (ones on the subdiagonal, matching
+the shift $\nu\to \nu{+}1$) and $D=\mathrm{diag}(d_{\nu})$, $d_{0}=1$,
+$d_{\nu+1}=\sqrt{(\nu{+}1)(M{-}\nu)}\,d_{\nu}$ ($\nu=0,\dots,M{-}1$), a \emph{fixed,
+positive} diagonal (\texttt{scripts/t4\_tower\_similarity.py}). The occupation
+and Jordan bases therefore differ, at every $M$, by one $t$-\emph{independent}
+positive-diagonal similarity: $U(t)=e^{-\ii M\omega t}\,D\,e^{-\ii J_{M}t}D^{-1}$,
+so $|U(t)|^{2}=D^{2}\,|e^{-\ii J_{M}t}|^{2}\,D^{-2}$ entrywise (the global phase
+$e^{-\ii M\omega t}$ cancels), and any two-time object $\Gamma(T)\Gamma(s)^{-1}$ built from
+$\Gamma=|U|^{2}$ conjugates by the same $D^{2}$, scaling entry $(i,j)$ by
+$(d_{i}/d_{j})^{2}>0$: at each $M$ the beable-basis divisor shares the entrywise
+sign pattern of the Jordan-basis one. Moreover $e^{-\ii J_{M}t}$ is triangular
+\emph{Toeplitz}---its offset-$\ell$ entry is $(-\ii t)^{\ell}/\ell!$, independent of
+$M$---so the Jordan-basis divisor's offset-$\ell$ entry is one and the same at every
+$M\ge \ell$; a depth-$\ell$ sign shown for one block size therefore holds, in the
+beable basis, at every sector $M\ge \ell$. ($t$-independence is essential: it is what lets
+$D^{2}$ pass through the two-time divisor $\Gamma(T)\Gamma(s)^{-1}$.)
+\end{remark}
+
+The hypothesis is Sec.~\ref{sec:kinematics}'s kinematics: $A$ is
+the one-particle \emph{Hamiltonian} of the equal-frequency pair
+(real eigenvalue $\omega$), which inherits the nilpotent structure
+$N$ of the mode matrix's $+\ii\omega$ Jordan cell (the
+positive-frequency one of its two
+conjugate $2\times2$ blocks---the eigenvalue is the cell's times
+$\ii^{-1}$, the nilpotent the same up to that scalar, the Jordan
+structure unchanged; this per-level Jordan structure is the
+Bender--Mannheim equal-frequency construction \cite{BenderMannheim2008PRD}),
+so the Fock tower of
+every conformal mode carries this structure.
+This is the constructive form of Smilga's observation that the
+equal-frequency point is an exceptional point of \emph{infinite
+order}, whose closure produces a continuous spectrum
+\cite{Smilga2014}. Two consequences. First, no truncation escapes
+the lemma---every level $M\ge1$ of the tower contains Jordan
+structure, and
+each level makes the secular degree worse. Second, the
+no-representation statement lifts to the field:
+
+\begin{theorem}[no boundedly invertible dictionary on the Fock tower]
+\label{thm:tower}
+Let $H=d\Gamma(A)$ as above ($A=\omega\mathbf 1+N$ a size-2 Jordan
+pair with $\omega\in\mathbb R$) on the Fock space of one mode
+(sector-preserving with finite-dimensional sectors, so
+$\ee^{-\ii Ht}$ is defined sector-wise on a dense domain; it is
+\emph{not} bounded on $\ell^{2}$---its sector norms grow
+exponentially in $M$ at fixed $t$), and
+let $S$ be any bounded operator with bounded inverse on the
+$\ell^{2}$ configuration space. Then
+$\Gamma_{ij}(t)=|(S\ee^{-\ii Ht}S^{-1})_{ij}|^{2}$ cannot have unit
+column sums for all $t$ (whenever the representation exists at all,
+i.e.\ $\ee^{-\ii Ht}S^{-1}e_{j}\in\ell^{2}$, which we take as part of the
+dictionary class; an entrywise column that leaves $\ell^{2}$ is not a
+bounded-in-Fock-norm representation and is excluded by definition).
+\end{theorem}
+
+\begin{proof}
+Unit column sums mean $\norm{V(t)e_{j}}=1$ for every basis vector
+$e_{j}$ and all $t$. Let $u,v$ be
+the Jordan pair in the one-quantum sector, and let $u^{*}$ and
+$\alpha$ be the coordinate functionals dual to $u$ and $v$ there,
+extended by zero off the sector (bounded); since
+$\ee^{-\ii Ht}$ preserves sectors, they read off the one-quantum
+component, on which $H$ acts as $A$, giving
+$\langle u^{*},\ee^{-\ii Ht}\psi\rangle
+=\ee^{-\ii\omega t}\bigl(\langle u^{*},\psi\rangle
+-\ii t\,\alpha(\psi)\bigr)$
+for every $\psi$ in the domain.
+If $\alpha(S^{-1}e_{j})=0$ for every $j$, then the bounded
+functional $\alpha\circ S^{-1}$ vanishes on a basis, hence
+everywhere, hence $\alpha=0$ (as $S^{-1}$ is surjective)---false.
+So some $j$ has $\alpha(S^{-1}e_{j})=a\neq0$, and with
+$c=|\langle u^{*},S^{-1}e_{j}\rangle|$,
+\[
+1=\norm{V(t)e_{j}}
+\ge\frac{\norm{\ee^{-\ii Ht}S^{-1}e_{j}}}{\norm{S^{-1}}}
+\ge\frac{|a|\,t-c}{\norm{u^{*}}\,\norm{S^{-1}}}
+\;\longrightarrow\;\infty .
+\qedhere
+\]
+\end{proof}
+
+\begin{remark}[mode-wise extension to the full free Fock space]
+\label{rem:modewise}
+The theorem extends to the multi-mode free field:
+$H=\sum_{k}d\Gamma(A_{k})$ commutes with every per-mode number
+operator $\hat N_{k}$, so the two-dimensional subspace \{one quantum
+in mode $k$, vacuum elsewhere\} is invariant and lies in an invariant
+orthogonal decomposition; the dual functionals extend by zero and the
+linear-growth argument of Theorem~\ref{thm:tower} runs verbatim
+mode-wise.
+\end{remark}
+
+A control makes the mechanism sharp: for a \emph{diagonalizable}
+one-particle matrix at the same degenerate frequency, every sector
+evolution is exactly unitary ($\bigl|\norm{\ee^{-\ii d\Gamma
+t}}-1\bigr|$ at machine epsilon, $2.2\times10^{-16}$, at all
+sectors and times tested):
+degeneracy alone is harmless; the Jordan pair is what kills the
+tower. Scope, stated plainly: this is the \emph{free} field on flat
+space---precisely the arena whose per-mode kinematics
+Sec.~\ref{sec:kinematics} measured; interactions and curved
+backgrounds remain outside the theorem. ``Bounded'' here is relative to
+the occupation-number ($\{u,v\}$-orthonormal) Fock norm of
+Remark~\ref{rem:posdiag}: a Dyson map bounded in a different Fock norm
+falls into the honestly-open unbounded/sector-mixing class of
+Claim~\ref{claim:choose}, not around the theorem.
+
+\subsection{What survives: the open process, and the adjudication}
+
+What the indivisible-process paper~\cite{indivisible} found at the dimer exceptional point holds here: the
+\emph{open} route is untouched (for the mechanical cell, and sector by
+sector on the tower---$H$ preserves each finite sector, each carrying
+its own contraction and dilation; no tower-wide normalization exists,
+by the unbounded sector norms of Theorem~\ref{thm:tower}). Normalizing
+$C(t)=\ee^{-\ii Ht}/\sigma_{\max}(t)$, with $\sigma_{\max}$ the
+largest singular value, gives an exact contraction;
+its Halmos dilation is unitary (verified to $1.4\times10^{-8}$,
+limited by a
+matrix square root at an exactly-degenerate singular value); and the
+reduced process is sub-stochastic at all times. The normalization is
+a convention, and the minimal one: a unitary dilation exists exactly
+when the normalized evolution is a contraction, so $\sigma_{\max}$
+is the pointwise-least normalization admitting a conservative
+completion---the unique choice that discards no survival probability
+beyond what the dynamics itself loses ($\norm{C(t)}=1$: the
+least-decaying state is unconditioned at every time). Its structure is,
+however, new to the series' taxonomy: for the pure Jordan cell,
+$|U(t)|^{2}$ is \emph{triangular}---the beable-level process is a
+one-way cascade into the growth direction---and its indivisibility
+enters not through divisor negativity (the broken-dimer mechanism of
+\cite{indivisible}; the dimer at its own exceptional point develops a
+negative divisor entry by $t\approx0.7$ at unit coupling ($\kappa$, the
+cell's off-diagonal coupling)---the EP
+limit $1/(\kappa\sqrt2)$ of the companion's onset formula; the
+companion's canonical $\theta=\pi/4$ device gives
+$t\approx1.0$---while the size-2 PU cell never
+does, its $2{\times}2$ divisor being too small to carry a depth-two entry) but through the
+divisor violating the column-sum
+condition: \emph{conditional mass creation}, onset at finite length
+($t_c=0.486$ for the unit cell in the zero-step limit---the root
+of $2t\,\sigma_{\max}^2(t)=(\sigma_{\max}^2)'(t)$, emitted by the
+script;
+$\approx0.50$ at this section's protocol, whose base grid and pair
+step are both $0.05$), with
+entrywise nonnegativity
+intact throughout \emph{for the size-2 cell} (whose triangular divisor has
+nonnegative entries). At the higher Fock sectors $M\ge2$ the divisor's
+depth-two entry $\tfrac14(T^{2}-s^{2})(T^{2}-3s^{2})$ turns negative for a short
+step ($s<T<\sqrt3\,s$), carried into the beable basis by the positive-diagonal
+similarity of Remark~\ref{rem:posdiag}---so there the companion's ordinary
+negativity mechanism reappears alongside mass creation. One bookkeeping fact must be
+flagged, because the two mechanisms differ in kind under it:
+divisor entry \emph{signs} are invariant under every positive
+scalar renormalization $c(t)$ of the normalization, while divisor
+\emph{column sums} scale by $c^{2}(s)/c^{2}(s+\tau)$---negativity
+is convention-free, but the mass-creation onset $t_c$ is stated
+relative to the minimal ($\sigma_{\max}$) convention. The
+convention is not idle, and its minimality carries the physics: for
+the unit cell with coupling $\kappa$ the raw $|U|^{2}$ divisor's
+column sum is exactly $1+\kappa^{2}(T^{2}-s^{2})$, so a
+renormalization avoids the crossing at all step pairs only if
+$c^{2}(t)\ge c^{2}(0)\,\ee^{\kappa^{2}t^{2}}$, and that Gaussian
+envelope does avoid it (both verified in
+\texttt{scripts/t4\_jordan\_process.py}, block~[3b]). Divisibility can thus
+be purchased, but only by conditioning away survival probability at
+a Gaussian rate against polynomially growing dynamics---a
+conditioning overhead $c^{2}/\sigma_{\max}^{2}$ that diverges;
+under the minimal convention, in which conditioning means survival
+and nothing else, the crossing is unavoidable. The dipole ghost,
+read as a process, is a one-way
+conditioned cascade.
+
+This dissolves the published dispute into two currencies:
+
+\begin{itemize}
+\item \emph{Smilga's statement} (said of the nonstandard
+realization: ``unitarity is broken in the equal frequencies limit''
+\cite{Smilga2008}) is the closed-currency fact,
+now a lemma: no similarity restores a unitary---hence
+unistochastic---closed evolution.
+\item \emph{Bender--Mannheim's construction} (unitary time evolution
+carried by nonstationary states \cite{BenderMannheim2008PRD}) is,
+in this currency, the conditional bookkeeping of the dilated open
+process (read sector-wise on the tower): the polynomial norm growth is
+divided out exactly as the
+broken-phase dimer's exponential growth was in \cite{indivisible}---a
+survival-conditioned, open-system reading, not a closed sample
+space.
+\end{itemize}
+
+Both are right where they compute; neither headline survives the
+translation. We anticipate the natural reply from the $\PT$ side:
+in the theory's own inner product nothing is conditioned, and
+probability is exactly conserved. Agreed---and that is precisely
+the point at issue: the conditioning is relative to the
+Dirac/beable norm, the only norm that assigns Born weights to
+\emph{configurations}, so the disagreement is not about the
+formalism but about whether a configuration sample space exists.
+That is the trilemma's third seat, not a technicality. And the dictionary line for field theory: the Jordan
+$t$-term in amplitudes---the $t^{2}$ in probabilities---is precisely
+the notorious per-mode linear growth of fourth-order-gravity
+perturbations \cite{HellLustZoupanos2023}: conformal
+gravity is the
+everywhere-realized member of the exceptional-point polynomial class
+of \cite{indivisible}.
+
+%=====================================================================
+\section{Vacuum decay: the contact rung and the $\ag$ fork}
+\label{sec:rate}
+
+Suppose one refuses the exit and keeps definite configurations: the
+ghost sector is then subject to the vacuum-decay analysis of
+\cite{instantaneous}. There the golden-rule rate factorizes into an
+infinite boost-orbit volume times an invariant reduced integral, and
+the reduced measure's ultraviolet scaling is set by the vertex:
+contact $|\mathcal M|^{2}\sim1$ gives $\Lambda^{4}$, the
+graviton-mediated phantom of Cline--Jeon--Moore,
+$|\mathcal M|^{2}\sim s^{2}/M_{\rm Pl}^{4}$, gives
+$\Lambda^{8}/M_{\rm Pl}^{4}$ \cite{CJM2004,instantaneous}.
+
+For conformal gravity the physical channel is the
+Cline--Jeon--Moore analog, vacuum $\to$ (ghost-graviton pair) $+$
+(photon pair), through the $1/(\ag k^{4})$-scaled propagator; the
+matter side couples through the standard linearized
+$\tfrac12 h_{\mu\nu}T^{\mu\nu}$ coupling (the quadratic-action form
+of the sourced field equation of~\cite{Mannheim2011}). The
+illustrative $T$-parallel, with pair matrix elements
+$\langle\text{pair}|T|0\rangle\sim s$,
+\begin{equation}
+\mathcal M\;\sim\;s\cdot\frac{1}{\ag s^{2}}\cdot s\;\sim\;
+\frac{1}{\ag},
+\qquad
+|\mathcal M|^{2}\sim\frac{1}{\ag^{2}}\;(\text{$s$-flat}),
+\end{equation}
+carries the correct $\ag$ counting for the physical channel as well
+(the same $\ag^{-1}$ follows for the ghost-self-interaction route by
+$\ag$ bookkeeping: each graviton vertex drawn from the $\ag C^{2}$
+action carries $\ag$, each internal line $1/\ag$, and each
+canonically normalized external leg $\ag^{-1/2}$, so a connected
+$0\to4$ tree with $n_v$ vertices and $n_v{-}1$ internal lines scales as
+$\ag^{\,n_v-(n_v-1)-2}=\ag^{-1}$, independent of topology), and the
+$s$-flatness is \emph{forced} by scale invariance: pure conformal
+gravity has no dimensionful parameter, so any tree-level $0\to4$
+massless amplitude is $s^{0}f(\ag;t/s,u/s)$---scale invariance fixes
+the overall Mandelstam degree, not the angular dependence (assumed
+integrable; any collinear/soft non-integrability would only raise the
+rate, consistent with the lower-bound reading). The reduced measure therefore
+sits on the \emph{contact} rung at the scale-invariant point---with
+$\Gamma$ now the vacuum-decay rate (not the Sec.~2 stochastic map) per
+volume $V$:
+$\Gamma/V\sim c_{\rm ps}\,\Lambda^{4}/\ag^{2}$---a maximally generous
+lower bound, since consistently regulating the split poles only raises
+it (for modes of relative detuning $\ll1$)---with
+$c_{\rm ps}=(2\pi)^{-4}$ the phase-space prefactor used throughout
+(slopes validated against \cite{instantaneous} to $10^{-3}$;
+\texttt{scripts/t4\_rate\_ladder.py}). The Planck \emph{mass} has left the
+suppression: what remains is whatever $\ag$ is. This is the
+structural sense in which the agravity escape---``cosmologically
+slow \dots\ where ghosts have gravitational interactions only''
+\cite{GSTZ2021}---does not port to conformal gravity: that estimate
+is a statement about $M_{\rm Pl}$, and conformal gravity has none in
+its ghost vertex.
+
+Pricing the Lorentz-violating-cutoff rescue (horn 1 of the
+trilemma) then requires a value of $\ag$, and here the theory
+forks, because no numerical $\ag$ exists in print:
+
+\emph{Face-value branch.} Matching the flat-space
+$1/(2\ag k^{4})$ exchange to the Mannheim--O'Brien rotation-curve
+parameters \cite{MannheimOBrien2011} gives $|\ag|\sim3\times10^{109}$
+(two normalization conventions differing by a fixed factor $4/3$; the in-print sign
+constraint is negative \cite{Mannheim2015}). At such $\ag$ the
+energy-density bound on the cutoff is vacuous
+($\Lambda_{\max}\sim5\times10^{7}\,M_{\rm Pl}$). But this same
+face-value
+flat-space theory is the one shown to fail solar-system tests
+outright in the weak-field limit (wrong light bending \cite{Flanagan2006}, disputed by
+Mannheim \cite{Mannheim2007}; wrong Newtonian
+limit \cite{Yoon2013}, disputed in \cite{Mannheim2015}): \emph{the
+branch that survives the vacuum-decay bound as stated (the contact-rung
+minimum) is already dead by other observations---or, if Mannheim's
+rebuttals stand (they invoke the very conformal-source structure that defines
+the Mannheim branch), one is thereby on the other branch.}
+
+\emph{Mannheim branch.} Mannheim rejects the face-value inversion
+(conformal sources; the local Higgs field $S(x)$)
+\cite{Mannheim2015}; then $\ag$ is unfixed, and for any $\ag$
+within eight decades of unity (a conservative figure; the same bound in fact
+reaches $|\ag|\lesssim3\times10^{12}$, below) the same energy-density bound
+(method anchored on the phantom vertex, where it reproduces the
+published gamma-ray bound scale within an order of magnitude:
+$108$ vs $18.8$~MeV, the latter being the $95\%$~C.L.\ limit
+quoted in \cite{ClinePhantom2024}; using the critical
+density $\rho_{\rm cr}$ rather than the ${\sim}10^{4}\times$
+smaller radiation background is the \emph{weakest defensible}
+bound, i.e.\ maximally generous to the theory) forces
+\begin{equation}
+\Lambda_{\max}=\Bigl(\frac{\ag^{2}\rho_{\rm cr}}
+{t_{0}\,c_{\rm ps}}\Bigr)^{1/5}
+\;\sim\;10^{-8}\,\text{eV}\;\;(|\ag|=1),
+\end{equation}
+with $t_{0}$ the age of the universe:
+a ghost sector cut off at a reduced wavelength
+$\hbar c/\Lambda_{\max}\approx20\,$m (physical wavelength
+${\approx}130\,$m)---no laboratory-scale field content at all.
+
+\emph{The gap between the branches, priced.} The two branches
+bracket the positions actually taken in print; they do not exhaust
+the real line, and we close the gap explicitly rather than by
+silence. Since the bound scales as
+$\Lambda_{\max}\propto\ag^{2/5}$, laboratory-scale field content
+($\Lambda_{\max}\gtrsim\mathrm{meV}$) returns for
+$|\ag|\gtrsim3\times10^{12}$, and a particle-scale cutoff
+($\Lambda_{\max}\sim100$~MeV) at $|\ag|\sim10^{40}$: couplings with
+$|\ag|\gtrsim3\times10^{12}$---the entire unanchored ray above threshold,
+bounded by nothing from above---would evade the energy bound as stated.
+That ray is nonetheless closed, and differently on the two branches. On the
+\emph{face-value} branch the closure is observational and needs no prior:
+every leading-order (one-exchange) gravitational observable carries a single
+$1/(2\ag k^{4})$ propagator and so scales as $1/\ag$ (nonlinear observables
+scale as higher powers of $1/\ag$ and close even faster), whence the linear
+potential coefficient
+$\gamma_*\propto1/\ag$ is \emph{measured} by the rotation-curve fit to be
+$|\ag|\simeq3\times10^{109}$---itself already dead by solar-system tests
+\cite{Flanagan2006} (a dark-matter-independent, though Mannheim-disputed, anchor)---and any $|\ag|$ off
+that value fails galactic and
+solar dynamics monotonically (below it the linear term overshoots the
+observed pull, above it undershoots by the matching decades). On the
+\emph{Mannheim} branch $\ag$ decouples---on Mannheim's contention, via
+degeneracy with the undetermined conformal-source normalization---from every conformally-invariant
+\emph{classical} observable, so no classical or astrophysical-fit measurement
+constrains it (graviton--graviton scattering does depend on $\ag$, but is
+unobservable here); there the ray is closed by a
+\emph{naturalness prior}, stated rather than smuggled: a dimensionless
+coupling is not taken tens of decades above unity without a mechanism. (The
+Mannheim energy bound already reaches the threshold on its own---%
+$\Lambda_{\max}\lesssim\mathrm{meV}$ for all $|\ag|\lesssim3\times10^{12}$---%
+leaving only the ray above it to the prior; and replacing $\rho_{\rm cr}$ by
+the smaller measured radiation backgrounds tightens $\Lambda_{\max}$ by only
+the fifth root of the density ratio, a factor of order ten.) Under either
+branch's closure horn~1 is untenable (on the Mannheim branch up to the stated
+prior); absent any closure it survives only on
+the unanchored ray $|\ag|\gtrsim3\times10^{12}$, selected to evade the
+bound.
+
+Neither branch keeps horn 1 alive, and the unanchored ray of larger
+couplings is closed on each (observationally on the face-value branch, by
+the stated prior on Mannheim's). And the escape Mannheim himself
+offers from both---the $\PT$/zero-norm quantization, under which
+the decay channel closes identically
+\cite{BenderMannheim2008,Mannheim2020}---is not a fourth option:
+it is horn 3, and Sec.~\ref{sec:lemma} has already priced it.
+
+\emph{Scope.} Everything in this section is tree-level, golden-rule,
+and computed on the Minkowski background with Dirac-norm (Fock)
+quantization, with the exactly degenerate external pair understood as
+the smooth $\delta\to0$ limit of the split-pole spectrum---an assumption,
+since the merging poles carry opposite residues (the
+degenerate tower of Prop.~\ref{prop:tower} has no stationary
+final-state basis at $\delta=0$)---that is, on the multiplicity (instantaneous-decay-products) sample-space choice of
+\cite{instantaneous}, which is exactly the reading in which horn 1 is
+being priced. Indeed the assumption is not merely unproven but fails in
+the regulated theory: canonically normalizing the split ($\delta>0$)
+external legs against their magnitude-$1/(\ag\delta)$ residues multiplies
+each gravitational leg by a divergent factor $\propto\delta^{-1/2}$, so
+the consistently regulated golden-rule rate is parametrically larger than the
+contact-rung value (for modes of relative detuning $\ll1$) and has no finite $\delta\to0$ limit---the split-pole
+and $\delta=0$ computations sit on opposite sides of a non-commuting
+limit. Because these Dirac-norm channel rates are positive and cannot
+cancel (positivity is norm-relative), this only tightens (never loosens) the horn-1 pricing; the contact rung is
+the maximally generous (minimum) reading. It is not a statement about the $\PT$-quantized
+theory, whose channels close by construction; that is the point of
+the fork, not an oversight of it.
+
+%=====================================================================
+\section{The trilemma, closed}
+\label{sec:trilemma}
+
+\begin{claim}[conformal gravity must choose---and already has]
+\label{claim:choose}
+Of the trilemma's three virtues---a coupled ghost sector, empirical
+Lorentz invariance, definite configurations---conformal gravity's
+\emph{no-ghost} kinematics removes the third, within the stated
+dictionary classes, at the outset:
+by Lemma~\ref{lem:jordan} the equal-frequency (Jordan) dynamics
+admits
+no closed configuration-space representation under any dictionary in the
+stated classes---any similarity per sector, or any dictionary bounded with
+bounded inverse in the occupation-number Fock norm (Theorem~\ref{thm:tower}, extended mode-wise to the full free Fock space by Remark~\ref{rem:modewise}). (Unbounded,
+sector-mixing field dictionaries, continuum-beable $(x,\dot x)$ kernels on
+$L^{2}$, and the deterministic Bohmian configuration trajectories
+of~\cite{DeyFring2026} fall outside these classes and remain open.) Within the stated classes, definite
+configurations survive only in the Hermitian ghost realization,
+never jointly with the other two virtues (at tree level).
+The remaining choices are priced:
+\begin{itemize}
+\item \textbf{Horn 1} (coupled ghosts $+$ configurations $\Rightarrow$
+  Lorentz-violating frame): the $\ag$ fork of
+  Sec.~\ref{sec:rate} (priced under the smooth $\delta\to0$ final-state
+  limit of that section's Scope)---vacuous-but-dead, or a
+  macroscopic-wavelength cutoff. Untenable on either branch (Mannheim up to the stated prior), with the surviving ray of larger
+  couplings closed on each (observationally on the face-value branch, by the
+  naturalness prior on Mannheim's).
+\item \textbf{Horn 2} (Lorentz $+$ configurations $\Rightarrow$ no
+  coupled ghosts): no conformal gravity coupled to matter---the
+  theory abandons its purpose.
+\item \textbf{Horn 3} (coupled ghosts $+$ Lorentz $\Rightarrow$ no
+  configurations): the Bender--Mannheim quantization. This is where
+  the theory already lives, by kinematics rather than choice; its
+  price, in this currency, is that the ``unitarity'' retained is the
+  conditional bookkeeping of an open process
+  (Sec.~\ref{sec:lemma})---at the free/kinematic level, within the stated
+  dictionary classes, there is no
+  underlying \emph{closed} sample space of definite configurations (the lemma and the tower theorem
+  are free-field statements; Sec.~\ref{sec:discussion} scopes them).
+\end{itemize}
+\end{claim}
+
+\begin{table}[t]
+\centering\small
+\begin{tabular}{@{}p{0.34\linewidth}cp{0.44\linewidth}@{}}
+\toprule
+escape route & horn & price, in the process currency\\
+\midrule
+Lorentz-violating cutoff / preferred frame
+\cite{CJM2004,Konnig2016} & 1 &
+the $\ag$ fork: vacuous-but-observationally-dead, or a
+macroscopic-wavelength cutoff (larger-coupling ray closed by fit or stated prior)\\
+Lorentz-violating gravitons \cite{Deruelle2012} & 1 &
+observable blow-up of the primordial GW spectrum (their result; a two-horn special case)\\
+decouple the ghost sector & 2 &
+no conformal gravity coupled to matter\\
+Maldacena boundary conditions \cite{Maldacena2011} & 2
+(attempted) & argued insufficient on Minkowski
+\cite{HellLustZoupanos2023}\\
+$\PT$/zero-norm quantization
+\cite{BenderMannheim2008,Mannheim2020} & 3 &
+no \emph{closed} sample space within the stated dictionary classes (Lemma~\ref{lem:jordan}); retained unitarity is
+conditioned, open-system bookkeeping\\
+negative-norm configuration space \cite{SalvioStrumia2016} & 3 &
+configurations without a probability measure\\
+fakeons \cite{Anselmi2018} & 3 &
+definition-level exit; microcausality violation ``survives the
+classical limit''\\
+Merlin modes \cite{DonoghueMenezes} & 3-adjacent &
+sample space kept, causal order paid (a loop-level width construction, outside the tree-level trilemma)\\
+metastability / benign ghosts
+\cite{Smilga2005,GSTZ2021,SalvioMeta,ErrastiDiez2024,Deffayet2026,EwasiukProfumo2026} &
+(premise) & disputes the rate premise rather than picking a horn;
+the open QFT rate is conceded ``naively infinite''; the 2026
+quantum-mechanical entries sharpen the dispute (unitary evolution
+with a well-defined vacuum; exact moment bounds) without touching
+the field-theoretic rate\\
+\bottomrule
+\end{tabular}
+\caption{The adjudicated published escape routes of quadratic/conformal gravity
+(one cited work concerns massive gravity's Boulware--Deser ghost
+\cite{Konnig2016}), assigned to the trilemma's horns. No route
+occupies a fourth position that we can identify; the closest
+candidate is the Merlin route, which keeps the sample space and
+trades causal order instead---a different door out of the same
+room, priced in a currency the trilemma does not list but
+operational physics does.}
+\label{tab:horns}
+\end{table}
+
+The \emph{adjudicated} escape routes of quadratic gravity map onto the horns
+(two rows only horn-adjacent or premise-level, as flagged in Table~\ref{tab:horns})
+with no further remainder we have been able to identify (the recent (2024--2026) entries
+flagged in the introduction, the older alternative quantizations \cite{Mostafazadeh2011,IlhanKovner2014}, and the Bohmian route \cite{DeyFring2026}, remain pending;
+Table~\ref{tab:horns}): Lorentz-violating cutoffs and frames
+\cite{CJM2004,Konnig2016} (horn 1); Maldacena's boundary conditions
+\cite{Maldacena2011}, argued insufficient on Minkowski
+\cite{HellLustZoupanos2023} (an attempted horn-2 residence);
+$\PT$/zero-norm quantization \cite{BenderMannheim2008,Mannheim2020},
+fakeons \cite{Anselmi2018}, and negative-norm configuration space
+\cite{SalvioStrumia2016} (horn 3, in three dialects: all exit the
+sample space, paying respectively in nonstationary-state bookkeeping,
+microcausality that ``survives the classical limit,'' and
+probability-free configurations); Merlin modes
+\cite{DonoghueMenezes} (horn 3 adjacent: the sample space is kept
+but causal order is not, which in the operational terms of
+\cite{instantaneous} is a different door out of the same room);
+and the trade of Weyl ghosts for observable Lorentz violation in the
+primordial gravitational-wave spectrum \cite{Deruelle2012} is a
+horn-1 special case (with a horn-2 aspect) computed before the general pattern was
+visible. The closest prior statements of a forced choice---%
+Donoghue--Menezes' unitarity at the price of microcausality
+(violated on scales of order the resonance
+width) \cite{DonoghueMenezes} and CJM's stability-versus-Lorentz
+\cite{CJM2004}---each name one edge, and Steinwachs names a
+different triangle altogether
+(unitarity--renormalizability--relativistic
+invariance)~\cite{Steinwachs2020}; the present triangle, and the
+identification of its third vertex with the existence of a
+configuration sample space, appears to be new here, as does every
+use of the process currency in this corpus.
+
+%=====================================================================
+\section{Discussion: what is established, at what strength}
+\label{sec:discussion}
+
+\emph{Theorem-grade}: Lemma~\ref{lem:jordan} and its corollary that
+the conformal point's Jordan (no-ghost) dynamics admits no closed
+beable representation (per
+sector; on the Fock tower for dictionaries boundedly invertible in
+the occupation-number Fock norm);
+the sector-tower proposition and the bounded-dictionary theorem on
+the free Fock space (Sec.~\ref{sec:tower}); the
+validity of the open (dilated) process for the mechanical Jordan
+cell (Sec.~\ref{sec:lemma}).
+\emph{Measured}: the reduced-measure slopes (validated against
+\cite{instantaneous}); the per-mode dictionary cost
+\eqref{eq:condscaling};
+the UV approach to the exceptional line with its units-honest
+decomposition; the conditional-mass-creation indivisibility
+mechanism of the dipole cell (under the minimal $\sigma_{\max}$
+convention, Sec.~\ref{sec:lemma}).
+\emph{Argued}: the adjudication of Sec.~\ref{sec:lemma} (that
+Bender--Mannheim's nonstationary-state unitarity \emph{is} the
+dilation's conditional dynamics is an identification we find exact
+in structure, but it is an interpretation of their formalism, not a
+theorem about it); the one-loop pole statement of
+Sec.~\ref{sec:kinematics} that the Merlin width does not detune
+the theory off the exceptional line (a resonance-type EP with
+unequal linewidths---an analytic one-loop estimate); the $T\sim s$
+vertex parallel behind the contact
+rung, and with it the reduced-measure power counting (its
+$s$-flatness is forced by scale invariance and its slopes are
+measured, but the vertex class itself is the argued premise); the
+horn assignments of Sec.~\ref{sec:trilemma}.
+\emph{Conditional}: everything in Sec.~\ref{sec:rate}, on the stated
+branch structure---in particular the $|\ag|\sim3\times10^{109}$
+face-value matching is our arithmetic on published fit parameters,
+not a published number, and Mannheim disputes the matching's
+premise; we present the fork, not a verdict on it.
+
+Limits. All rate statements are tree-level golden rule on flat
+space with Dirac-norm quantization; Mannheim contends flat space
+with those norms is the wrong arena twice over, and our reply is the
+structure of the paper: on his arena the trilemma's third seat is
+already gone (Sec.~\ref{sec:lemma}), so the rate section prices only
+the alternative he rejects. The energy-density bound is
+deliberately crude (its calibration against the phantom case is
+order-of-magnitude); a dedicated soft-photon analysis would tighten
+but not rescue horn 1. The equal-frequency quantum mechanics we
+adjudicate is no longer only the mechanical prototype---the sector
+tower (Sec.~\ref{sec:tower}) carries the no-representation
+statement to the free Fock space of every conformal mode, for any
+dictionary boundedly invertible in the occupation-number Fock
+norm---but the field-theoretic zero-norm construction
+still has structure (conformal ghosts on curved backgrounds, the
+$S(x)$ sector, interactions) that the free flat-space tower does
+not see, and our theorems constrain the latter only.
+Finally, the trilemma names combinations, not truths: conformal
+gravity may yet be the right theory of nature---the claim is that
+if so, it is a theory without a configuration sample space, and its
+advertised unitarity is of the conditioned, open-system kind.
+
+%=====================================================================
+\phantomsection
+\section*{Author contributions and use of AI}
+\addcontentsline{toc}{section}{Author contributions and use of AI}
+
+This manuscript was produced through a collaboration, directed by
+the author, with the large language model Claude Fable~5
+(Anthropic), which carried out the technical work: the research
+program, the derivations and proofs, the numerical experiments, the
+literature analysis, and the text, including this statement. J.T.\
+posed the research direction, provided iterative review, and takes
+responsibility for the decision to circulate. The research notebook
+in the program's public repository records the development,
+including a same-day correction of this paper's own initial
+cutoff-bound claim (superseded by the $\ag$ fork of
+Sec.~\ref{sec:rate}) when the coupling's face value was pinned down.
+
+%=====================================================================
+\phantomsection
+\section*{Code availability}
+\label{sec:code}
+\addcontentsline{toc}{section}{Code availability}
+
+All numerical claims are reproducible from five standalone scripts
+(NumPy/SciPy, seconds to minutes, controls printed inline) in the
+program's main repository, with companion-paper numbers cited as
+such, the face-value $\ag$ matching emitted by
+\texttt{scripts/t4\_rate\_ladder.py} from the constants documented in
+\texttt{research/t4\_vertex\_conventions.md}, and the one-loop pole
+estimates of Sec.~\ref{sec:kinematics} (width, suppression factor,
+fixed-linewidth foil) analytic computations whose arithmetic is
+stated in-text:
+\begin{center}
+\url{https://github.com/embeddetech/p05-choosing-ghosts}
+\end{center}
+(also archived, with the full program history, in the hub
+repository \url{https://github.com/embeddetech/ghosts-program});
+\texttt{scripts/t4\_\allowbreak ep\_\allowbreak dictionary.py} (Sec.~\ref{sec:kinematics}),
+\texttt{scripts/t4\_\allowbreak jordan\_\allowbreak process.py} (Sec.~\ref{sec:lemma}),
+\texttt{scripts/t4\_\allowbreak sector\_\allowbreak tower.py} and \texttt{scripts/t4\_\allowbreak tower\_\allowbreak similarity.py} (Sec.~\ref{sec:tower}),
+\texttt{scripts/t4\_\allowbreak rate\_\allowbreak ladder.py} (Sec.~\ref{sec:rate}); the
+supporting literature and convention reports are under
+\texttt{research/}.
+
+%=====================================================================
+\begin{thebibliography}{99}\small
+
+\bibitem{indivisible}
+J.~Torkelson,
+\emph{Indivisible stochastic processes for non-Hermitian and
+higher-derivative quantum systems: detailed balance, broken $\PT$
+symmetry, and the explosion of ghosts},
+companion paper (2026),
+\url{https://github.com/embeddetech/p01-indivisible-ghosts}.
+
+\bibitem{instantaneous}
+J.~Torkelson,
+\emph{Ghost vacuum decay as a stochastic process: instantaneous
+states, the boost-orbit measure, and the foliation that ghosts make
+visible},
+companion paper (2026),
+\url{https://github.com/embeddetech/p03-instantaneous-ghosts}.
+
+\bibitem{conditioned}
+J.~Torkelson,
+\emph{The price of a post-selected signal: a sharp
+survival--distinguishability trade-off, saturated by broken-$\PT$
+dynamics},
+companion paper (2026),
+\url{https://github.com/embeddetech/p04-conditioned-ghosts}.
+
+\bibitem{Barandes2023}
+J.~A.~Barandes,
+\emph{The stochastic-quantum correspondence},
+Philos.\ Phys.\ \textbf{3}(1), 8 (2025), arXiv:2302.10778.
+
+\bibitem{Barandes2025}
+J.~A.~Barandes,
+\emph{Quantum systems as indivisible stochastic processes},
+arXiv:2507.21192.
+
+\bibitem{PaisUhlenbeck1950}
+A.~Pais and G.~E.~Uhlenbeck,
+\emph{On field theories with non-localized action},
+Phys.\ Rev.\ \textbf{79}, 145 (1950).
+
+\bibitem{BenderMannheim2008}
+C.~M.~Bender and P.~D.~Mannheim,
+\emph{No-ghost theorem for the fourth-order derivative
+Pais--Uhlenbeck oscillator model},
+Phys.\ Rev.\ Lett.\ \textbf{100}, 110402 (2008), arXiv:0706.0207.
+
+\bibitem{BenderMannheim2008PRD}
+C.~M.~Bender and P.~D.~Mannheim,
+\emph{Exactly solvable PT-symmetric Hamiltonian having no Hermitian
+counterpart},
+Phys.\ Rev.\ D \textbf{78}, 025022 (2008), arXiv:0804.4190.
+
+\bibitem{Mannheim2011}
+P.~D.~Mannheim,
+\emph{Making the case for conformal gravity},
+Found.\ Phys.\ \textbf{42}, 388 (2012), arXiv:1101.2186.
+
+\bibitem{Mannheim2020}
+P.~D.~Mannheim,
+\emph{Ghost problems from Pauli--Villars to fourth-order quantum
+gravity and their resolution},
+Int.\ J.\ Mod.\ Phys.\ D \textbf{29}, 2043009 (2020),
+arXiv:2004.00376.
+
+\bibitem{Mannheim2015}
+P.~D.~Mannheim,
+\emph{Comment on ``Problems with Mannheim's conformal gravity
+program''},
+Phys.\ Rev.\ D \textbf{93}, 068501 (2016), arXiv:1506.02479.
+
+\bibitem{MannheimOBrien2011}
+P.~D.~Mannheim and J.~G.~O'Brien,
+\emph{Fitting galactic rotation curves with conformal gravity and a
+global quadratic potential},
+Phys.\ Rev.\ D \textbf{85}, 124020 (2012), arXiv:1011.3495.
+
+\bibitem{Smilga2005}
+A.~V.~Smilga,
+\emph{Benign vs.\ malicious ghosts in higher-derivative theories},
+Nucl.\ Phys.\ B \textbf{706}, 598 (2005), arXiv:hep-th/0407231.
+
+\bibitem{Smilga2008}
+A.~V.~Smilga,
+\emph{Comments on the dynamics of the Pais--Uhlenbeck oscillator},
+SIGMA \textbf{5}, 017 (2009), arXiv:0808.0139.
+
+\bibitem{Smilga2014}
+A.~V.~Smilga,
+\emph{Exceptional points of infinite order giving a continuous
+spectrum},
+Int.\ J.\ Theor.\ Phys.\ \textbf{54}, 3900 (2015), arXiv:1409.8450.
+
+\bibitem{FMT2026}
+A.~Fring, I.~Marquette, and T.~Taira,
+\emph{Spectrum-generating algebra and intertwiners of the resonant
+Pais--Uhlenbeck oscillator},
+arXiv:2601.20752 (their abstract: classically equivalent
+Hamiltonians define inequivalent quantum theories).
+
+\bibitem{FringTairaTurner2025}
+A.~Fring, T.~Taira, and B.~Turner,
+\emph{Ghost-free quantisation of higher time-derivative theories
+via non-unitary similarity transformations},
+arXiv:2506.21400 (2025).
+
+\bibitem{FelskiFringTurner2025}
+A.~Felski, A.~Fring, and B.~Turner,
+\emph{Lie symmetries and ghost-free representations of the
+Pais--Uhlenbeck model},
+Mod.\ Phys.\ Lett.\ A \textbf{41}, 2650019 (2026), arXiv:2505.07869.
+
+\bibitem{DeyFring2026}
+S.~Dey and A.~Fring,
+\emph{Quantum--classical diagnostics and Bohmian inequivalence for
+higher time-derivative Hamiltonians},
+Universe \textbf{12}(7), 200 (2026), arXiv:2603.15395.
+
+\bibitem{Holdom2024}
+B.~Holdom,
+\emph{Making sense of ghosts},
+Nucl.\ Phys.\ B \textbf{1008}, 116696 (2024), arXiv:2408.04089.
+
+\bibitem{Kuntz2024}
+J.~Kuntz,
+\emph{Unitarity through PT symmetry in quantum quadratic gravity},
+Class.\ Quantum Grav.\ \textbf{42}, 175003 (2025), arXiv:2410.08278.
+
+\bibitem{BatemanTurok2026}
+S.~Bateman and N.~Turok,
+\emph{Escape from Ostrogradsky via Hidden Ghost Parity},
+arXiv:2607.00096.
+
+\bibitem{KumarMarto2026}
+K.~S.~Kumar and J.~Marto,
+\emph{Quantum (quadratic) gravity: replacing the massive tensor
+ghost with an inverted harmonic oscillator-like instability},
+arXiv:2603.07150;
+\emph{Unitary Quadratic Quantum Gravity in 4D},
+arXiv:2604.19707.
+
+\bibitem{AsoreyKPS2026}
+M.~Asorey, G.~Krein, M.~Pardina, and I.~L.~Shapiro,
+\emph{Reflection positivity in a higher-derivative model with
+physical bound states of ghosts},
+JHEP \textbf{02} (2026) 020, arXiv:2511.15283;
+\emph{Bound states of massive complex ghosts in superrenormalizable
+quantum gravity theories},
+JHEP \textbf{01} (2025) 113, arXiv:2408.16514.
+
+\bibitem{Santillan2025}
+O.~P.~Santill\'an,
+\emph{LSZ ghostbusters in the quadratic gravity stage},
+Eur.\ Phys.\ J.\ C \textbf{85}, 810 (2025), arXiv:2505.20597.
+
+\bibitem{Buoninfante2026}
+L.~Buoninfante,
+\emph{Asymptotic Quantum Dynamics of Ghost Fields},
+arXiv:2605.29047.
+
+\bibitem{ErrastiDiez2024}
+V.~Errasti D\'iez, J.~Gaset Rif\`a, and G.~Staudt,
+\emph{Foundations of ghost stability},
+Fortschr.\ Phys.\ \textbf{73}, 2400268 (2025), arXiv:2408.16832.
+
+\bibitem{Deffayet2026}
+C.~Deffayet, A.~Fathe Jalali, A.~Held, S.~Mukohyama, and A.~Vikman,
+\emph{Unitary time evolution and vacuum for a quantum stable ghost},
+arXiv:2604.21823.
+
+\bibitem{EwasiukProfumo2026}
+C.~Ewasiuk and S.~Profumo,
+\emph{Ghost degrees of freedom without quantum runaway: exact moment
+bounds from an operator conservation law},
+arXiv:2604.21348.
+
+\bibitem{Oda2026}
+I.~Oda,
+\emph{Confinement of Massive Ghost in Quadratic Gravity},
+arXiv:2605.01966.
+
+\bibitem{Mostafazadeh2011}
+A.~Mostafazadeh,
+\emph{A Hamiltonian formulation of the Pais--Uhlenbeck oscillator
+that yields a stable and unitary quantum system},
+Phys.\ Lett.\ A \textbf{375}, 93 (2010), arXiv:1008.4678.
+
+\bibitem{GSTZ2021}
+C.~Gross, A.~Strumia, D.~Teresi, and M.~Zirilli,
+\emph{Is negative kinetic energy metastable?},
+Phys.\ Rev.\ D \textbf{103}, 115025 (2021), arXiv:2007.05541.
+
+\bibitem{CJM2004}
+J.~M.~Cline, S.~Jeon, and G.~D.~Moore,
+\emph{The phantom menaced: constraints on low-energy effective
+ghosts},
+Phys.\ Rev.\ D \textbf{70}, 043543 (2004), hep-ph/0311312.
+
+\bibitem{ClinePhantom2024}
+J.~M.~Cline, M.~Puel, T.~Toma, and Q.~S.~Wang,
+\emph{Phantom fluid cosmology: impact of a phantom hidden sector on
+cosmological observables},
+Phys.\ Rev.\ D \textbf{108}, 095033 (2023), arXiv:2308.12989.
+
+\bibitem{SalvioStrumia2016}
+A.~Salvio and A.~Strumia,
+\emph{Quantum mechanics of 4-derivative theories},
+Eur.\ Phys.\ J.\ C \textbf{76}, 227 (2016), arXiv:1512.01237.
+
+\bibitem{Salvio2018}
+A.~Salvio,
+\emph{Quadratic gravity},
+Front.\ Phys.\ \textbf{6}, 77 (2018), arXiv:1804.09944.
+
+\bibitem{SalvioMeta}
+A.~Salvio,
+\emph{Metastability in quadratic gravity},
+Phys.\ Rev.\ D \textbf{99}, 103507 (2019), arXiv:1902.09557.
+
+\bibitem{Mannheim2007}
+P.~D.~Mannheim,
+\emph{Schwarzschild limit of conformal gravity in the presence of
+macroscopic scalar fields},
+Phys.\ Rev.\ D \textbf{75}, 124006 (2007), arXiv:gr-qc/0703037.
+
+\bibitem{DonoghueMenezes}
+J.~F.~Donoghue and G.~Menezes,
+\emph{Unitarity, stability, and loops of unstable ghosts},
+Phys.\ Rev.\ D \textbf{100}, 105006 (2019), arXiv:1908.02416;
+\emph{The arrow of causality and quantum gravity},
+Phys.\ Rev.\ Lett.\ \textbf{123}, 171601 (2019), arXiv:1908.04170.
+
+\bibitem{Anselmi2018}
+D.~Anselmi,
+\emph{On the quantum field theory of the gravitational
+interactions},
+JHEP \textbf{06} (2017) 086, arXiv:1704.07728;
+\emph{Fakeons and Lee--Wick models},
+JHEP \textbf{02} (2018) 141, arXiv:1801.00915;
+\emph{Fakeons, microcausality and the classical limit of quantum
+gravity},
+Class.\ Quantum Grav.\ \textbf{36}, 065010 (2019), arXiv:1809.05037.
+
+\bibitem{HellLustZoupanos2023}
+A.~Hell, D.~L\"ust, and G.~Zoupanos,
+\emph{On the ghost problem of conformal gravity},
+JHEP \textbf{08} (2023) 168, arXiv:2306.13714.
+
+\bibitem{IlhanKovner2014}
+I.~B.~Ilhan and A.~Kovner,
+\emph{Some comments on ghosts and unitarity: the Pais--Uhlenbeck
+oscillator revisited},
+Phys.\ Rev.\ D \textbf{88}, 044045 (2013), arXiv:1301.4879
+[see also \emph{Conformal gravity redux: Ghost-turned tachyon},
+Phys.\ Rev.\ D \textbf{89}, 104015 (2014), arXiv:1403.4664].
+
+\bibitem{Flanagan2006}
+\'E.~\'E.~Flanagan,
+\emph{Fourth order Weyl gravity},
+Phys.\ Rev.\ D \textbf{74}, 023002 (2006), astro-ph/0605504.
+
+\bibitem{Yoon2013}
+Y.~Yoon,
+\emph{Problems with Mannheim's conformal gravity program},
+Phys.\ Rev.\ D \textbf{88}, 027504 (2013), arXiv:1305.0163.
+
+\bibitem{Riegert1984}
+R.~J.~Riegert,
+\emph{The particle content of linearized conformal gravity},
+Phys.\ Lett.\ A \textbf{105}, 110 (1984).
+
+\bibitem{Maldacena2011}
+J.~Maldacena,
+\emph{Einstein gravity from conformal gravity},
+arXiv:1105.5632.
+
+\bibitem{Deruelle2012}
+N.~Deruelle, M.~Sasaki, Y.~Sendouda, and A.~Youssef,
+\emph{Lorentz-violating vs.\ ghost gravitons: the example of Weyl
+gravity},
+JHEP \textbf{09} (2012) 009, arXiv:1202.3131.
+
+\bibitem{Steinwachs2020}
+C.~F.~Steinwachs,
+\emph{Towards a unitary, renormalizable, and ultraviolet-complete
+quantum theory of gravity},
+Front.\ Phys.\ \textbf{8}, 185 (2020), arXiv:2004.07842.
+
+\bibitem{Konnig2016}
+F.~K\"onnig, H.~Nersisyan, Y.~Akrami, L.~Amendola, and
+M.~Zumalac\'arregui,
+\emph{A spectre is haunting the cosmos: quantum stability of massive
+gravity with ghosts},
+JHEP \textbf{11} (2016) 118, arXiv:1605.08757.
+
+\end{thebibliography}
+
+\end{document}
